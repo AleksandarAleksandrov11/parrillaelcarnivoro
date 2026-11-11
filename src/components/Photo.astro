@@ -25,6 +25,8 @@ interface Props {
   curtain?: string;
   /** Sobrescribe la calidad por defecto de todos los formatos (normalmente no hace falta). */
   quality?: number;
+  /** Prioridad baja de descarga (no compite con la imagen LCP aunque esté cerca del viewport). */
+  lowPriority?: boolean;
 }
 
 const {
@@ -42,6 +44,7 @@ const {
   delay = 0,
   curtain,
   quality,
+  lowPriority = false,
 } = Astro.props;
 
 const img = await photo(name);
@@ -68,7 +71,7 @@ const style = [
     quality={quality}
     loading={priority ? 'eager' : 'lazy'}
     decoding={priority ? 'sync' : 'async'}
-    fetchpriority={priority ? 'high' : 'auto'}
+    fetchpriority={priority ? 'high' : lowPriority ? 'low' : 'auto'}
     class={imgClass}
     style={`object-position:${position}`}
   />

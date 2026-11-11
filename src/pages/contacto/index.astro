@@ -129,7 +129,8 @@ const crumbs = [
   }
   .big-phone {
     font-family: var(--ff-display);
-    font-size: var(--step-4);
+    font-size: clamp(2.1rem, 1.3rem + 2.4vw, 3.4rem);
+    white-space: nowrap;
     line-height: 1;
     font-variant-numeric: lining-nums;
     text-decoration: none;
@@ -148,6 +149,14 @@ const crumbs = [
     gap: 0.5rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--line-on-light);
+  }
+  /* La tabla de horario ya cierra con su propia línea. */
+  .details > div:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .details :global(.hours) {
+    max-width: none;
   }
   .details dt {
     display: flex;

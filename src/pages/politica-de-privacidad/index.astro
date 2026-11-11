@@ -32,44 +32,44 @@ import { business, legal } from '../../data/site';
       </thead>
       <tbody>
         <tr>
-          <th scope="row">Responsable</th>
-          <td>
+          <th scope="row" data-label="Epígrafe">Responsable</th>
+          <td data-label="Información básica">
             {legal.company} ({business.name}), N.I.F. {legal.nif}. Contacto: <a href={`mailto:${legal.email}`}>{legal.email}</a>.
           </td>
         </tr>
         <tr>
-          <th scope="row">Finalidad</th>
-          <td>
+          <th scope="row" data-label="Epígrafe">Finalidad</th>
+          <td data-label="Información básica">
             Atender tus consultas por correo electrónico, WhatsApp o teléfono; gestionar tus reservas; medir el uso de la web y mostrar el mapa de Google, solo
             si lo aceptas; y mantener la web segura y en funcionamiento.
           </td>
         </tr>
         <tr>
-          <th scope="row">Legitimación</th>
-          <td>
+          <th scope="row" data-label="Epígrafe">Legitimación</th>
+          <td data-label="Información básica">
             Tu consentimiento (art. 6.1.a RGPD); la aplicación de medidas precontractuales a petición tuya para gestionar reservas (art. 6.1.b RGPD); nuestro
             interés legítimo en la seguridad de la web (art. 6.1.f RGPD); el cumplimiento de obligaciones legales (art. 6.1.c RGPD); y tu consentimiento
             explícito si nos comunicas alergias o intolerancias, solo para adaptar tu servicio (art. 9.2.a RGPD).
           </td>
         </tr>
         <tr>
-          <th scope="row">Destinatarios</th>
-          <td>
+          <th scope="row" data-label="Epígrafe">Destinatarios</th>
+          <td data-label="Información básica">
             No cedemos tus datos a terceros, salvo obligación legal. Nos prestan servicios Vercel (alojamiento web), Google (correo Gmail, Google Analytics y
             Google Maps) y Meta (WhatsApp, si eliges ese canal). Puede haber transferencias internacionales a EE. UU. con garantías adecuadas.
           </td>
         </tr>
         <tr>
-          <th scope="row">Derechos</th>
-          <td>
+          <th scope="row" data-label="Epígrafe">Derechos</th>
+          <td data-label="Información básica">
             Acceso, rectificación, supresión, oposición, limitación del tratamiento, portabilidad, retirada del consentimiento y a no ser objeto de
             decisiones automatizadas, escribiendo a <a href={`mailto:${legal.email}`}>{legal.email}</a> y acreditando tu identidad. También puedes reclamar
             ante la AEPD (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).
           </td>
         </tr>
         <tr>
-          <th scope="row">Información adicional</th>
-          <td>Consulta la información detallada en los apartados siguientes de esta página.</td>
+          <th scope="row" data-label="Epígrafe">Información adicional</th>
+          <td data-label="Información básica">Consulta la información detallada en los apartados siguientes de esta página.</td>
         </tr>
       </tbody>
     </table>
@@ -196,7 +196,7 @@ import { business, legal } from '../../data/site';
     </li>
     <li>No usamos cookies publicitarias, no elaboramos perfiles, no tomamos decisiones automatizadas sobre ti y no vendemos tus datos.</li>
   </ul>
-  {/* TODO: confirmar con el cliente: que no envía comunicaciones comerciales (listas de difusión o estados de WhatsApp dirigidos a clientes, promociones por correo) con los datos de quienes reservan o consultan; si lo hace, añadir esa finalidad con consentimiento previo y expreso (art. 21 LSSI-CE). */}
+  {/* TODO: confirmar con el cliente: que no envía comunicaciones comerciales (listas de difusión o estados de WhatsApp dirigidos a clientes, promociones por correo) con los datos de quienes reservan o consultan; si lo hace, añadir esa finalidad con consentimiento previo y expreso (art. 21 LSSI‑CE). */}
 
   <h2 id="finalidades">3. Para qué usamos tus datos y con qué base jurídica</h2>
   <div class="table-wrap" tabindex="0" role="region" aria-label="Finalidades del tratamiento, datos utilizados y base jurídica">
@@ -211,48 +211,48 @@ import { business, legal } from '../../data/site';
       </thead>
       <tbody>
         <tr>
-          <td>Responder a las consultas que nos envías por correo electrónico.</td>
-          <td>Correo electrónico, nombre y contenido del mensaje.</td>
-          <td>
+          <td data-label="Finalidad">Responder a las consultas que nos envías por correo electrónico.</td>
+          <td data-label="Datos">Correo electrónico, nombre y contenido del mensaje.</td>
+          <td data-label="Base jurídica">
             Tu consentimiento, que prestas al escribirnos (art. 6.1.a RGPD). Si la consulta se refiere a una reserva o a un servicio que quieres contratar,
             como un menú de grupo, la aplicación de medidas precontractuales a petición tuya (art. 6.1.b RGPD).
           </td>
         </tr>
         <tr>
-          <td>
+          <td data-label="Finalidad">
             Gestionar tus reservas y atender tus consultas por WhatsApp o teléfono: confirmar, modificar o cancelar la reserva y avisarte de cualquier
             incidencia.
           </td>
-          <td>Nombre, teléfono, perfil de WhatsApp, datos de la reserva y comentarios.</td>
-          <td>
+          <td data-label="Datos">Nombre, teléfono, perfil de WhatsApp, datos de la reserva y comentarios.</td>
+          <td data-label="Base jurídica">
             La aplicación de medidas precontractuales a petición tuya para las reservas (art. 6.1.b RGPD) y tu consentimiento para el resto de consultas (art.
             6.1.a RGPD).
           </td>
         </tr>
         <tr>
-          <td>Adaptar el servicio a las alergias o intolerancias que nos comuniques.</td>
-          <td>Datos de salud que nos indiques.</td>
-          <td>Tu consentimiento explícito (art. 9.2.a RGPD), únicamente para esta finalidad.</td>
+          <td data-label="Finalidad">Adaptar el servicio a las alergias o intolerancias que nos comuniques.</td>
+          <td data-label="Datos">Datos de salud que nos indiques.</td>
+          <td data-label="Base jurídica">Tu consentimiento explícito (art. 9.2.a RGPD), únicamente para esta finalidad.</td>
         </tr>
         <tr>
-          <td>Medir de forma estadística el uso de la web con Google Analytics 4.</td>
-          <td>Identificador de la cookie, páginas visitadas, dispositivo, ubicación aproximada y eventos de uso.</td>
-          <td>Tu consentimiento (art. 6.1.a RGPD y art. 22.2 de la LSSI-CE).</td>
+          <td data-label="Finalidad">Medir de forma estadística el uso de la web con Google Analytics 4.</td>
+          <td data-label="Datos">Identificador de la cookie, páginas visitadas, dispositivo, ubicación aproximada y eventos de uso.</td>
+          <td data-label="Base jurídica">Tu consentimiento (art. 6.1.a RGPD y art. 22.2 de la LSSI‑CE).</td>
         </tr>
         <tr>
-          <td>Mostrar el mapa interactivo de Google Maps.</td>
-          <td>Dirección IP y cookies de Google.</td>
-          <td>Tu consentimiento (art. 6.1.a RGPD y art. 22.2 de la LSSI-CE).</td>
+          <td data-label="Finalidad">Mostrar el mapa interactivo de Google Maps.</td>
+          <td data-label="Datos">Dirección IP y cookies de Google.</td>
+          <td data-label="Base jurídica">Tu consentimiento (art. 6.1.a RGPD y art. 22.2 de la LSSI‑CE).</td>
         </tr>
         <tr>
-          <td>Garantizar la seguridad y el correcto funcionamiento de la web: servir las páginas, prevenir ataques y abusos, y recordar tu elección de cookies.</td>
-          <td>Datos técnicos de conexión (IP, navegador, fecha y hora) y preferencia de cookies.</td>
-          <td>Nuestro interés legítimo en mantener una web segura y operativa (art. 6.1.f RGPD).</td>
+          <td data-label="Finalidad">Garantizar la seguridad y el correcto funcionamiento de la web: servir las páginas, prevenir ataques y abusos, y recordar tu elección de cookies.</td>
+          <td data-label="Datos">Datos técnicos de conexión (IP, navegador, fecha y hora) y preferencia de cookies.</td>
+          <td data-label="Base jurídica">Nuestro interés legítimo en mantener una web segura y operativa (art. 6.1.f RGPD).</td>
         </tr>
         <tr>
-          <td>Cumplir nuestras obligaciones legales y atender el ejercicio de tus derechos.</td>
-          <td>Los datos estrictamente necesarios en cada caso.</td>
-          <td>El cumplimiento de una obligación legal (art. 6.1.c RGPD).</td>
+          <td data-label="Finalidad">Cumplir nuestras obligaciones legales y atender el ejercicio de tus derechos.</td>
+          <td data-label="Datos">Los datos estrictamente necesarios en cada caso.</td>
+          <td data-label="Base jurídica">El cumplimiento de una obligación legal (art. 6.1.c RGPD).</td>
         </tr>
       </tbody>
     </table>
@@ -343,49 +343,49 @@ import { business, legal } from '../../data/site';
       </thead>
       <tbody>
         <tr>
-          <td>Vercel Inc.</td>
-          <td>Alojamiento y entrega de la web mediante una red global de servidores (CDN).</td>
-          <td>Datos técnicos de conexión. Actúa como encargado del tratamiento.</td>
-          <td>EE. UU., con servidores en distintos países: Marco de Privacidad de Datos UE-EE. UU. y/o cláusulas contractuales tipo.</td>
+          <td data-label="Proveedor">Vercel Inc.</td>
+          <td data-label="Servicio">Alojamiento y entrega de la web mediante una red global de servidores (CDN).</td>
+          <td data-label="Datos y papel">Datos técnicos de conexión. Actúa como encargado del tratamiento.</td>
+          <td data-label="Ubicación y garantías">EE. UU., con servidores en distintos países: Marco de Privacidad de Datos UE-EE. UU. y/o cláusulas contractuales tipo.</td>
         </tr>
         <tr>
-          <td>Google Ireland Limited</td>
-          <td>Correo electrónico Gmail, con el que recibimos y respondemos tus mensajes.</td>
-          <td>Los correos que nos envías y los datos que contienen. Actúa como proveedor del servicio de correo.</td>
-          <td>
+          <td data-label="Proveedor">Google Ireland Limited</td>
+          <td data-label="Servicio">Correo electrónico Gmail, con el que recibimos y respondemos tus mensajes.</td>
+          <td data-label="Datos y papel">Los correos que nos envías y los datos que contienen. Actúa como proveedor del servicio de correo.</td>
+          <td data-label="Ubicación y garantías">
             Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Google LLC): Marco de Privacidad de Datos
             UE-EE. UU. y/o cláusulas contractuales tipo.
           </td>
         </tr>
         <tr>
-          <td>Google Ireland Limited</td>
-          <td>Google Analytics 4, solo si aceptas las cookies de analítica.</td>
-          <td>Datos de navegación seudonimizados. Actúa como encargado del tratamiento.</td>
-          <td>
+          <td data-label="Proveedor">Google Ireland Limited</td>
+          <td data-label="Servicio">Google Analytics 4, solo si aceptas las cookies de analítica.</td>
+          <td data-label="Datos y papel">Datos de navegación seudonimizados. Actúa como encargado del tratamiento.</td>
+          <td data-label="Ubicación y garantías">
             Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Google LLC): Marco de Privacidad de Datos
             UE-EE. UU. y/o cláusulas contractuales tipo.
           </td>
         </tr>
         <tr>
-          <td>Google Ireland Limited</td>
-          <td>Google Maps, solo si aceptas «Mapas de Google» o pulsas «Ver mapa interactivo».</td>
-          <td>
+          <td data-label="Proveedor">Google Ireland Limited</td>
+          <td data-label="Servicio">Google Maps, solo si aceptas «Mapas de Google» o pulsas «Ver mapa interactivo».</td>
+          <td data-label="Datos y papel">
             Dirección IP y cookies propias de Google. Nosotros no recibimos estos datos: los trata Google como responsable, conforme a su propia política de
             privacidad.
           </td>
-          <td>
+          <td data-label="Ubicación y garantías">
             Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Google LLC): Marco de Privacidad de Datos
             UE-EE. UU. y/o cláusulas contractuales tipo.
           </td>
         </tr>
         <tr>
-          <td>Meta Platforms Ireland Limited</td>
-          <td>WhatsApp, cuando eliges este canal para escribirnos o reservar.</td>
-          <td>
+          <td data-label="Proveedor">Meta Platforms Ireland Limited</td>
+          <td data-label="Servicio">WhatsApp, cuando eliges este canal para escribirnos o reservar.</td>
+          <td data-label="Datos y papel">
             Tu número, tu perfil y los mensajes, cifrados de extremo a extremo. WhatsApp es el servicio de mensajería que tú eliges y trata los datos conforme a
             sus propias condiciones y política de privacidad.
           </td>
-          <td>
+          <td data-label="Ubicación y garantías">
             Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Meta Platforms, Inc.): Marco de Privacidad
             de Datos UE-EE. UU. y/o cláusulas contractuales tipo.
           </td>

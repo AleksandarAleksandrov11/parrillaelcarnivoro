@@ -84,17 +84,18 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
                 curtain={s.kind === 'menu' ? '#2b2621' : '#e9dfcc'}
                 class="cs-photo"
                 widths={[480, 720, 960, 1280]}
+                lowPriority
               />
             </div>
           </div>
 
           <div class="cs-body">
             {s.kind === 'carta' ? (
-              <div class="on-light" data-reveal style="--d:100">
+              <div class="on-light" data-reveal style="--d:100" data-fab-avoid>
                 <MenuList section={s} />
               </div>
             ) : (
-              <div class="cs-menus" data-reveal style="--d:100">
+              <div class="cs-menus" data-reveal style="--d:100" data-fab-avoid>
                 {s.menus.map((m) =>
                   m.courses.length ? (
                     <SetMenu menu={m} showName={s.menus.length > 1} />
@@ -106,7 +107,7 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
                       </p>
                       <p class="daily-text">El menú cambia cada día. Consulta el de hoy en nuestro Instagram o pregúntanos por teléfono.</p>
                       {s.link && (
-                        <a class="btn btn--ghost" href={s.link.href} target="_blank" rel="noopener">
+                        <a class="btn btn--ghost daily-link" href={s.link.href} target="_blank" rel="noopener">
                           <Icon name="instagram" />
                           {s.link.label}
                         </a>
@@ -170,7 +171,11 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
   const hero = document.querySelector<HTMLElement>('.page-hero');
   if (hero)
     new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) links.forEach((a) => a.removeAttribute('aria-current'));
+      if (e.isIntersecting) {
+        links.forEach((a) => a.removeAttribute('aria-current'));
+        // La barra vuelve a su inicio para que se vean las primeras categorías.
+        nav?.querySelector('ul')?.scrollTo({ left: 0 });
+      }
     }, { rootMargin: '0px 0px -40% 0px' }).observe(hero);
   if (nav) {
     const sentinel = new IntersectionObserver(([e]) => nav.classList.toggle('is-stuck', e.intersectionRatio < 1), { threshold: [1], rootMargin: '-77px 0px 0px 0px' });
@@ -236,9 +241,11 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
       color: var(--text-on-dark);
     }
   }
+  /* Se suma al scroll-padding-top global (cabecera): deja la sección justo bajo la barra de categorías. */
   .carta-sec {
-    scroll-margin-top: calc(var(--header-h) + 64px);
+    scroll-margin-top: 56px;
   }
+
   .cs-grid {
     display: grid;
     gap: var(--space-l);
@@ -321,6 +328,9 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
   .daily-text {
     max-width: 44ch;
     color: var(--muted-on-dark);
+  }
+  .daily-link {
+    white-space: nowrap;
   }
   @media (min-width: 1000px) {
     .cs-grid {

@@ -47,11 +47,15 @@ export async function scrollThrough(page) {
     const h = document.documentElement.scrollHeight;
     for (let y = 0; y < h; y += Math.round(window.innerHeight * 0.7)) {
       window.scrollTo({ top: y, behavior: 'instant' });
-      await new Promise((r) => setTimeout(r, 70));
+      await new Promise((r) => setTimeout(r, 140));
     }
     window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
     await new Promise((r) => setTimeout(r, 150));
     window.scrollTo({ top: 0, behavior: 'instant' });
   });
+  // Espera a que terminen de cargar todas las imágenes (carga diferida incluida).
+  await page
+    .waitForFunction(() => [...document.images].every((i) => i.complete), null, { timeout: 15000 })
+    .catch(() => {});
   await page.waitForTimeout(1200);
 }

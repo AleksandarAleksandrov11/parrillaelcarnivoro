@@ -31,15 +31,17 @@ const CourseTag = showName ? 'h4' : 'h3';
   {
     menu.includes && (
       <p class="includes">
+        <span class="visually-hidden">Incluye: </span>
         {menu.includes.map((x, i) => (
-          <>
+          <span class="inc">
             {i > 0 && (
               <span class="plus" aria-hidden="true">
-                +
+                +{' '}
               </span>
             )}
-            <span>{x}</span>
-          </>
+            {x}
+            {i < menu.includes!.length - 1 && <span class="visually-hidden">,</span>}
+          </span>
         ))}
       </p>
     )
@@ -114,6 +116,10 @@ const CourseTag = showName ? 'h4' : 'h3';
     justify-content: center;
     gap: 0.3rem 0.6rem;
     font-size: var(--step-0);
+  }
+  /* Cada «+» viaja con el elemento que le sigue: nunca queda colgando al final de línea. */
+  .inc {
+    white-space: nowrap;
   }
   .plus {
     color: var(--brass);

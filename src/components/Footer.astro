@@ -242,13 +242,31 @@ const year = new Date().getFullYear();
       color: var(--text-on-dark);
     }
   }
+  .bottom li {
+    white-space: nowrap;
+  }
+  /* Móvil: enlaces en dos columnas, sin huérfanos. */
+  @media (max-width: 639px) {
+    .bottom ul {
+      display: grid;
+      grid-template-columns: repeat(2, max-content);
+      gap: 0.1rem 1.5rem;
+    }
+    .hours div {
+      max-width: none;
+    }
+  }
+  /* Escritorio: navegación a la izquierda, legales a la derecha y copyright debajo. */
   @media (min-width: 1080px) {
     .bottom {
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto 1fr;
       align-items: center;
     }
     .legal-nav ul {
-      justify-content: center;
+      justify-content: flex-end;
+    }
+    .copy {
+      grid-column: 1 / -1;
     }
   }
 </style>

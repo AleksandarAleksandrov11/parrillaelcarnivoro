@@ -323,10 +323,15 @@ const sources = {
   .video-toggle[hidden] {
     display: none;
   }
+  /* Deja libre la esquina del botón flotante de WhatsApp (salvo en pantallas muy anchas). */
   @media (max-width: 999px) {
-    /* Deja libre la esquina del botón flotante de WhatsApp. */
     .hero-foot {
-      padding-right: calc(var(--gutter) + 64px);
+      padding-right: 64px;
+    }
+  }
+  @media (min-width: 1000px) and (max-width: 1799px) {
+    .hero-foot {
+      padding-right: 84px;
     }
   }
   @media (max-width: 479px) {

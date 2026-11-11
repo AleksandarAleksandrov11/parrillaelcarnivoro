@@ -63,8 +63,9 @@ const { class: className } = Astro.props;
 <style>
   .status {
     display: inline-flex;
-    align-items: center;
+    align-items: baseline;
     gap: 0.6rem;
+    text-wrap: balance;
     margin-bottom: 1rem;
     font-size: var(--step--1);
     font-weight: 600;
@@ -72,9 +73,11 @@ const { class: className } = Astro.props;
   }
   .status::before {
     content: '';
+    flex: none;
     width: 8px;
     height: 8px;
     border-radius: 50%;
+    transform: translateY(-1px);
     background: var(--muted-on-dark);
   }
   .status.is-open::before {

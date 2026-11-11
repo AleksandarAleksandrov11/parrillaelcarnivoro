@@ -16,7 +16,8 @@ const { text, as: Tag = 'h2', class: className, id, delay = 0 } = Astro.props;
 type Tok = { word: string; em: boolean };
 const tokens: Tok[] = [];
 let em = false;
-for (const raw of text.split(/\s+/).filter(Boolean)) {
+// Solo se parte por espacios normales: un espacio duro (\u00a0) mantiene unidas dos palabras.
+for (const raw of text.split(/[ \t\n\r]+/).filter(Boolean)) {
   let w = raw;
   const opens = w.startsWith('_');
   if (opens) {

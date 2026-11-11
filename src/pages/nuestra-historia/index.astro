@@ -117,7 +117,7 @@ const firePoster = await getImage({ src: await photo('brasas-parrilla-el-carnivo
     <div class="container container--wide">
       <div class="spaces-head">
         <span class="eyebrow" data-reveal="fade">Salón y terraza</span>
-        <SplitText as="h2" id="espacios-title" class="display" text="Dentro o _al aire de la sierra_" />
+        <SplitText as="h2" id="espacios-title" class="display" text={"Dentro o _al\u00a0aire de la sierra_"} />
         <p class="lead" data-reveal style="--d:150">
           Dentro, un salón cálido de madera y ladrillo, con la barra y la vinoteca. Fuera, una gran terraza cubierta bajo una pérgola de madera, con un mural de paisaje de montaña, y mesas en la calle para tomar algo al sol. Y con la bebida, su tapa.
         </p>
@@ -240,9 +240,10 @@ const firePoster = await getImage({ src: await photo('brasas-parrilla-el-carnivo
   }
   .fire-tag {
     position: absolute;
-    left: 0.75rem;
-    bottom: 0.75rem;
-    padding: 0.35rem 0.7rem;
+    left: 0.5rem;
+    bottom: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    white-space: nowrap;
     font-size: var(--step--2);
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -281,6 +282,14 @@ const firePoster = await getImage({ src: await photo('brasas-parrilla-el-carnivo
   }
   .fire-photo {
     margin-bottom: -2rem;
+  }
+  @media (max-width: 999px) {
+    .fire-photo {
+      margin-bottom: 0;
+    }
+    .fire-grid {
+      gap: var(--space-l);
+    }
   }
   .fire-copy {
     display: grid;

@@ -86,8 +86,9 @@ html {
   background: var(--ink);
   hanging-punctuation: first last;
 }
+/* Scroll suave solo tras la carga: el salto inicial a un ancla (/carta/#grupos) es inmediato. */
 @media (prefers-reduced-motion: no-preference) {
-  html:not(.lenis) {
+  html.smooth:not(.lenis) {
     scroll-behavior: smooth;
   }
 }
@@ -307,6 +308,7 @@ ol[role='list'] {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
+  text-wrap: balance;
   font-family: var(--ff-sans);
   font-size: var(--step--2);
   font-weight: 600;
@@ -455,6 +457,7 @@ ol[role='list'] {
   text-decoration: none;
   line-height: 1.2;
   text-align: center;
+  text-wrap: balance;
   isolation: isolate;
   overflow: hidden;
   transition:

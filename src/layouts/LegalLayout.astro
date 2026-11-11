@@ -38,7 +38,7 @@ const crumbs = [
       </nav>
       <p class="eyebrow">Información legal</p>
       <h1 class="display lh-title">{title}</h1>
-      <p class="muted lh-updated">Última actualización: {updated}</p>
+      <p class="muted lh-updated">Última actualización: <span class="nw">{updated}</span></p>
     </div>
   </header>
   <section class="section bg-paper grain legal-body" aria-label={title}>
@@ -80,6 +80,9 @@ const crumbs = [
   .lh-updated {
     font-size: var(--step--1);
   }
+  .nw {
+    white-space: nowrap;
+  }
   .crumbs ol {
     display: flex;
     flex-wrap: wrap;
@@ -93,7 +96,8 @@ const crumbs = [
     margin-right: 0.6rem;
     opacity: 0.6;
   }
-  .crumbs a {
+  .crumbs a,
+  .crumbs span {
     display: inline-block;
     padding-block: 0.3rem;
     color: var(--text-on-dark);
@@ -155,6 +159,64 @@ const crumbs = [
     text-align: left;
     padding: 0.7rem 0.8rem;
     font-weight: 700;
+  }
+  .legal-body :global(.prose h3) {
+    line-height: 1.35;
+  }
+  .legal-body :global(.prose code) {
+    white-space: nowrap;
+  }
+  /* Móvil: cada fila de tabla se convierte en una ficha con la cabecera de cada dato. */
+  @media (max-width: 699px) {
+    .legal-body :global(.table-wrap) {
+      overflow: visible;
+      border: 0;
+    }
+    .legal-body :global(table) {
+      min-width: 0;
+    }
+    .legal-body :global(caption) {
+      display: block;
+      padding: 0 0 0.75rem;
+    }
+    .legal-body :global(thead) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+    .legal-body :global(tbody),
+    .legal-body :global(tr),
+    .legal-body :global(tbody th),
+    .legal-body :global(td) {
+      display: block;
+    }
+    .legal-body :global(tr) {
+      margin-bottom: 1rem;
+      border: 1px solid var(--line-on-light);
+    }
+    .legal-body :global(tbody th),
+    .legal-body :global(td) {
+      border-bottom: 1px solid var(--line-on-light);
+      padding: 0.65rem 0.9rem;
+    }
+    .legal-body :global(tr > :last-child) {
+      border-bottom: 0;
+    }
+    .legal-body :global(tbody th) {
+      background: var(--bone);
+    }
+    .legal-body :global([data-label]::before) {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: var(--step--2);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brass-ink);
+    }
   }
   .legal-other {
     margin-top: var(--space-xl);

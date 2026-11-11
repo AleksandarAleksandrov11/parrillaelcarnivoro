@@ -50,7 +50,8 @@ const PHOTOS = [
   { out: 'morcilla-brasa-huevos-el-carnivoro', src: '2024/01/IMG-20231219-WA0015.jpg', enhance: 'phone' },
   { out: 'pescado-brasa-ensalada-el-carnivoro', src: '2024/01/IMG-20231219-WA0010.jpg', enhance: 'phone' },
   { out: 'patatas-gajo-salsas-el-carnivoro', src: '2024/01/IMG-20231219-WA0011.jpg', enhance: 'phone' },
-  { out: 'crepe-tarta-queso-el-carnivoro', src: '2024/01/IMG-20231219-WA0012.jpg', enhance: 'phone' },
+  // Recorte de las bandas negras (letterbox) que trae el original arriba y abajo.
+  { out: 'crepe-tarta-queso-el-carnivoro', src: '2024/01/IMG-20231219-WA0012.jpg', enhance: 'phone', crop: { left: 0, top: 0.007, width: 1, height: 0.986 } },
   { out: 'bacalao-ajoarriero-el-carnivoro', src: '2023/03/bacalao-el-carnivoro.jpg', enhance: 'pro' },
   { out: 'gambon-brasa-el-carnivoro', src: '2024/01/gambon.jpg', enhance: 'phone', crop: { left: 0.06, top: 0.07, width: 0.94, height: 0.93 } },
   { out: 'provolone-cazuela-el-carnivoro', src: '2024/01/provolone.jpg', enhance: 'phone' },

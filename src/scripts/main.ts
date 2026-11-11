@@ -79,18 +79,39 @@ function initReveals() {
     els.forEach((el) => el.classList.add('is-in'));
     return;
   }
+  const pending = new Set(els);
+  const reveal = (el: Element) => {
+    el.classList.add('is-in');
+    io.unobserve(el);
+    pending.delete(el as HTMLElement);
+  };
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-in');
-          io.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) reveal(entry.target);
       });
     },
     { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
   );
   els.forEach((el) => io.observe(el));
+  // Respaldo: con un salto brusco (ancla, tecla Fin, scroll muy rápido) un elemento puede pasar de
+  // debajo a encima del viewport sin «cruzarlo»; todo lo que ya esté por encima del borde inferior se muestra.
+  let ticking = false;
+  const sweep = () => {
+    ticking = false;
+    const limit = window.innerHeight;
+    pending.forEach((el) => {
+      if (el.getBoundingClientRect().top < limit) reveal(el);
+    });
+    if (!pending.size) window.removeEventListener('scroll', onScroll);
+  };
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(sweep);
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
 }
 
 /* Parallax suave: solo transform; desactivado con movimiento reducido -------- */
@@ -131,13 +152,36 @@ function initFab() {
   if (!fab) return;
   let last = window.scrollY;
   let ticking = false;
+  let hiddenByScroll = false;
+  // Zonas que el botón no debe tapar (listas de precios de la carta): si alguna ocupa la franja
+  // inferior de la pantalla, donde está el botón, este se aparta.
+  const avoid = Array.from(document.querySelectorAll<HTMLElement>('[data-fab-avoid]'));
+  const overlapping = new Set<Element>();
+  const apply = () => fab.classList.toggle('is-hidden', hiddenByScroll || overlapping.size > 0);
+  let io: IntersectionObserver | null = null;
+  const watch = () => {
+    io?.disconnect();
+    overlapping.clear();
+    if (!avoid.length) return;
+    io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => (e.isIntersecting ? overlapping.add(e.target) : overlapping.delete(e.target)));
+        apply();
+      },
+      { rootMargin: `-${Math.max(0, window.innerHeight - 120)}px 0px 0px 0px` },
+    );
+    avoid.forEach((el) => io!.observe(el));
+  };
+  watch();
+  window.addEventListener('resize', () => watch(), { passive: true });
   const update = () => {
     const y = window.scrollY;
     const nearBottom = window.innerHeight + y > document.documentElement.scrollHeight - 160;
     const goingDown = y > last + 4;
     const goingUp = y < last - 4;
-    if (y < 200 || goingUp || nearBottom) fab.classList.remove('is-hidden');
-    else if (goingDown) fab.classList.add('is-hidden');
+    if (y < 200 || goingUp || nearBottom) hiddenByScroll = false;
+    else if (goingDown) hiddenByScroll = true;
+    apply();
     last = y;
     ticking = false;
   };
@@ -168,6 +212,11 @@ function initSmoothScroll() {
   if (document.readyState === 'complete') (idle ? idle(start) : setTimeout(start, 200));
   else window.addEventListener('load', () => (idle ? idle(() => start()) : setTimeout(start, 200)), { once: true });
 }
+
+// Activa el scroll suave nativo cuando la página ya ha hecho su salto inicial a un ancla.
+const enableSmooth = () => window.setTimeout(() => document.documentElement.classList.add('smooth'), 300);
+if (document.readyState === 'complete') enableSmooth();
+else window.addEventListener('load', enableSmooth, { once: true });
 
 initHeader();
 initMenu();

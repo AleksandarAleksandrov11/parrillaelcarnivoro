@@ -90,7 +90,7 @@ try {
     console.log(`✓ ${p.path}`);
   }
   };
-  await Promise.all(Array.from({ length: 3 }, worker));
+  await Promise.all(Array.from({ length: 2 }, worker));
 } finally {
   await browser.close();
   stop();

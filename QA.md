@@ -167,7 +167,71 @@ calculado para cada combinación de colores del sistema de diseño.
 
 ## Incidencias encontradas y corregidas durante la QA
 
-__FIXES__
+Además de los scripts, se hicieron dos revisiones independientes con agentes: una revisión de
+código por dimensiones (consentimiento, calendario/reserva, interfaz, contenido/SEO/accesibilidad)
+y una revisión visual de las 88 capturas, página a página y tramo a tramo. Todo lo encontrado se
+corrigió y se volvió a comprobar:
+
+**Rendimiento**
+- El LCP móvil de la home era el logotipo del hero, que aparecía con fundido tras la intro (Chrome
+  descarta como LCP el póster a pantalla completa): ahora se pinta desde el primer momento y solo
+  entra con `transform`. LCP móvil de 2,64 s a 1,65 s.
+- Carta: las fotos de sección competían con la imagen LCP: ahora llevan `fetchpriority="low"`.
+  Se probó también `content-visibility: auto` en las secciones, pero se descartó porque los saltos
+  directos a `/carta/#grupos` y `#desayunos` (destino de las redirecciones antiguas) caían en una
+  posición incorrecta.
+- Eliminado `will-change` persistente en los elementos animados (demasiadas capas), AVIF algo más
+  ligero y cabeceras interiores más comprimidas (van bajo un velo oscuro).
+
+**Formulario y calendario**
+- «Hoy» se recalcula siempre: una pestaña abierta tras la medianoche ya no permite reservar «ayer».
+- La hora se revalida al enviar (una franja que ya ha pasado se rechaza) y, pasadas las 23:00, hoy
+  deja de ofrecerse.
+- Sin JavaScript el botón queda deshabilitado: el formulario nunca se envía de forma nativa.
+- Navegación del calendario: límites inferior/superior correctos, último mes sin días elegibles,
+  AvPág/RePág conservan el día, el foco no se pierde al deshabilitarse un botón de mes, y un clic
+  en el relleno del diálogo ya no lo cierra.
+- La región viva de la hora se anuncia correctamente.
+
+**Cookies y analítica**
+- Revocar en otra pestaña (o volver con «Atrás» desde la caché) detiene GA4 y retira el mapa en
+  esa página también.
+- Si el navegador bloquea el almacenamiento, la elección se mantiene durante la visita.
+- Conceder el mapa ya no prorroga el vencimiento del consentimiento de analítica.
+- El evento de reserva enviado a GA4 ya no incluye ningún dato del formulario (ni personas, ni zona,
+  ni franja); los tres textos legales lo explican igual.
+- Tras elegir en el banner, el foco pasa al contenido en lugar de perderse.
+
+**Accesibilidad**
+- Precios con texto para lectores de pantalla («Copa: 3,30 €», «48,00 € el kilo») en lugar de
+  `aria-label` en `span`.
+- Contraste de migas de pan y antetítulos sobre las fotos de cabecera (velo más denso).
+- Control de pausa en el vídeo de las brasas; animaciones decorativas limitadas a 5 s (WCAG 2.2.2).
+- El botón de vídeo del hero cambia su texto (sin `aria-pressed` contradictorio).
+- El botón flotante oculto sale del orden de tabulación; el visor de la galería anuncia cada foto,
+  bloquea el scroll del fondo y sigue el orden visual; el menú móvil devuelve el foco al cerrarse
+  al ensanchar la ventana; separadores de migas sin texto para lectores.
+- Tablas legales desplazables accesibles por teclado y, en móvil, convertidas en fichas.
+
+**Diseño responsive**
+- Tarjetas de carnes y de menús que se ensanchaban por su contenido entre 1100 y 1280 px.
+- El botón de WhatsApp tapaba «Pausar vídeo» en el hero y algunos precios de la carta: ahora el
+  hero le deja hueco y el botón se aparta cuando hay una lista de precios en su zona.
+- Saltos de línea cuidados: separadores «·» y «+» que ya no empiezan línea, teléfono grande que no
+  se parte, títulos de tarjetas sin cortes a mitad de palabra, antetítulos equilibrados.
+- Galería completa en mampostería por columnas (sin huecos); salón y terraza, datos de la intro y
+  pie de página reordenados en las anchuras intermedias; fila Personas/Fecha alineada; doble línea
+  bajo el horario; bandas negras de la foto de postres recortadas.
+- Barra de categorías de la carta que se quedaba desplazada al final al volver arriba.
+
+**Contenido**
+- «Menú del día: de lunes a viernes» contradecía el horario (martes y miércoles cerrado): ahora
+  «Lunes, jueves y viernes» (pendiente de confirmar).
+- Promesas no confirmadas suavizadas («siempre una tapa»); unidades «/persona» en los menús.
+- El schema `Restaurant` usa fotos reales del local (no las imágenes OG con texto ni el vídeo de
+  stock).
+- Los comentarios `TODO` ya no llegan al HTML publicado (comentarios de plantilla).
+- Orden de secciones y tres textos de la carta ajustados al PDF.
 
 ## Datos pendientes de confirmar con el cliente
 

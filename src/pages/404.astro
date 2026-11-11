@@ -24,8 +24,8 @@ const links = [
       <p class="nf-code" aria-hidden="true">404</p>
       <p class="eyebrow eyebrow--center">Página no encontrada</p>
       <h1 id="nf-title" class="display nf-title">Esta página se ha quedado <em>en las brasas</em></h1>
-      <p class="lead nf-text">Puede que la dirección haya cambiado con la nueva web o que no exista. Te ayudamos a encontrar lo que buscas.</p>
-      <ul role="list" class="nf-links">
+      <p class="lead nf-text">Puede que la dirección haya cambiado con la nueva web o que no exista. Te ayudamos a encontrar lo que buscas.</p>
+      <ul role="list" class="nf-links" data-fab-avoid>
         {
           links.map((l) => (
             <li>
@@ -146,6 +146,7 @@ const links = [
   .nf-contact a {
     color: var(--text-on-dark);
     font-weight: 600;
+    white-space: nowrap;
   }
   @media (prefers-reduced-motion: reduce) {
     .nf-glow {

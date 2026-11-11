@@ -216,7 +216,7 @@ export const carta: Section[] = [
       'El PDF indica «D.O. Cueva» para el espumoso Alcardet Brut 18; confirmar la denominación correcta (¿D.O. Cava?) antes de mostrarla.',
     groups: [
       {
-        title: 'Tintos · D.O. Ribera del Duero',
+        title: 'Tintos · D.O. Ribera del Duero',
         items: [
           { name: 'Ricardo Dumas', description: 'Tempranillo', prices: [{ amount: 3.3, label: 'Copa' }, { amount: 19, label: 'Botella' }] },
           { name: 'Ricardo Dumas Crianza', description: 'Tinta del País', prices: [{ amount: 4, label: 'Copa' }, { amount: 24, label: 'Botella' }] },
@@ -225,39 +225,39 @@ export const carta: Section[] = [
         ],
       },
       {
-        title: 'Tintos · D.O. Rioja',
+        title: 'Tintos · D.O. Rioja',
         items: [
           { name: 'Muriel Crianza', description: 'Tempranillo', prices: [{ amount: 3.4, label: 'Copa' }, { amount: 20, label: 'Botella' }] },
           { name: 'Muriel Reserva', description: 'Tempranillo', prices: [{ amount: 4.5, label: 'Copa' }, { amount: 27, label: 'Botella' }] },
         ],
       },
       {
-        title: 'Tintos · D.O. Madrid',
+        title: 'Tintos · D.O. Madrid',
         items: [
           {
-            name: 'Pago Vilches · Vino de la casa',
-            description: 'Tempranillo, Merlot y Syrah',
+            name: 'Pago Vilches',
+            description: 'Vino de la casa · Tempranillo, Merlot y Syrah',
             prices: [{ amount: 3, label: 'Copa' }, { amount: 17, label: 'Botella' }],
           },
         ],
       },
       {
-        title: 'Blancos · D.O. Rueda / Verdejo',
+        title: 'Blancos · D.O. Rueda / Verdejo',
         items: [
           { name: 'Hombre Pez', prices: [{ amount: 3.2, label: 'Copa' }, { amount: 18, label: 'Botella' }] },
           { name: 'Esencia 27', prices: [{ amount: 3.2, label: 'Copa' }, { amount: 18, label: 'Botella' }] },
         ],
       },
       {
-        title: 'Blancos · D.O. Albariño / Rías Baixas',
+        title: 'Blancos · D.O. Albariño / Rías Baixas',
         items: [{ name: 'Folklore de Pazo Cilleiro', prices: [{ amount: 3.2, label: 'Copa' }, { amount: 18, label: 'Botella' }] }],
       },
       {
-        title: 'Blancos · D.O. Godello',
+        title: 'Blancos · D.O. Godello',
         items: [{ name: 'Luna Beberide', description: 'Bierzo', prices: [{ amount: 3.3, label: 'Copa' }, { amount: 19, label: 'Botella' }] }],
       },
       {
-        title: 'Rosados · D.O. Castilla y León',
+        title: 'Rosados · D.O. Castilla y León',
         items: [
           {
             name: 'Kapricho de la Viña',
@@ -282,7 +282,7 @@ export const carta: Section[] = [
     photo: 'pescado-brasa-ensalada-el-carnivoro',
     photoAlt: 'Plato de pescado a la brasa con ensalada servido en mesa de madera',
     availability: 'Lunes, jueves y viernes (martes y miércoles cerramos).',
-    link: { href: 'https://www.instagram.com/elcarnivoro.villalba/', label: 'Ver el menú de hoy en Instagram' },
+    link: { href: 'https://www.instagram.com/elcarnivoro.villalba/', label: 'Menú de hoy en Instagram' },
     pendingConfirmation:
       'No aparece en el PDF. Precio de la web anterior: 14,90 € de lunes a viernes (la antigua página de desayunos indicaba «plato del día 12 €»). Confirmar precio, días y si se mantiene el plato del día.',
     menus: [
@@ -302,7 +302,7 @@ export const carta: Section[] = [
     photo: 'carnes-brasa-pizarra-el-carnivoro',
     photoAlt: 'Dos tablas de pizarra con carnes a la brasa recién cortadas y guarnición de patatas',
     availability: 'Cenas y fines de semana.',
-    notes: ['Servicio/cubiertos (por comensal): 0,90 €.', 'IVA incluido.'],
+    notes: ['Servicio/cubiertos (por comensal): 0,90\u00a0€.', 'IVA incluido.'],
     pendingConfirmation: 'Confirmar el horario exacto en el que se sirve (qué días y desde qué hora).',
     menus: [
       {
@@ -338,12 +338,12 @@ export const carta: Section[] = [
     kind: 'menu',
     id: 'grupos',
     title: 'Menú de grupos',
-    kicker: 'Celebraciones · mínimo 4 personas',
+    kicker: 'Celebraciones · mínimo 4 personas',
     intro:
       'Primeros para compartir, un segundo por persona, pan, aperitivo, postre, una bebida por persona y café. Botella de vino cada 4 personas (Rueda, Ribera del Duero o Rioja) o una bebida por persona.',
     photo: 'parrilla-carbon-carnes-el-carnivoro',
     photoAlt: 'La parrilla de carbón de El Carnívoro llena de carnes para un grupo',
-    notes: ['Servicio/cubierto (por comensal): 0,60 €.', 'IVA incluido.'],
+    notes: ['Servicio/cubierto (por comensal): 0,60\u00a0€.', 'IVA incluido.'],
     pendingConfirmation:
       'No aparece en el PDF; datos de la web anterior. Confirmar precios (39,50 € y 59,50 €), platos y el servicio/cubierto (0,60 € en grupos frente a 0,90 € en el menú de cenas).',
     menus: [
@@ -383,7 +383,7 @@ export const carta: Section[] = [
     intro: 'Empieza el día en la barra o en la terraza: tostadas, bocatas y café recién hecho.',
     photo: 'barra-restaurante-el-carnivoro',
     photoAlt: 'Barra del restaurante El Carnívoro con botellero, cafetera y plantas colgantes',
-    notes: ['Suplemento de refresco en los desayunos: 1,00 €.', 'Suplemento de queso en sándwiches y bocatas: 0,50 €.'],
+    notes: ['Suplemento de refresco en los desayunos: 1,00\u00a0€.', 'Suplemento de queso en sándwiches y bocatas: 0,50\u00a0€.'],
     pendingConfirmation: 'No aparecen en el PDF; precios de la web anterior. Confirmar carta y precios de desayunos.',
     groups: [
       {
