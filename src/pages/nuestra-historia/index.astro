@@ -76,6 +76,10 @@ const firePoster = await getImage({ src: await photo('brasas-parrilla-el-carnivo
             data-src-av1="/video/brasas-parrilla.webm?v=2026-11"
             data-src-h264="/video/brasas-parrilla.mp4?v=2026-11"></video>
           <span class="fire-tag">Nuestras brasas</span>
+          <button type="button" class="fire-toggle" data-paused="false" hidden data-ambient-toggle>
+            <span class="ft-pause"><Icon name="pause" size={14} /><span>Pausar vídeo</span></span>
+            <span class="ft-play"><Icon name="play" size={14} /><span>Reproducir vídeo</span></span>
+          </button>
         </div>
         <div class="fire-photo" data-parallax="0.16">
           <Photo name="parrilla-carbon-carnes-el-carnivoro" alt="La parrilla de carbón del restaurante llena de carnes al fuego" sizes="(min-width: 1000px) 30vw, 70vw" ratio="4 / 3" reveal="mask" delay={200} />
@@ -115,7 +119,7 @@ const firePoster = await getImage({ src: await photo('brasas-parrilla-el-carnivo
         <span class="eyebrow" data-reveal="fade">Salón y terraza</span>
         <SplitText as="h2" id="espacios-title" class="display" text="Dentro o _al aire de la sierra_" />
         <p class="lead" data-reveal style="--d:150">
-          Dentro, un salón cálido de madera y ladrillo, con la barra y la vinoteca. Fuera, una gran terraza cubierta bajo una pérgola de madera, con un mural de paisaje de montaña, y mesas en la calle para tomar algo al sol. Con la bebida, siempre una tapa.
+          Dentro, un salón cálido de madera y ladrillo, con la barra y la vinoteca. Fuera, una gran terraza cubierta bajo una pérgola de madera, con un mural de paisaje de montaña, y mesas en la calle para tomar algo al sol. Y con la bebida, su tapa.
         </p>
       </div>
       <div class="spaces-mosaic">
@@ -157,8 +161,11 @@ const firePoster = await getImage({ src: await photo('brasas-parrilla-el-carnivo
   type Conn = { saveData?: boolean; effectiveType?: string };
   const conn = (navigator as Navigator & { connection?: Conn }).connection;
   const skip = window.matchMedia('(prefers-reduced-motion: reduce)').matches || conn?.saveData === true || /(^|-)2g$/.test(conn?.effectiveType ?? '');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-ambient-toggle]');
   if (video && !skip) {
     let started = false;
+    let userPaused = false;
+    video.addEventListener('playing', () => toggle && (toggle.hidden = false), { once: true });
     new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -167,11 +174,18 @@ const firePoster = await getImage({ src: await photo('brasas-parrilla-el-carnivo
             const av1 = video.canPlayType('video/webm; codecs="av01.0.05M.08"') === 'probably';
             video.src = (av1 ? video.dataset.srcAv1 : video.dataset.srcH264) || '';
           }
-          video.play().catch(() => {});
+          if (!userPaused) video.play().catch(() => {});
         } else if (started) video.pause();
       },
       { rootMargin: '200px 0px' },
     ).observe(video);
+    // Control de pausa (WCAG 2.2.2).
+    toggle?.addEventListener('click', () => {
+      userPaused = !video.paused;
+      if (userPaused) video.pause();
+      else video.play().catch(() => {});
+      toggle.dataset.paused = String(userPaused);
+    });
   }
 </script>
 
@@ -234,6 +248,36 @@ const firePoster = await getImage({ src: await photo('brasas-parrilla-el-carnivo
     text-transform: uppercase;
     background: rgb(11 10 9 / 0.7);
     color: var(--cream);
+  }
+  .fire-toggle {
+    position: absolute;
+    right: 0.6rem;
+    top: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: rgb(11 10 9 / 0.7);
+    color: var(--cream);
+    font-size: var(--step--2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .fire-toggle[hidden] {
+    display: none;
+  }
+  .fire-toggle > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .fire-toggle .ft-play,
+  .fire-toggle[data-paused='true'] .ft-pause {
+    display: none;
+  }
+  .fire-toggle[data-paused='true'] .ft-play {
+    display: inline-flex;
   }
   .fire-photo {
     margin-bottom: -2rem;

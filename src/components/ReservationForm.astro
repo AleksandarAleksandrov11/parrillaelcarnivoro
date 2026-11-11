@@ -32,7 +32,7 @@ const WEEK = [
 ];
 ---
 
-<form class="rf on-light" novalidate data-reservation aria-labelledby="reserva-title" aria-describedby="rf-privacy" data-track-zone="formulario-reserva">
+<form class="rf on-light" novalidate action="#reserva" method="post" data-reservation aria-labelledby="reserva-title" aria-describedby="rf-privacy" data-track-zone="formulario-reserva">
   <div class="rf-summary" role="alert" data-rf-summary hidden></div>
 
   <div class="field">
@@ -138,7 +138,7 @@ const WEEK = [
     <textarea id="rf-notes" name="notes" rows="3" maxlength="500" placeholder="Alergias, una celebración, una trona…"></textarea>
   </div>
 
-  <button type="submit" class="btn btn--primary btn--block rf-submit">
+  <button type="submit" class="btn btn--primary btn--block rf-submit" disabled>
     <Icon name="whatsapp" />
     Enviar reserva por WhatsApp
   </button>
@@ -178,6 +178,7 @@ const WEEK = [
     }
   }
   .field {
+    position: relative;
     display: grid;
     gap: 0.45rem;
     min-width: 0;
@@ -260,8 +261,13 @@ const WEEK = [
     font-size: var(--step--2);
     color: var(--muted-on-light);
   }
+  /* Vacío pero presente en el árbol de accesibilidad para que la región viva se anuncie. */
   .hint:empty {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
   }
   .error {
     font-size: var(--step--1);
@@ -321,6 +327,10 @@ const WEEK = [
   }
   .rf-submit {
     margin-top: 0.5rem;
+  }
+  .rf-submit:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
   }
   .rf-alt {
     text-align: center;

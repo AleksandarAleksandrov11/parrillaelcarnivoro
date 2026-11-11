@@ -587,7 +587,6 @@ ol[role='list'] {
     opacity 1s var(--ease-out),
     transform 1.2s var(--ease-out);
   transition-delay: calc(var(--d, 0) * 1ms + var(--intro-delay, 0) * 1ms);
-  will-change: opacity, transform;
 }
 .js [data-reveal='fade'] {
   transform: none;
@@ -601,7 +600,6 @@ ol[role='list'] {
 .js [data-reveal].is-in {
   opacity: 1;
   transform: none;
-  will-change: auto;
 }
 
 /* Revelado de imagen: cortina que se retira + ligera escala */
@@ -749,4 +747,12 @@ main:focus {
 .map-title,
 .review-highlight {
   font-variant-numeric: lining-nums;
+}
+
+/* Scroll bloqueado mientras hay un diálogo abierto (sin salto por la barra de desplazamiento) */
+html {
+  scrollbar-gutter: stable;
+}
+html.scroll-locked {
+  overflow: hidden;
 }

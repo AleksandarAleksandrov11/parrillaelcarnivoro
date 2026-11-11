@@ -277,11 +277,11 @@ export const carta: Section[] = [
     kind: 'menu',
     id: 'menu-del-dia',
     title: 'Menú del día',
-    kicker: 'De lunes a viernes',
+    kicker: 'Lunes, jueves y viernes',
     intro: 'Un menú que cambia cada día. Publicamos el de hoy en nuestro Instagram.',
     photo: 'pescado-brasa-ensalada-el-carnivoro',
     photoAlt: 'Plato de pescado a la brasa con ensalada servido en mesa de madera',
-    availability: 'De lunes a viernes (martes y miércoles, cerrado).',
+    availability: 'Lunes, jueves y viernes (martes y miércoles cerramos).',
     link: { href: 'https://www.instagram.com/elcarnivoro.villalba/', label: 'Ver el menú de hoy en Instagram' },
     pendingConfirmation:
       'No aparece en el PDF. Precio de la web anterior: 14,90 € de lunes a viernes (la antigua página de desayunos indicaba «plato del día 12 €»). Confirmar precio, días y si se mantiene el plato del día.',

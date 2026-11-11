@@ -94,6 +94,22 @@ try {
     await ctx.close();
   }
 
+  // 2b) Revocar en otra pestaña detiene la analítica en la primera (evento storage).
+  {
+    const { ctx } = await newCtx();
+    const a = await ctx.newPage();
+    await a.goto(BASE + '/carta/', { waitUntil: 'load' });
+    await a.locator('[data-cc-banner] [data-cc="accept"]').click();
+    const b = await ctx.newPage();
+    await b.goto(BASE + '/politica-de-cookies/', { waitUntil: 'load' });
+    await b.locator('footer [data-cookie-settings]').click();
+    await b.locator('[data-cc-dialog] [data-cc="reject"]').click();
+    await a.waitForTimeout(400);
+    const st = await a.evaluate((id) => ({ disabled: window[`ga-disable-${id}`], last: window.dataLayer.filter((e) => e[0] === 'consent').pop()?.[2]?.analytics_storage }), TEST_ID);
+    st.disabled && st.last === 'denied' ? pass('Revocar en otra pestaña desactiva GA4 también en la pestaña abierta') : fail(`Sincronización entre pestañas: ${JSON.stringify(st)}`);
+    await ctx.close();
+  }
+
   // 3) Rechazar → nada; el mapa solo se carga si se pulsa «Ver mapa interactivo».
   {
     const { ctx, requests } = await newCtx();

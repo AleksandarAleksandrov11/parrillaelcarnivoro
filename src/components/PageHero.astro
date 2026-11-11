@@ -20,7 +20,7 @@ const { title, kicker, intro, photo, photoAlt = '', position = 'center', crumbs,
 <header class:list={['page-hero', { compact }]}>
   <div class="ph-media" aria-hidden={photoAlt ? undefined : 'true'}>
     <div class="ph-parallax" data-parallax="0.18">
-      <Photo name={photo} alt={photoAlt} fill sizes="100vw" priority position={position} widths={[640, 960, 1280, 1600, 1920]} />
+      <Photo name={photo} alt={photoAlt} fill sizes="100vw" priority position={position} widths={[640, 960, 1280, 1600, 1920]} quality={40} />
     </div>
   </div>
   <div class="container container--wide ph-inner">
@@ -69,8 +69,9 @@ const { title, kicker, intro, photo, photoAlt = '', position = 'center', crumbs,
     content: '';
     position: absolute;
     inset: 0;
+    /* Velo más denso donde va el texto (mitad inferior) para garantizar contraste AA sobre cualquier foto. */
     background:
-      linear-gradient(180deg, rgb(11 10 9 / 0.75) 0%, rgb(11 10 9 / 0.35) 40%, rgb(11 10 9 / 0.92) 100%),
+      linear-gradient(180deg, rgb(11 10 9 / 0.78) 0%, rgb(11 10 9 / 0.55) 30%, rgb(11 10 9 / 0.8) 55%, rgb(11 10 9 / 0.94) 100%),
       radial-gradient(70% 80% at 0% 100%, rgb(155 0 14 / 0.25), transparent 70%);
   }
   .ph-inner {
@@ -84,10 +85,14 @@ const { title, kicker, intro, photo, photoAlt = '', position = 'center', crumbs,
     flex-wrap: wrap;
     gap: 0.25rem 0.6rem;
     font-size: var(--step--1);
-    color: var(--muted-on-dark);
+    color: var(--text-on-dark);
+  }
+  .ph-inner {
+    text-shadow: 0 1px 12px rgb(0 0 0 / 0.55);
   }
   .crumbs li + li::before {
     content: '/';
+    content: '/' / '';
     margin-right: 0.6rem;
     opacity: 0.6;
   }

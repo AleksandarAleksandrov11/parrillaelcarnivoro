@@ -1,7 +1,7 @@
 ---
 /** Lista de platos con línea de puntos y precio (o columnas copa/botella en vinos). */
 import type { CartaSection } from '../data/carta';
-import { formatPrice, priceLabel } from '../lib/format';
+import PriceText from './PriceText.astro';
 
 interface Props {
   section: CartaSection;
@@ -33,18 +33,22 @@ const cols = section.priceColumns;
                   cols.map((c) => {
                     const p = it.prices.find((x) => x.label === c);
                     return p ? (
-                      <span class="item-price" aria-label={`${c}: ${priceLabel(p)}`}>
-                        {formatPrice(p)}
-                      </span>
+                      <PriceText class="item-price" price={p} label={c} />
                     ) : (
-                      <span class="item-price empty" aria-hidden="true">
-                        —
+                      <span class="item-price empty">
+                        <span aria-hidden="true">—</span>
+                        <span class="visually-hidden">{c}: no disponible</span>
                       </span>
                     );
                   })
                 ) : (
-                  <span class="item-price" aria-label={it.prices.map(priceLabel).join(' / ')}>
-                    {it.prices.map((p) => formatPrice(p)).join(' / ')}
+                  <span class="item-price">
+                    {it.prices.map((p, i) => (
+                      <>
+                        {i > 0 && ' / '}
+                        <PriceText price={p} />
+                      </>
+                    ))}
                   </span>
                 )}
               </div>

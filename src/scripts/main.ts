@@ -5,6 +5,7 @@
  * Todo respeta prefers-reduced-motion.
  */
 import { initClickTracking } from './analytics';
+import { lockScroll, unlockScroll } from './scroll-lock';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -38,6 +39,7 @@ function initMenu() {
 
   const open = () => {
     dialog.showModal();
+    lockScroll();
     openBtn.setAttribute('aria-expanded', 'true');
     requestAnimationFrame(() => dialog.classList.add('is-open'));
   };
@@ -57,7 +59,10 @@ function initMenu() {
   });
   dialog.addEventListener('close', () => {
     openBtn.setAttribute('aria-expanded', 'false');
-    openBtn.focus();
+    unlockScroll();
+    // Si el botón ya no se ve (ventana ensanchada a escritorio), el foco va al enlace activo.
+    if (openBtn.offsetParent) openBtn.focus();
+    else (document.querySelector<HTMLElement>('.nav a[aria-current]') ?? document.querySelector<HTMLElement>('#contenido'))?.focus({ preventScroll: true });
   });
   // Al navegar a un ancla de la misma página, cerrar el menú.
   dialog.addEventListener('click', (e) => {
@@ -93,12 +98,13 @@ function initParallax() {
   const els = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
   if (!els.length || reduced.matches) return;
   const visible = new Set<HTMLElement>();
+  let ticking = false;
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => (e.isIntersecting ? visible.add(e.target as HTMLElement) : visible.delete(e.target as HTMLElement)));
+    onScroll();
   });
   els.forEach((el) => io.observe(el));
-  let ticking = false;
-  const update = () => {
+  function update() {
     const vh = window.innerHeight;
     visible.forEach((el) => {
       const speed = Number(el.dataset.parallax) || 0.12;
@@ -107,13 +113,13 @@ function initParallax() {
       el.style.transform = `translate3d(0, ${(-progress * speed * 100).toFixed(2)}px, 0)`;
     });
     ticking = false;
-  };
-  const onScroll = () => {
+  }
+  function onScroll() {
     if (!ticking) {
       ticking = true;
       requestAnimationFrame(update);
     }
-  };
+  }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
   update();
@@ -152,7 +158,8 @@ function initSmoothScroll() {
   if (reduced.matches || !window.matchMedia('(pointer: fine)').matches) return;
   const start = async () => {
     const { default: Lenis } = await import('lenis');
-    const lenis = new Lenis({ duration: 1.05, anchors: { offset: -88 }, autoRaf: true, prevent: (node: HTMLElement) => node.closest('dialog, [data-lenis-prevent]') !== null });
+    // Lenis ya respeta scroll-padding-top y scroll-margin-top: sin offset adicional.
+    const lenis = new Lenis({ duration: 1.05, anchors: true, autoRaf: true, prevent: (node: HTMLElement) => node.closest('dialog, [data-lenis-prevent]') !== null });
     document.documentElement.classList.add('lenis');
     document.addEventListener('lenis:stop', () => lenis.stop());
     document.addEventListener('lenis:start', () => lenis.start());

@@ -48,7 +48,9 @@ const sources = {
       class="hero-logo"
     />
     <h1 id="hero-title" class="hero-title">
-      <span class="eyebrow eyebrow--center hero-eyebrow" data-reveal="fade" style="--d:150">Restaurante parrilla · Collado Villalba</span>
+      <span class="eyebrow eyebrow--center hero-eyebrow" data-reveal="fade" style="--d:150"
+        ><span class="nw">Restaurante parrilla</span><span class="sep" aria-hidden="true"> · </span><span class="nw">Collado Villalba</span></span
+      >
       <SplitText as="span" text="Pasión _por la carne_" class="hero-slogan" delay={250} />
     </h1>
     <p class="hero-sub" data-reveal style="--d:650">La mejor carne a la parrilla de carbón de la sierra de Madrid, en un salón acogedor y una gran terraza.</p>
@@ -67,7 +69,7 @@ const sources = {
       <Icon name="arrow-down" size={18} />
     </a>
     <p class="hero-hours"><Icon name="clock" size={16} /> {hoursSummary.openShort} · {hoursSummary.time}</p>
-    <button class="video-toggle" type="button" aria-pressed="false" hidden data-video-toggle>
+    <button class="video-toggle" type="button" data-paused="false" hidden data-video-toggle>
       <span class="vt-pause"><Icon name="pause" size={14} /><span>Pausar vídeo</span></span>
       <span class="vt-play"><Icon name="play" size={14} /><span>Reproducir vídeo</span></span>
     </button>
@@ -117,7 +119,7 @@ const sources = {
       userPaused = !video.paused ? true : false;
       if (video.paused) play();
       else video.pause();
-      toggle.setAttribute('aria-pressed', String(userPaused));
+      toggle.dataset.paused = String(userPaused);
     });
   }
 
@@ -159,7 +161,7 @@ const sources = {
     object-fit: cover;
   }
   .hero-poster {
-    animation: hero-zoom 14s var(--ease-out) both;
+    animation: hero-zoom 5s var(--ease-out) both;
   }
   @keyframes hero-zoom {
     from {
@@ -222,6 +224,29 @@ const sources = {
     font-family: var(--ff-sans);
     line-height: 1.4;
   }
+  .hero-eyebrow .nw {
+    white-space: nowrap;
+  }
+  @media (max-width: 479px) {
+    /* En pantallas estrechas, dos líneas limpias sin separador colgando. */
+    .hero-eyebrow {
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 15rem;
+      text-align: center;
+      row-gap: 0.15rem;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      display: none;
+    }
+    .hero-eyebrow .sep {
+      display: none;
+    }
+    .hero-eyebrow .nw {
+      flex-basis: 100%;
+    }
+  }
   .hero-title :global(.hero-slogan) {
     display: block;
     font-family: var(--ff-display);
@@ -269,7 +294,7 @@ const sources = {
     text-decoration: none;
   }
   .scroll-cue :global(svg) {
-    animation: cue 2.4s var(--ease-in-out) infinite;
+    animation: cue 2.4s var(--ease-in-out) 2;
   }
   @keyframes cue {
     50% {
@@ -298,16 +323,38 @@ const sources = {
   .video-toggle[hidden] {
     display: none;
   }
+  @media (max-width: 999px) {
+    /* Deja libre la esquina del botón flotante de WhatsApp. */
+    .hero-foot {
+      padding-right: calc(var(--gutter) + 64px);
+    }
+  }
+  @media (max-width: 479px) {
+    .video-toggle {
+      padding: 0.5rem;
+      width: 44px;
+      justify-content: center;
+    }
+    .video-toggle > span > span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+  }
   .video-toggle > span {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
   }
+  /* El texto (y por tanto el nombre accesible) cambia: «Pausar vídeo» / «Reproducir vídeo». */
   .video-toggle .vt-play,
-  .video-toggle[aria-pressed='true'] .vt-pause {
+  .video-toggle[data-paused='true'] .vt-pause {
     display: none;
   }
-  .video-toggle[aria-pressed='true'] .vt-play {
+  .video-toggle[data-paused='true'] .vt-play {
     display: inline-flex;
   }
   @media (min-width: 720px) {

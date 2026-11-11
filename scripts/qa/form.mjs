@@ -116,6 +116,43 @@ try {
     await ctx.close();
   }
 
+  // Sin JavaScript el formulario no puede enviarse de forma nativa (no salen datos en la URL).
+  {
+    const ctx = await browser.newContext({ javaScriptEnabled: false });
+    const page = await ctx.newPage();
+    await page.goto(BASE + '/contacto/', { waitUntil: 'load' });
+    const disabled = await page.locator('.rf-submit').isDisabled();
+    check(disabled, 'Sin JavaScript el botón de envío está deshabilitado (el formulario nunca se envía de forma nativa)');
+    await ctx.close();
+  }
+
+  // Una hora que deja de ser válida mientras el formulario está abierto se rechaza al enviar.
+  {
+    const { ctx, page } = await setup();
+    const madrid = await page.evaluate(() => {
+      const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Madrid', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+      return { wd: p.find((x) => x.type === 'weekday').value, h: Number(p.find((x) => x.type === 'hour').value) };
+    });
+    const todayOpen = !['Tue', 'Wed'].includes(madrid.wd) && madrid.h >= 10 && madrid.h < 22;
+    if (todayOpen) {
+      await page.fill('#rf-name', 'Prueba');
+      await page.selectOption('#rf-people', '2');
+      await page.click('[data-date-trigger]');
+      const today = await page.evaluate(() => document.querySelector('.cal-day[aria-current="date"]')?.dataset.date);
+      await page.click(`.cal-day[data-date="${today}"]`);
+      // Fuerza una hora ya pasada (10:00) como si se hubiera elegido antes.
+      await page.evaluate(() => {
+        const sel = document.querySelector('#rf-time');
+        sel.querySelector('option[value="10:00"]').disabled = false;
+        sel.value = '10:00';
+      });
+      await page.click('.rf-submit');
+      const err = await page.locator('[data-error-for="time"]').textContent();
+      check(/pasado|pronto/.test(err || ''), 'Una hora que ya ha pasado se rechaza al enviar (se recalcula en el envío)');
+    } else results.push({ ok: true, check: 'Hora pasada: no aplicable a esta hora del día (se comprueba con el restaurante abierto)' });
+    await ctx.close();
+  }
+
   // iPhone y Android: misma pestaña → abre la app.
   for (const dev of ['iPhone 13', 'Pixel 7']) {
     const { ctx, page } = await setup({ ...devices[dev] });

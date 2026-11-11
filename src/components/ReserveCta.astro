@@ -86,7 +86,8 @@ const {
     border-radius: 50%;
     background: radial-gradient(circle, rgb(255 130 78 / 0.32), transparent 62%);
     transform: translateX(-50%);
-    animation: ember 7s var(--ease-in-out) infinite alternate;
+    /* Un único pulso de 5 s (WCAG 2.2.2: nada se mueve más de 5 s sin control). */
+    animation: ember 2.5s var(--ease-in-out) 2 alternate;
   }
   @keyframes ember {
     to {

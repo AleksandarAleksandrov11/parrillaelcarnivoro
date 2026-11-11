@@ -43,6 +43,8 @@ export function buildMessage(d: { name: string; people: string; date: string; ti
 export function initReservation() {
   const form = document.querySelector<HTMLFormElement>('[data-reservation]');
   if (!form) return;
+  // Sin JS el botón queda deshabilitado: el formulario nunca se envía de forma nativa.
+  form.querySelector<HTMLButtonElement>('[type="submit"]')?.removeAttribute('disabled');
   const summary = form.querySelector<HTMLElement>('[data-rf-summary]')!;
   const done = form.querySelector<HTMLElement>('[data-rf-done]')!;
   const time = form.querySelector<HTMLSelectElement>('select[name="time"]')!;
@@ -52,18 +54,28 @@ export function initReservation() {
   const picker = initDatePicker(form.querySelector<HTMLElement>('[data-datepicker]')!, {
     closedWeekdays,
     maxDays: 180,
+    // Después de la última franja (menos el margen de 30 min) ya no se puede reservar para hoy.
+    todayIsOver: () => madridMinutesNow() + 30 > lastSlotMinutes(),
     onChange: (value) => {
       dateInput.value = value;
-      clearError('date');
+      if (value) clearError('date');
       updateTimes();
     },
   });
 
+  function lastSlotMinutes() {
+    const values = Array.from(time.options).map((o) => o.value).filter(Boolean).map(toMinutes);
+    return Math.max(...values);
+  }
+
+  function todayIso() {
+    const t = madridToday();
+    return `${t.y}-${String(t.m + 1).padStart(2, '0')}-${String(t.d).padStart(2, '0')}`;
+  }
+
   /** Si la fecha es hoy, deshabilita las horas que ya han pasado (con 30 min de margen). */
   function updateTimes() {
-    const t = madridToday();
-    const todayIso = `${t.y}-${String(t.m + 1).padStart(2, '0')}-${String(t.d).padStart(2, '0')}`;
-    const isToday = dateInput.value === todayIso;
+    const isToday = dateInput.value === todayIso();
     const now = madridMinutesNow() + 30;
     let available = 0;
     Array.from(time.options).forEach((o) => {
@@ -106,9 +118,14 @@ export function initReservation() {
     if (name && errors[name]) clearError(name);
   });
 
+  // Se recalcula al volver a la pestaña y al enfocar la hora (el tiempo pasa).
+  document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && updateTimes());
+  time.addEventListener('focus', updateTimes);
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     (['name', 'people', 'date', 'time'] as Field[]).forEach(clearError);
+    picker.revalidate();
     summary.hidden = true;
     done.hidden = true;
 
@@ -126,7 +143,9 @@ export function initReservation() {
     if (!date) setError('date', 'Elige una fecha en el calendario.');
     else if (picker.isDisabled(date)) setError('date', 'Ese día no abrimos o ya ha pasado: elige otra fecha (cerramos martes y miércoles).');
     if (!timeValue) setError('time', 'Elige una hora.');
-    else if (time.selectedOptions[0]?.disabled) setError('time', 'Esa hora ya ha pasado: elige otra.');
+    else if (date && date === todayIso() && toMinutes(timeValue) >= 10 * 60 && toMinutes(timeValue) < madridMinutesNow() + 30)
+      setError('time', 'Esa hora ya ha pasado o es demasiado pronto: elige otra.');
+    updateTimes();
 
     const keys = Object.keys(errors) as Field[];
     if (keys.length) {
@@ -150,8 +169,9 @@ export function initReservation() {
     const message = buildMessage({ name, people, date, time: timeValue, slot, zone, notes });
     const url = `https://wa.me/${business.phone.whatsapp}?text=${encodeURIComponent(message)}`;
 
+    // Solo se registra que se ha enviado (sin ningún dato del formulario).
     track('generate_lead', { method: 'whatsapp', form_name: 'reserva' });
-    track('reservation_whatsapp', { party_size: people, zone, slot });
+    track('reservation_whatsapp', { method: 'whatsapp' });
 
     const fallback = done.querySelector<HTMLAnchorElement>('[data-rf-link]');
     if (fallback) fallback.href = url;

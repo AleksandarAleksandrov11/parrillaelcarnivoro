@@ -11,7 +11,11 @@ import MapFacade from '../components/MapFacade.astro';
 import ReserveCta from '../components/ReserveCta.astro';
 import { heroPoster, PORTRAIT_MQ } from '../lib/hero';
 import { restaurantSchema, websiteSchema, abs } from '../lib/schema';
-import { euros, findItem, formatPrice, minPrice, priceLabel } from '../lib/format';
+import { euros, findItem, formatPrice, minPrice } from '../lib/format';
+import PriceText from '../components/PriceText.astro';
+import { getSection } from '../data/carta';
+import { getImage } from 'astro:assets';
+import { photo } from '../data/photos';
 import { gallery } from '../data/gallery';
 import { reviews } from '../data/reviews';
 import { business } from '../data/site';
@@ -30,6 +34,12 @@ const meats = meatDefs.map((m) => ({ ...m, item: findItem('carnes', m.name) }));
 
 const moreCuts = ['Chuletón madurado de vaca', 'Steak Ribeye', 'Entrecot', 'Solomillo', 'Picaña', 'Vacío', 'Tira de asado', 'Secreto', 'Pluma ibérica', 'Paletilla de cordero'];
 
+function setMenuPrice(id: string) {
+  const sec = getSection(id);
+  if (sec.kind !== 'menu') throw new Error(id);
+  return sec.menus[0].price;
+}
+
 const menus = [
   {
     id: 'desayunos',
@@ -40,13 +50,13 @@ const menus = [
   {
     id: 'menu-del-dia',
     title: 'Menú del día',
-    price: euros(minPrice('menu-del-dia')),
-    text: 'De lunes a viernes. Publicamos el menú de cada día en nuestro Instagram.',
+    price: formatPrice(setMenuPrice('menu-del-dia')),
+    text: 'Lunes, jueves y viernes. Publicamos el menú de cada día en nuestro Instagram.',
   },
   {
     id: 'menu-cenas',
     title: 'Menú cenas y fines de semana',
-    price: euros(minPrice('menu-cenas')),
+    price: formatPrice(setMenuPrice('menu-cenas')),
     text: 'Primero, segundo y postre, con pan, una bebida y café o chupito.',
   },
   {
@@ -60,10 +70,18 @@ const menus = [
 // Composición fija sin huecos: filas completas a 2 y 4 columnas.
 const featured = gallery.filter((g) => g.featured);
 
-const schema = [
-  restaurantSchema([abs('/og/inicio.jpg'), abs('/og/carta.jpg'), abs('/og/nuestra-historia.jpg'), abs('/og/contacto.jpg')]),
-  websiteSchema(),
-];
+// Imágenes del schema: fotos reales del restaurante, sin textos superpuestos (1200 px, JPEG).
+const schemaImages = await Promise.all(
+  (
+    [
+      'salon-restaurante-el-carnivoro-collado-villalba',
+      'fachada-terraza-exterior-el-carnivoro',
+      'terraza-cubierta-el-carnivoro',
+      'chuleton-parrilla-carbon-el-carnivoro',
+    ] as const
+  ).map(async (n) => abs((await getImage({ src: await photo(n), width: 1200, format: 'jpg' })).src)),
+);
+const schema = [restaurantSchema(schemaImages), websiteSchema()];
 ---
 
 <BaseLayout
@@ -146,9 +164,7 @@ const schema = [
                     0{i + 1}
                   </span>
                   <span class="meat-name">{m.name}</span>
-                  <span class="meat-price" aria-label={priceLabel(m.item.prices[0])}>
-                    {formatPrice(m.item.prices[0])}
-                  </span>
+                  <PriceText class="meat-price" price={m.item.prices[0]} />
                   {m.item.note && <span class="meat-note">{m.item.note}</span>}
                 </span>
               </a>
@@ -171,7 +187,7 @@ const schema = [
         <span class="eyebrow" data-reveal="fade">Un restaurante con encanto</span>
         <SplitText as="h2" id="espacios-title" class="display" text="Salón _y terraza_" />
         <p class="lead" data-reveal style="--d:150">
-          El calor de un salón acogedor o el aire de la sierra en nuestra gran terraza: tú eliges. Ven a disfrutar de nuestras carnes, a tomar unas cervezas con amigos —siempre con su tapa— o a empezar el día con un buen desayuno.
+          El calor de un salón acogedor o el aire de la sierra en nuestra gran terraza: tú eliges. Ven a disfrutar de nuestras carnes, a tomar unas cervezas con amigos —con su tapa— o a empezar el día con un buen desayuno.
         </p>
         <a class="link" href="/nuestra-historia/" data-reveal="fade" style="--d:300">Conoce nuestra historia <Icon name="arrow" /></a>
       </div>
@@ -411,6 +427,7 @@ const schema = [
   }
   .meat-link {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
     text-decoration: none;
   }
@@ -427,11 +444,20 @@ const schema = [
   }
   .meat-body {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: baseline;
     gap: 0.25rem 0.9rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--line-on-dark);
+  }
+  /* En 4 columnas el precio pasa bajo el nombre para no forzar el ancho de la tarjeta. */
+  @media (min-width: 1100px) and (max-width: 1499px) {
+    .meat-body {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+    .meat-price {
+      grid-column: 2;
+    }
   }
   .meat-num {
     font-size: var(--step--2);
@@ -539,6 +565,7 @@ const schema = [
   .menu-card {
     position: relative;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto 1fr auto;
     gap: 0.9rem;
     width: 100%;
@@ -567,6 +594,7 @@ const schema = [
     font-family: var(--ff-display);
     font-size: var(--step-3);
     line-height: 1;
+    overflow-wrap: break-word;
   }
   .mc-price {
     font-size: var(--step-0);

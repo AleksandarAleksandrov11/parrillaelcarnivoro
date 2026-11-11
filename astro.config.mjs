@@ -21,7 +21,7 @@ export default defineConfig({
     service: {
       entrypoint: 'astro/assets/services/sharp',
       config: {
-        avif: { quality: 50, effort: 4 },
+        avif: { quality: 46, effort: 4 },
         webp: { quality: 74, effort: 4 },
         jpeg: { quality: 76, mozjpeg: true },
         png: { compressionLevel: 9, palette: true, quality: 90 },

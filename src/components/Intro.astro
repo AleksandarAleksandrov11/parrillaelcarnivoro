@@ -23,12 +23,18 @@ import icon from '../assets/brand/icono-el-carnivoro.png';
   const html = document.documentElement;
   const layer = document.querySelector<HTMLElement>('[data-intro]');
   if (layer && html.classList.contains('intro')) {
+    let done = false;
     const finish = () => {
+      if (done) return;
+      done = true;
       html.classList.add('intro-done');
-      window.setTimeout(() => {
-        html.classList.remove('intro');
-        layer.remove();
-      }, 500);
+      // Quita el retardo de la intro y reinicia los revelados del hero para que aparezcan ya.
+      html.classList.remove('intro');
+      const hero = document.querySelectorAll<HTMLElement>('.hero [data-reveal].is-in, .hero .split.is-in');
+      hero.forEach((el) => el.classList.remove('is-in'));
+      void document.body.offsetWidth;
+      hero.forEach((el) => el.classList.add('is-in'));
+      window.setTimeout(() => layer.remove(), 450);
       window.removeEventListener('keydown', onKey);
     };
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && finish();

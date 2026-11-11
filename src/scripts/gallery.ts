@@ -4,6 +4,8 @@
  * - Flechas ← → para navegar; gesto de deslizar en táctil.
  * - Al cerrar, el foco vuelve a la miniatura que lo abrió.
  */
+import { lockScroll, unlockScroll } from './scroll-lock';
+
 const LABELS: Record<string, string> = { all: 'todas las categorías', platos: 'Platos', local: 'Local', terraza: 'Terraza', parrilla: 'Parrilla' };
 
 export function initGalleries() {
@@ -52,7 +54,14 @@ function initGallery(root: HTMLElement) {
   });
 
   /* Visor ------------------------------------------------------------------ */
-  const visible = () => cells.filter((c) => !c.hidden).map((c) => c.querySelector<HTMLButtonElement>('[data-lightbox-open]')!);
+  // Orden visual (la rejilla densa puede recolocar alguna foto): de arriba abajo y de izquierda a derecha.
+  const visible = () =>
+    cells
+      .filter((c) => !c.hidden)
+      .map((c) => ({ c, r: c.getBoundingClientRect() }))
+      .sort((a, b) => Math.round(a.r.top) - Math.round(b.r.top) || a.r.left - b.r.left)
+      .map(({ c }) => c.querySelector<HTMLButtonElement>('[data-lightbox-open]')!);
+  let nextToPreload: HTMLButtonElement | null = null;
 
   const show = (index: number) => {
     const list = visible();
@@ -69,21 +78,26 @@ function initGallery(root: HTMLElement) {
     if (lastWebp) img.src = lastWebp;
     caption.textContent = t.dataset.alt || '';
     count.textContent = `${current + 1} / ${list.length}`;
-    // Precarga de la siguiente.
-    const next = list[(current + 1) % list.length];
-    if (next?.dataset.webp) {
+    nextToPreload = list[(current + 1) % list.length] ?? null;
+  };
+  img.addEventListener('load', () => {
+    img.classList.remove('is-loading');
+    // Precarga la siguiente en el mismo formato que ha elegido el navegador (AVIF o WebP).
+    const next = nextToPreload;
+    if (!next) return;
+    const set = img.currentSrc.includes('.avif') ? next.dataset.avif : next.dataset.webp;
+    if (set) {
       const pre = new Image();
       pre.sizes = '100vw';
-      pre.srcset = next.dataset.webp;
+      pre.srcset = set;
     }
-  };
-  img.addEventListener('load', () => img.classList.remove('is-loading'));
+  });
 
   const open = (btn: HTMLButtonElement) => {
     opener = btn;
     show(visible().indexOf(btn));
     dialog.showModal();
-    document.dispatchEvent(new Event('lenis:stop'));
+    lockScroll();
     requestAnimationFrame(() => dialog.classList.add('is-open'));
   };
   const close = () => {
@@ -103,7 +117,7 @@ function initGallery(root: HTMLElement) {
     close();
   });
   dialog.addEventListener('close', () => {
-    document.dispatchEvent(new Event('lenis:start'));
+    unlockScroll();
     opener?.focus();
   });
   dialog.addEventListener('keydown', (e) => {

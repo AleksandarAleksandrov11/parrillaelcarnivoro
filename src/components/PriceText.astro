@@ -1,0 +1,28 @@
+---
+/**
+ * Precio accesible: se ve «48,00 €/kg» y un lector de pantalla oye «48,00 € el kilo».
+ * Con `label` (Copa/Botella) se antepone un texto oculto «Copa:».
+ */
+import type { Price } from '../data/carta';
+import { euros } from '../lib/format';
+
+interface Props {
+  price: Price;
+  label?: string;
+  class?: string;
+}
+const { price, label, class: className } = Astro.props;
+const unit = { kg: ['/kg', ' el kilo'], unidad: ['/ud.', ' la unidad'], persona: ['/persona', ' por persona'] } as const;
+const u = price.per ? unit[price.per] : null;
+---
+
+<span class={className}
+  >{label && <span class="visually-hidden">{label}: </span>}{euros(price.amount)}{
+    u && (
+      <>
+        <span aria-hidden="true">{u[0]}</span>
+        <span class="visually-hidden">{u[1]}</span>
+      </>
+    )
+  }</span
+>

@@ -41,13 +41,17 @@ export async function writeReport(name, data) {
 
 /** Recorre la página para disparar los revelados y la carga diferida. */
 export async function scrollThrough(page) {
+  // Desplazamiento instantáneo: sin Lenis (pantallas táctiles) la web usa scroll-behavior: smooth
+  // y los saltos rápidos no llegarían al final de la página.
   await page.evaluate(async () => {
     const h = document.documentElement.scrollHeight;
-    for (let y = 0; y < h; y += Math.round(window.innerHeight * 0.6)) {
-      window.scrollTo(0, y);
-      await new Promise((r) => setTimeout(r, 90));
+    for (let y = 0; y < h; y += Math.round(window.innerHeight * 0.7)) {
+      window.scrollTo({ top: y, behavior: 'instant' });
+      await new Promise((r) => setTimeout(r, 70));
     }
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
+    await new Promise((r) => setTimeout(r, 150));
+    window.scrollTo({ top: 0, behavior: 'instant' });
   });
   await page.waitForTimeout(1200);
 }

@@ -20,7 +20,11 @@ const browser = await chromium.launch();
 const results = [];
 try {
   const viewports = [...WIDTHS.map((w) => ({ name: `${w}`, width: w, height: w < 768 ? 800 : 900 })), ...LANDSCAPE];
-  for (const p of PAGES) {
+  // Varias páginas en paralelo para acortar la ejecución.
+  const queue = [...PAGES];
+  const worker = async () => {
+  while (queue.length) {
+    const p = queue.shift();
     for (const vp of viewports) {
       const mobile = vp.width < 1000;
       const ctx = await browser.newContext({
@@ -40,7 +44,12 @@ try {
       });
       const page = await ctx.newPage();
       const consoleMsgs = [];
-      page.on('console', (m) => ['error', 'warning'].includes(m.type()) && consoleMsgs.push(`${m.type()}: ${m.text()}`));
+      page.on('console', (m) => {
+        if (!['error', 'warning'].includes(m.type())) return;
+        // En la página 404 el propio documento responde 404 (es lo esperado).
+        if (p.name === '404' && /status of 404/.test(m.text())) return;
+        consoleMsgs.push(`${m.type()}: ${m.text()}`);
+      });
       page.on('pageerror', (e) => consoleMsgs.push(`pageerror: ${e.message}`));
       await page.goto(BASE + p.path, { waitUntil: 'load' });
       await scrollThrough(page);
@@ -48,10 +57,19 @@ try {
         const vw = document.documentElement.clientWidth;
         const overflowX = document.documentElement.scrollWidth > vw + 1;
         const offenders = [];
+        // ¿Lo recorta algún ancestro (overflow hidden/clip/auto)? Entonces no desborda la página.
+        const clippedByAncestor = (el) => {
+          for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+            const o = getComputedStyle(a);
+            if (/(hidden|clip|auto|scroll)/.test(o.overflowX + o.overflow)) return true;
+          }
+          return false;
+        };
         document.querySelectorAll('body *').forEach((el) => {
           const cs = getComputedStyle(el);
           if (cs.position === 'fixed' || el.closest('dialog:not([open])') || cs.visibility === 'hidden' || cs.display === 'none') return;
-          if (el.closest('.cn-list, .lb-stage, .hero-media, .ph-media, .cta-ember, .nf-glow, [data-parallax]')) return;
+          if (el.closest('.cn-list, .lb-stage, .hero-media, .ph-media, .cta-ember, .nf-glow, [data-parallax], .visually-hidden')) return;
+          if (clippedByAncestor(el)) return;
           const r = el.getBoundingClientRect();
           if (r.width === 0 || r.height === 0) return;
           if (r.right > vw + 1 || r.left < -1) offenders.push(`${el.tagName.toLowerCase()}.${[...el.classList].join('.')} (${Math.round(r.left)}→${Math.round(r.right)})`);
@@ -60,7 +78,7 @@ try {
         const clipped = [];
         document.querySelectorAll('h1, h2, h3, p, a, button, li, dt, dd, span.item-name, span.item-price').forEach((el) => {
           const cs = getComputedStyle(el);
-          if ((cs.overflow === 'hidden' || cs.textOverflow === 'ellipsis') && el.scrollWidth > el.clientWidth + 2 && !el.closest('.split')) clipped.push(el.tagName.toLowerCase() + ': ' + (el.textContent || '').trim().slice(0, 40));
+          if ((cs.overflow === 'hidden' || cs.textOverflow === 'ellipsis') && el.scrollWidth > el.clientWidth + 2 && !el.closest('.split') && !el.classList.contains('visually-hidden')) clipped.push(el.tagName.toLowerCase() + ': ' + (el.textContent || '').trim().slice(0, 40));
         });
         return { overflowX, offenders: offenders.slice(0, 10), clipped: clipped.slice(0, 10) };
       });
@@ -71,6 +89,8 @@ try {
     }
     console.log(`✓ ${p.path}`);
   }
+  };
+  await Promise.all(Array.from({ length: 3 }, worker));
 } finally {
   await browser.close();
   stop();
