@@ -1,0 +1,118 @@
+---
+/** Cabecera de páginas interiores: foto con parallax suave, migas de pan, H1 e introducción. */
+import Photo from './Photo.astro';
+import SplitText from './SplitText.astro';
+import type { PhotoName } from '../data/photos';
+
+interface Props {
+  title: string;
+  kicker: string;
+  intro?: string;
+  photo: PhotoName;
+  photoAlt?: string;
+  position?: string;
+  crumbs: { name: string; path: string }[];
+  compact?: boolean;
+}
+const { title, kicker, intro, photo, photoAlt = '', position = 'center', crumbs, compact = false } = Astro.props;
+---
+
+<header class:list={['page-hero', { compact }]}>
+  <div class="ph-media" aria-hidden={photoAlt ? undefined : 'true'}>
+    <div class="ph-parallax" data-parallax="0.18">
+      <Photo name={photo} alt={photoAlt} fill sizes="100vw" priority position={position} widths={[640, 960, 1280, 1600, 1920]} />
+    </div>
+  </div>
+  <div class="container container--wide ph-inner">
+    <nav aria-label="Migas de pan" class="crumbs" data-reveal="fade">
+      <ol role="list">
+        {
+          crumbs.map((c, i) => (
+            <li>
+              {i < crumbs.length - 1 ? <a href={c.path}>{c.name}</a> : <span aria-current="page">{c.name}</span>}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+    <p class="eyebrow" data-reveal="fade" style="--d:100">{kicker}</p>
+    <SplitText as="h1" class="ph-title" text={title} delay={150} />
+    {intro && <p class="lead ph-intro" data-reveal style="--d:450">{intro}</p>}
+    <slot />
+  </div>
+</header>
+
+<style>
+  .page-hero {
+    position: relative;
+    isolation: isolate;
+    min-height: min(78svh, 760px);
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+    color: var(--text-on-dark);
+    background: var(--ink);
+  }
+  .page-hero.compact {
+    min-height: min(58svh, 560px);
+  }
+  .ph-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .ph-parallax {
+    position: absolute;
+    inset: -12% 0;
+  }
+  .ph-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(11 10 9 / 0.75) 0%, rgb(11 10 9 / 0.35) 40%, rgb(11 10 9 / 0.92) 100%),
+      radial-gradient(70% 80% at 0% 100%, rgb(155 0 14 / 0.25), transparent 70%);
+  }
+  .ph-inner {
+    display: grid;
+    gap: 1.1rem;
+    padding-top: calc(var(--header-h) + 3rem);
+    padding-bottom: var(--space-xl);
+  }
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.6rem;
+    font-size: var(--step--1);
+    color: var(--muted-on-dark);
+  }
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 0.6rem;
+    opacity: 0.6;
+  }
+  .crumbs a {
+    color: var(--text-on-dark);
+    text-decoration: none;
+    padding-block: 0.3rem;
+    display: inline-block;
+  }
+  @media (hover: hover) {
+    .crumbs a:hover {
+      text-decoration: underline;
+    }
+  }
+  .page-hero :global(.ph-title) {
+    font-size: var(--step-5);
+    line-height: 0.98;
+    max-width: 14ch;
+  }
+  .page-hero :global(.ph-title em) {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--brass);
+  }
+  .ph-intro {
+    color: rgb(243 236 223 / 0.88);
+  }
+</style>

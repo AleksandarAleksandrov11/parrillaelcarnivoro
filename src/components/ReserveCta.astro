@@ -1,0 +1,102 @@
+---
+import Icon from './Icon.astro';
+import SplitText from './SplitText.astro';
+import { business, whatsappUrl, defaultWhatsappText } from '../data/site';
+interface Props {
+  title?: string;
+  text?: string;
+  showFormLink?: boolean;
+}
+const {
+  title = 'Reserva _tu mesa_',
+  text = 'Escríbenos por WhatsApp o llámanos. Estaremos encantados de recibirte y de recomendarte nuestros mejores platos.',
+  showFormLink = true,
+} = Astro.props;
+---
+
+<section class="cta section bg-wine grain" aria-labelledby="cta-title" data-track-zone="cta-reserva">
+  <div class="container cta-inner">
+    <span class="eyebrow eyebrow--center cta-eyebrow" data-reveal="fade">Reservas</span>
+    <SplitText as="h2" id="cta-title" class="display cta-title" text={title} />
+    <p class="lead cta-text" data-reveal style="--d:200">{text}</p>
+    <div class="cta-actions" data-reveal style="--d:300">
+      <a class="btn btn--light" href={whatsappUrl(defaultWhatsappText)} target="_blank" rel="noopener" data-track="whatsapp">
+        <Icon name="whatsapp" />
+        Reservar por WhatsApp
+      </a>
+      <a class="btn btn--ghost" href={business.phone.tel} data-track="phone">
+        <Icon name="phone" />
+        Llamar al {business.phone.display}
+      </a>
+    </div>
+    {
+      showFormLink && (
+        <a class="link cta-form" href="/contacto/#reserva" data-reveal="fade" style="--d:400">
+          Elegir fecha y hora en el formulario <Icon name="arrow" />
+        </a>
+      )
+    }
+  </div>
+  <div class="cta-ember" aria-hidden="true"></div>
+</section>
+
+<style>
+  .cta {
+    overflow: hidden;
+    text-align: center;
+  }
+  .cta-inner {
+    display: grid;
+    justify-items: center;
+    gap: 1.4rem;
+  }
+  .cta-eyebrow {
+    color: var(--bone);
+  }
+  .cta :global(.cta-title) {
+    font-size: var(--step-5);
+  }
+  .cta :global(.cta-title em) {
+    color: var(--bone);
+  }
+  .cta-text {
+    color: rgb(249 246 240 / 0.88);
+  }
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .cta .btn--ghost {
+    --btn-fg: var(--cream);
+    --btn-border: rgb(249 246 240 / 0.55);
+  }
+  .cta-form {
+    color: var(--cream);
+  }
+  .cta-ember {
+    position: absolute;
+    left: 50%;
+    bottom: -40%;
+    z-index: -1;
+    width: min(900px, 140vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(255 130 78 / 0.32), transparent 62%);
+    transform: translateX(-50%);
+    animation: ember 7s var(--ease-in-out) infinite alternate;
+  }
+  @keyframes ember {
+    to {
+      opacity: 0.55;
+      transform: translateX(-50%) scale(1.08);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta-ember {
+      animation: none;
+    }
+  }
+</style>

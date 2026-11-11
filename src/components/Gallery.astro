@@ -1,0 +1,378 @@
+---
+/**
+ * Galería editorial con proporciones variadas, filtros discretos y lightbox accesible
+ * (dialog modal: foco atrapado, Esc, flechas del teclado y gesto de deslizar).
+ * Miniaturas y ampliaciones en AVIF + WebP, carga diferida y placeholder desenfocado.
+ */
+import { getImage } from 'astro:assets';
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { photo, photoSize } from '../data/photos';
+import { galleryCategories, type GalleryItem } from '../data/gallery';
+
+interface Props {
+  items: GalleryItem[];
+  filters?: boolean;
+  id?: string;
+  label: string;
+  /** "featured": composición fija de la home (2 y 4 columnas, sin huecos). */
+  layout?: 'masonry' | 'featured';
+}
+const { items, filters = false, id, label, layout = 'masonry' } = Astro.props;
+
+const srcset = async (name: GalleryItem['photo'], format: 'avif' | 'webp') => {
+  const img = await photo(name);
+  const widths = [1200, 2000].filter((w) => w < img.width);
+  widths.push(Math.min(img.width, 2400));
+  const out = await Promise.all([...new Set(widths)].map((w) => getImage({ src: img, width: w, format })));
+  return out.map((i) => `${i.src} ${i.attributes.width}w`).join(', ');
+};
+
+const prepared = await Promise.all(
+  items.map(async (it, i) => {
+    const { width, height } = photoSize(it.photo);
+    const r = width / height;
+    // Ritmo editorial: panorámicas a dos columnas, verticales a dos filas y una pieza grande cada 7.
+    const shape =
+      layout === 'featured'
+        ? (it.featuredShape ?? 'std')
+        : i % 7 === 0 && r > 0.85 && r < 1.6
+          ? 'big'
+          : r >= 1.6
+            ? 'wide'
+            : r < 0.85
+              ? 'tall'
+              : 'std';
+    const [avif, webp] = await Promise.all([srcset(it.photo, 'avif'), srcset(it.photo, 'webp')]);
+    return { ...it, shape, avif, webp, width, height };
+  }),
+);
+const sizesFor = (shape: string) =>
+  shape === 'big' || shape === 'wide' ? '(min-width: 1100px) 50vw, (min-width: 700px) 66vw, 100vw' : '(min-width: 1100px) 25vw, (min-width: 700px) 33vw, 50vw';
+---
+
+<div class:list={['gallery', `gallery--${layout}`]} data-gallery id={id}>
+  {
+    filters && (
+      <div class="filters" role="group" aria-label="Filtrar fotos por categoría">
+        <button type="button" class="filter" aria-pressed="true" data-filter="all">
+          Todas
+        </button>
+        {galleryCategories.map((c) => (
+          <button type="button" class="filter" aria-pressed="false" data-filter={c.id}>
+            {c.label}
+          </button>
+        ))}
+      </div>
+    )
+  }
+  <p class="visually-hidden" aria-live="polite" data-gallery-status></p>
+
+  <ul class="grid" role="list" aria-label={label}>
+    {
+      prepared.map((it, i) => (
+        <li class:list={['cell', `cell--${it.shape}`]} data-cat={it.category} data-reveal="fade" style={`--d:${(i % 4) * 90}`}>
+          <button
+            type="button"
+            class="thumb"
+            data-lightbox-open
+            data-avif={it.avif}
+            data-webp={it.webp}
+            data-alt={it.alt}
+            data-w={it.width}
+            data-h={it.height}
+          >
+            <Photo name={it.photo} alt={it.alt} fill sizes={sizesFor(it.shape)} widths={[360, 540, 720, 960, 1280]} />
+            <span class="zoom" aria-hidden="true">
+              <Icon name="expand" size={18} />
+            </span>
+            <span class="visually-hidden">Ampliar foto</span>
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+
+  <dialog class="lightbox" aria-label="Visor de fotos" data-lightbox>
+    <div class="lb-stage" data-lb-stage>
+      <figure class="lb-figure">
+        <div class="lb-media" data-lb-media></div>
+        <figcaption class="lb-caption">
+          <span data-lb-caption></span>
+          <span class="lb-count" data-lb-count></span>
+        </figcaption>
+      </figure>
+    </div>
+    <button type="button" class="lb-btn lb-close" data-lb-close>
+      <Icon name="close" />
+      <span class="visually-hidden">Cerrar visor</span>
+    </button>
+    <button type="button" class="lb-btn lb-prev" data-lb-prev>
+      <Icon name="chevron-left" />
+      <span class="visually-hidden">Foto anterior</span>
+    </button>
+    <button type="button" class="lb-btn lb-next" data-lb-next>
+      <Icon name="chevron-right" />
+      <span class="visually-hidden">Foto siguiente</span>
+    </button>
+  </dialog>
+</div>
+
+<script>
+  import { initGalleries } from '../scripts/gallery';
+  initGalleries();
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: var(--space-l);
+  }
+  .filter {
+    min-height: 44px;
+    padding: 0.55rem 1.15rem;
+    border: 1px solid var(--line-on-dark);
+    border-radius: 999px;
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    color: var(--muted-on-dark);
+    transition:
+      color 0.3s var(--ease-out),
+      background-color 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out);
+  }
+  .filter[aria-pressed='true'] {
+    background: var(--cream);
+    border-color: var(--cream);
+    color: var(--ink);
+  }
+  @media (hover: hover) {
+    .filter:not([aria-pressed='true']):hover {
+      color: var(--text-on-dark);
+      border-color: rgb(243 236 223 / 0.45);
+    }
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: clamp(150px, 38vw, 220px);
+    grid-auto-flow: dense;
+    gap: clamp(0.5rem, 1.2vw, 1rem);
+  }
+  @media (min-width: 700px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: clamp(180px, 22vw, 260px);
+    }
+  }
+  @media (min-width: 1100px) {
+    .grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-auto-rows: clamp(200px, 17vw, 300px);
+    }
+  }
+  .gallery--featured .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 1100px) {
+    .gallery--featured .grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-auto-rows: clamp(220px, 19vw, 320px);
+    }
+  }
+  .cell {
+    min-width: 0;
+  }
+  .cell[hidden] {
+    display: none;
+  }
+  .cell--wide {
+    grid-column: span 2;
+  }
+  .cell--tall {
+    grid-row: span 2;
+  }
+  .cell--big {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .thumb {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--smoke);
+  }
+  .thumb :global(.media) {
+    height: 100%;
+  }
+  .thumb :global(img) {
+    transition:
+      transform 1.2s var(--ease-out),
+      opacity 0.6s var(--ease-out);
+  }
+  .thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgb(11 10 9 / 0.55));
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-out);
+  }
+  .zoom {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgb(11 10 9 / 0.6);
+    color: var(--cream);
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+    transition:
+      opacity 0.4s var(--ease-out),
+      transform 0.4s var(--ease-out);
+  }
+  @media (hover: hover) {
+    .thumb:hover :global(img) {
+      transform: scale(1.05);
+    }
+    .thumb:hover::after,
+    .thumb:hover .zoom {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .thumb:focus-visible .zoom {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Lightbox ---------------------------------------------------------------- */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(8 7 6 / 0.97);
+    color: var(--text-on-dark);
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-out);
+  }
+  .lightbox.is-open {
+    opacity: 1;
+  }
+  .lightbox::backdrop {
+    background: transparent;
+  }
+  .lb-stage {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: clamp(3.5rem, 8vh, 5rem) clamp(0.75rem, 6vw, 6rem) clamp(4.5rem, 10vh, 6rem);
+    touch-action: pan-y pinch-zoom;
+  }
+  .lb-figure {
+    display: grid;
+    gap: 0.9rem;
+    justify-items: center;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .lb-media {
+    display: contents;
+  }
+  .lb-figure :global(img) {
+    max-width: 100%;
+    max-height: calc(100svh - 11rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 2px;
+    box-shadow: 0 30px 80px rgb(0 0 0 / 0.5);
+    transition:
+      opacity 0.35s var(--ease-out),
+      transform 0.5s var(--ease-out);
+  }
+  .lb-figure :global(img.is-loading) {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  .lb-caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1rem;
+    max-width: 70ch;
+    font-size: var(--step--1);
+    color: var(--muted-on-dark);
+    text-align: center;
+  }
+  .lb-count {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.12em;
+    color: var(--brass);
+  }
+  .lb-btn {
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid var(--line-on-dark);
+    background: rgb(19 17 16 / 0.7);
+    color: var(--cream);
+    transition: background-color 0.3s var(--ease-out);
+  }
+  @media (hover: hover) {
+    .lb-btn:hover {
+      background: var(--wine);
+      border-color: var(--wine);
+    }
+  }
+  .lb-close {
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: max(0.75rem, env(safe-area-inset-right));
+  }
+  .lb-prev,
+  .lb-next {
+    bottom: calc(0.9rem + env(safe-area-inset-bottom));
+  }
+  .lb-prev {
+    left: calc(50% - 62px);
+  }
+  .lb-next {
+    right: calc(50% - 62px);
+  }
+  @media (min-width: 900px) {
+    .lb-prev,
+    .lb-next {
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%);
+    }
+    .lb-prev {
+      left: 1.5rem;
+    }
+    .lb-next {
+      right: 1.5rem;
+    }
+  }
+</style>

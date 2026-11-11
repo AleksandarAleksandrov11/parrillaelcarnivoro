@@ -1,0 +1,48 @@
+---
+/** Metadatos SEO: title, description, canonical absoluto, Open Graph, Twitter Cards y JSON-LD. */
+import { business, SITE_URL } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Ruta canónica con barra final (p. ej. "/carta/"). */
+  path: string;
+  ogImage: { path: string; alt: string };
+  noindex?: boolean;
+  schema?: object[];
+}
+
+const { title, description, path, ogImage, noindex = false, schema = [] } = Astro.props;
+const canonical = new URL(path, SITE_URL).href;
+const og = new URL(ogImage.path, SITE_URL).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{!noindex && <link rel="canonical" href={canonical} />}
+<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={business.name} />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{!noindex && <meta property="og:url" content={canonical} />}
+<meta property="og:image" content={og} />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={ogImage.alt} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={og} />
+<meta name="twitter:image:alt" content={ogImage.alt} />
+
+<meta name="geo.region" content="ES-MD" />
+<meta name="geo.placename" content="Collado Villalba" />
+<meta name="geo.position" content={`${business.geo.latitude};${business.geo.longitude}`} />
+<meta name="ICBM" content={`${business.geo.latitude}, ${business.geo.longitude}`} />
+
+{schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}

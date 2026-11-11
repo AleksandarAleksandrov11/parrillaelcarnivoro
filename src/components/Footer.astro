@@ -1,0 +1,254 @@
+---
+import { Picture } from 'astro:assets';
+import logo from '../assets/brand/logo-el-carnivoro-blanco.png';
+import Icon from './Icon.astro';
+import { business, hours, legal, legalNav, nav, whatsappUrl, defaultWhatsappText } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer grain" aria-labelledby="footer-title">
+  <h2 id="footer-title" class="visually-hidden">Información del restaurante</h2>
+  <div class="container container--wide">
+    <p class="motto" aria-hidden="true">Pasión <em>por la carne</em></p>
+
+    <div class="grid">
+      <div class="col brand-col">
+        <a href="/" class="brand" aria-label={`${business.name}, ir al inicio`}>
+          <Picture
+            src={logo}
+            alt=""
+            widths={[150, 300, 450]}
+            sizes="150px"
+            formats={['avif', 'webp']}
+            fallbackFormat="png"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <p class="muted">Carnes a la parrilla de carbón en Collado Villalba, a los pies de la sierra de Guadarrama.</p>
+      </div>
+
+      <div class="col">
+        <h3 class="col-title">Visítanos</h3>
+        <address>
+          {business.address.street}<br />
+          {business.address.postalCode} {business.address.locality} ({business.address.region})
+        </address>
+        <a class="link" href={business.maps.directions} target="_blank" rel="noopener" data-track="directions">
+          Cómo llegar <Icon name="arrow" />
+        </a>
+      </div>
+
+      <div class="col">
+        <h3 class="col-title">Horario</h3>
+        <dl class="hours">
+          {
+            hours.map((d) => (
+              <div class:list={{ closed: !d.open }}>
+                <dt>{d.label}</dt>
+                <dd>{d.open ? `${d.open} – ${d.close}` : 'Cerrado'}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div class="col">
+        <h3 class="col-title">Reservas y contacto</h3>
+        <ul role="list" class="contact">
+          <li>
+            <a href={business.phone.tel} data-track="phone"><Icon name="phone" size={18} />{business.phone.display}</a>
+          </li>
+          <li>
+            <a href={whatsappUrl(defaultWhatsappText)} target="_blank" rel="noopener" data-track="whatsapp"><Icon name="whatsapp" size={18} />WhatsApp</a>
+          </li>
+          <li>
+            <a href={`mailto:${business.email}`}><Icon name="mail" size={18} />{business.email}</a>
+          </li>
+          <li>
+            <a href={business.instagram.url} target="_blank" rel="noopener"><Icon name="instagram" size={18} />{business.instagram.handle}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <nav aria-label="Pie de página" class="foot-nav">
+        <ul role="list">
+          {
+            nav.map((n) => (
+              <li>
+                <a href={n.href}>{n.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <nav aria-label="Información legal" class="legal-nav">
+        <ul role="list">
+          {
+            legalNav.map((n) => (
+              <li>
+                <a href={n.href}>{n.label}</a>
+              </li>
+            ))
+          }
+          <li>
+            <button type="button" class="cookie-settings" data-cookie-settings>Configurar cookies</button>
+          </li>
+        </ul>
+      </nav>
+      <p class="copy">© {year} {legal.company} · {business.name}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(70% 50% at 50% 0%, rgb(155 0 14 / 0.16), transparent 70%),
+      var(--ink);
+    color: var(--text-on-dark);
+    padding-block: var(--space-xl) calc(var(--space-l) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line-on-dark);
+  }
+  .motto {
+    font-family: var(--ff-display);
+    font-size: clamp(2.6rem, 1rem + 8vw, 9rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: rgb(243 236 223 / 0.92);
+    margin-bottom: var(--space-xl);
+    max-width: 14ch;
+  }
+  .motto em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--brass);
+  }
+  .grid {
+    display: grid;
+    gap: var(--space-l) var(--space-m);
+    grid-template-columns: 1fr;
+    padding-block: var(--space-l);
+    border-top: 1px solid var(--line-on-dark);
+  }
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1080px) {
+    .grid {
+      grid-template-columns: 1.3fr 1fr 1fr 1.1fr;
+    }
+  }
+  .col {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    font-size: var(--step--1);
+  }
+  .brand :global(img) {
+    width: 150px;
+    height: auto;
+  }
+  .brand-col p {
+    max-width: 34ch;
+  }
+  .col-title {
+    font-family: var(--ff-sans);
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  address {
+    font-style: normal;
+    line-height: 1.7;
+  }
+  .hours {
+    display: grid;
+    gap: 0.3rem;
+  }
+  .hours div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 260px;
+    border-bottom: 1px dotted var(--line-on-dark);
+    padding-bottom: 0.3rem;
+  }
+  .hours dd {
+    font-variant-numeric: tabular-nums;
+  }
+  .hours .closed dd {
+    color: var(--muted-on-dark);
+    font-style: italic;
+  }
+  .contact {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .contact a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-height: 32px;
+    text-decoration: none;
+    word-break: break-word;
+  }
+  .contact :global(svg) {
+    color: var(--brass);
+    flex: none;
+  }
+  @media (hover: hover) {
+    .contact a:hover {
+      text-decoration: underline;
+    }
+  }
+  .bottom {
+    display: grid;
+    gap: 1.25rem;
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--line-on-dark);
+    font-size: var(--step--1);
+    color: var(--muted-on-dark);
+  }
+  .bottom ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+  }
+  .bottom a,
+  .cookie-settings {
+    display: inline-block;
+    padding-block: 0.4rem;
+    color: var(--muted-on-dark);
+    text-decoration: none;
+    font-size: inherit;
+  }
+  .cookie-settings {
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+  }
+  @media (hover: hover) {
+    .bottom a:hover,
+    .cookie-settings:hover {
+      color: var(--text-on-dark);
+    }
+  }
+  @media (min-width: 1080px) {
+    .bottom {
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+    }
+    .legal-nav ul {
+      justify-content: center;
+    }
+  }
+</style>

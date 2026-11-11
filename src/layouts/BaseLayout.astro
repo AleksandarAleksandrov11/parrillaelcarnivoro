@@ -1,0 +1,102 @@
+---
+import '../styles/global.css';
+import { Font } from 'astro:assets';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage: { path: string; alt: string };
+  schema?: object[];
+  noindex?: boolean;
+  /** Cabecera transparente sobre un hero oscuro. */
+  overlayHeader?: boolean;
+  /** Animación de entrada (solo la primera visita de la sesión). */
+  intro?: boolean;
+}
+
+const { title, description, path, ogImage, schema = [], noindex = false, overlayHeader = true, intro = false } = Astro.props;
+const gaId = (import.meta.env.PUBLIC_GA_ID ?? '').trim();
+---
+
+<!doctype html>
+<html lang="es-ES" data-ga={gaId || undefined} data-intro-page={intro ? '' : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    {/*
+      1) Marca JS disponible (las animaciones solo se preparan si hay JS).
+      2) Google Consent Mode v2: todo denegado por defecto ANTES de cualquier etiqueta.
+      3) Recupera el consentimiento guardado (sin pedir nada a terceros).
+      4) Intro solo en la primera página de la sesión (si es la home) y sin movimiento reducido.
+    */}
+    <script is:inline>
+      (function (d, w) {
+        var h = d.documentElement;
+        h.classList.add('js');
+        w.dataLayer = w.dataLayer || [];
+        w.gtag = function () {
+          w.dataLayer.push(arguments);
+        };
+        w.gtag('consent', 'default', {
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          analytics_storage: 'denied',
+          functionality_storage: 'granted',
+          security_storage: 'granted',
+          wait_for_update: 500,
+        });
+        w.gtag('set', 'ads_data_redaction', true);
+        try {
+          var c = JSON.parse(w.localStorage.getItem('pec-consent') || 'null');
+          if (c && c.v === 1 && c.exp > Date.now()) {
+            h.setAttribute('data-consent', 'set');
+            if (c.maps) h.classList.add('consent-maps');
+          }
+        } catch (e) {}
+        try {
+          var s = w.sessionStorage;
+          if (
+            h.hasAttribute('data-intro-page') &&
+            !s.getItem('pec-visited') &&
+            !w.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ) {
+            h.classList.add('intro');
+          }
+          s.setItem('pec-visited', '1');
+        } catch (e) {}
+      })(document, window);
+    </script>
+    <slot name="head-early" />
+    <Font cssVariable="--font-display" preload={[{ style: 'normal' }]} />
+    <Font cssVariable="--font-sans" />
+    <Seo title={title} description={description} path={path} ogImage={ogImage} schema={schema} noindex={noindex} />
+    <meta name="theme-color" content="#0b0a09" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <CookieConsent />
+    <Header overlay={overlayHeader} current={path} />
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsAppFab />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

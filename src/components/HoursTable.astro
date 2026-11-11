@@ -1,0 +1,121 @@
+---
+/** Horario semanal con el día de hoy resaltado y estado «abierto/cerrado ahora» (hora de Madrid). */
+import { hours } from '../data/site';
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<div class:list={['hours-wrap', className]} data-hours>
+  <p class="status" data-hours-status hidden></p>
+  <table class="hours">
+    <caption class="visually-hidden">Horario de apertura semanal</caption>
+    <tbody>
+      {
+        hours.map((d) => (
+          <tr data-day={d.jsDay} class:list={{ closed: !d.open }}>
+            <th scope="row">{d.label}</th>
+            <td>{d.open ? `${d.open} – ${d.close}` : 'Cerrado'}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<script>
+  import { closedWeekdays } from '../data/site';
+  const DAYS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  const OPEN = 10 * 60;
+  const CLOSE = 60; // 01:00 del día siguiente
+
+  function madridNow() {
+    const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Madrid', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+    const get = (t: string) => parts.find((p) => p.type === t)?.value ?? '';
+    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday'));
+    return { day, minutes: Number(get('hour')) * 60 + Number(get('minute')) };
+  }
+  const isOpenDay = (d: number) => !closedWeekdays.includes(d);
+
+  document.querySelectorAll<HTMLElement>('[data-hours]').forEach((root) => {
+    const { day, minutes } = madridNow();
+    root.querySelector(`tr[data-day="${day}"]`)?.classList.add('is-today');
+    const status = root.querySelector<HTMLElement>('[data-hours-status]');
+    if (!status) return;
+    const yesterday = (day + 6) % 7;
+    const open = (isOpenDay(day) && minutes >= OPEN) || (isOpenDay(yesterday) && minutes < CLOSE);
+    if (open) {
+      status.textContent = 'Abierto ahora · cerramos a la 01:00';
+      status.classList.add('is-open');
+    } else {
+      let next = day;
+      if (!(isOpenDay(day) && minutes < OPEN)) {
+        do next = (next + 1) % 7;
+        while (!isOpenDay(next));
+      }
+      status.textContent = next === day ? 'Cerrado ahora · abrimos hoy a las 10:00' : `Cerrado ahora · abrimos el ${DAYS[next]} a las 10:00`;
+    }
+    status.hidden = false;
+  });
+</script>
+
+<style>
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .status::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--muted-on-dark);
+  }
+  .status.is-open::before {
+    background: #7fbf7a;
+    box-shadow: 0 0 0 4px rgb(127 191 122 / 0.18);
+  }
+  .hours {
+    width: 100%;
+    max-width: 420px;
+    border-collapse: collapse;
+    font-size: var(--step-0);
+  }
+  .hours th,
+  .hours td {
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--line-on-dark);
+    text-align: left;
+    font-weight: 400;
+  }
+  .hours td {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .hours .closed td {
+    color: var(--muted-on-dark);
+    font-style: italic;
+  }
+  .hours tr.is-today th,
+  .hours tr.is-today td {
+    color: var(--brass);
+    font-weight: 600;
+  }
+  :global(.on-light) .hours th,
+  :global(.on-light) .hours td {
+    border-color: var(--line-on-light);
+  }
+  :global(.on-light) .hours .closed td {
+    color: var(--muted-on-light);
+  }
+  :global(.on-light) .hours tr.is-today th,
+  :global(.on-light) .hours tr.is-today td {
+    color: var(--wine);
+  }
+</style>

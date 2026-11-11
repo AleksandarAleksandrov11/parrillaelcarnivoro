@@ -1,0 +1,339 @@
+---
+/**
+ * Hero de la home: póster optimizado (LCP, con preload y fetchpriority) y vídeo de
+ * carne a la brasa que solo se descarga después de pintar el póster y de cargar la página.
+ * Con prefers-reduced-motion, ahorro de datos o conexión lenta se queda la imagen fija.
+ */
+import { Picture } from 'astro:assets';
+import logo from '../assets/brand/logo-el-carnivoro-blanco.png';
+import { lqip } from '../data/photos';
+import { business, hoursSummary, whatsappUrl, defaultWhatsappText } from '../data/site';
+import { heroPoster, PORTRAIT_MQ } from '../lib/hero';
+import Icon from './Icon.astro';
+import SplitText from './SplitText.astro';
+
+const VIDEO_VERSION = '2026-11';
+const { landAvif, landWebp, portAvif, portWebp, fallback } = await heroPoster();
+
+const v = (name: string) => `/video/${name}?v=${VIDEO_VERSION}`;
+const sources = {
+  av1: { portrait: v('hero-portrait.webm'), sd: v('hero-720.webm'), hd: v('hero-1080.webm') },
+  h264: { portrait: v('hero-portrait.mp4'), sd: v('hero-720.mp4'), hd: v('hero-1080.mp4') },
+};
+---
+
+<section class="hero" aria-labelledby="hero-title" data-track-zone="hero">
+  <div class="hero-media" aria-hidden="true" style={`background-image:url(${lqip('hero-parrilla-carbon-poster')})`}>
+    <picture>
+      <source media={PORTRAIT_MQ} type="image/avif" srcset={portAvif} sizes="100vw" />
+      <source media={PORTRAIT_MQ} type="image/webp" srcset={portWebp} sizes="100vw" />
+      <source type="image/avif" srcset={landAvif} sizes="100vw" />
+      <source type="image/webp" srcset={landWebp} sizes="100vw" />
+      <img class="hero-poster" src={fallback} width="1920" height="1080" alt="" fetchpriority="high" loading="eager" decoding="sync" />
+    </picture>
+    <video class="hero-video" muted playsinline loop preload="none" disablepictureinpicture data-hero-video data-sources={JSON.stringify(sources)}></video>
+    <div class="hero-shade"></div>
+  </div>
+
+  <div class="hero-content container">
+    <Picture
+      src={logo}
+      alt={business.name}
+      widths={[180, 260, 360, 520]}
+      sizes="(min-width: 900px) 260px, 180px"
+      formats={['avif', 'webp']}
+      fallbackFormat="png"
+      loading="eager"
+      decoding="async"
+      class="hero-logo"
+    />
+    <h1 id="hero-title" class="hero-title">
+      <span class="eyebrow eyebrow--center hero-eyebrow" data-reveal="fade" style="--d:150">Restaurante parrilla · Collado Villalba</span>
+      <SplitText as="span" text="Pasión _por la carne_" class="hero-slogan" delay={250} />
+    </h1>
+    <p class="hero-sub" data-reveal style="--d:650">La mejor carne a la parrilla de carbón de la sierra de Madrid, en un salón acogedor y una gran terraza.</p>
+    <div class="hero-ctas" data-reveal style="--d:800">
+      <a class="btn btn--primary" href={whatsappUrl(defaultWhatsappText)} target="_blank" rel="noopener" data-track="whatsapp">
+        <Icon name="whatsapp" />
+        Reservar por WhatsApp
+      </a>
+      <a class="btn btn--ghost" href="/carta/">Ver la carta</a>
+    </div>
+  </div>
+
+  <div class="hero-foot container container--wide" data-reveal="fade" style="--d:1000">
+    <a class="scroll-cue" href="#descubre">
+      <span>Descubre</span>
+      <Icon name="arrow-down" size={18} />
+    </a>
+    <p class="hero-hours"><Icon name="clock" size={16} /> {hoursSummary.openShort} · {hoursSummary.time}</p>
+    <button class="video-toggle" type="button" aria-pressed="false" hidden data-video-toggle>
+      <span class="vt-pause"><Icon name="pause" size={14} /><span>Pausar vídeo</span></span>
+      <span class="vt-play"><Icon name="play" size={14} /><span>Reproducir vídeo</span></span>
+    </button>
+  </div>
+</section>
+
+<script>
+  type Sources = { av1: Record<'portrait' | 'sd' | 'hd', string>; h264: Record<'portrait' | 'sd' | 'hd', string> };
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-video-toggle]');
+
+  type Conn = { saveData?: boolean; effectiveType?: string };
+  const conn = (navigator as Navigator & { connection?: Conn }).connection;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const skip = reduced || conn?.saveData === true || /(^|-)2g$/.test(conn?.effectiveType ?? '');
+
+  function pick(src: Sources): string {
+    const portrait = window.matchMedia('(orientation: portrait) and (max-width: 899px)').matches;
+    const physical = Math.max(window.innerWidth, window.innerHeight) * Math.min(window.devicePixelRatio || 1, 2);
+    const key = portrait ? 'portrait' : physical > 1700 ? 'hd' : 'sd';
+    const av1 = video!.canPlayType('video/webm; codecs="av01.0.05M.08"') === 'probably';
+    return (av1 ? src.av1 : src.h264)[key];
+  }
+
+  function start() {
+    if (!video || skip) return;
+    const src = JSON.parse(video.dataset.sources || '{}') as Sources;
+    video.src = pick(src);
+    let userPaused = false;
+    const play = () => video.play().catch(() => {});
+    video.addEventListener(
+      'playing',
+      () => {
+        video.classList.add('is-playing');
+        if (toggle) toggle.hidden = false;
+      },
+      { once: true },
+    );
+    play();
+    // Pausa cuando el hero no se ve (ahorra batería y CPU).
+    new IntersectionObserver(([e]) => {
+      if (userPaused) return;
+      if (e.isIntersecting) play();
+      else video.pause();
+    }).observe(video);
+    toggle?.addEventListener('click', () => {
+      userPaused = !video.paused ? true : false;
+      if (video.paused) play();
+      else video.pause();
+      toggle.setAttribute('aria-pressed', String(userPaused));
+    });
+  }
+
+  // El vídeo no se pide hasta que el póster (LCP) está pintado y la página cargada.
+  const later = () => {
+    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+    if (ric) ric(start, { timeout: 2500 });
+    else setTimeout(start, 400);
+  };
+  if (document.readyState === 'complete') later();
+  else window.addEventListener('load', later, { once: true });
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: max(600px, 100svh);
+    display: grid;
+    grid-template-rows: 1fr auto;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--text-on-dark);
+  }
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--ink);
+    background-size: cover;
+    background-position: center;
+  }
+  .hero-media picture,
+  .hero-poster,
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-poster {
+    animation: hero-zoom 14s var(--ease-out) both;
+  }
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.08);
+    }
+  }
+  .hero-video {
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-out);
+  }
+  .hero-video.is-playing {
+    opacity: 1;
+  }
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(80% 70% at 50% 45%, rgb(11 10 9 / 0.35), rgb(11 10 9 / 0.78) 75%),
+      linear-gradient(180deg, rgb(11 10 9 / 0.55) 0%, rgb(11 10 9 / 0.15) 35%, rgb(11 10 9 / 0.35) 65%, var(--ink) 100%);
+  }
+  .hero-shade::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--tex-grain) 0 0 / 160px repeat;
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+  }
+  .hero-content {
+    align-self: center;
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: 1.25rem;
+    padding-top: calc(var(--header-h) + 2.5rem);
+    padding-bottom: 2rem;
+  }
+  /* El logo es el elemento LCP (Chrome descarta como LCP el póster a pantalla completa):
+     se pinta desde el primer momento y solo entra con transform, nunca con opacidad. */
+  .hero-content :global(.hero-logo) {
+    width: 180px;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgb(0 0 0 / 0.5));
+    animation: logo-in 1.4s var(--ease-out) both;
+    animation-delay: calc(var(--intro-delay, 0) * 1ms);
+  }
+  @keyframes logo-in {
+    from {
+      transform: translate3d(0, 14px, 0) scale(0.94);
+    }
+  }
+  .hero-title {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    font-weight: 500;
+  }
+  .hero-eyebrow {
+    color: var(--brass);
+    font-family: var(--ff-sans);
+    line-height: 1.4;
+  }
+  .hero-title :global(.hero-slogan) {
+    display: block;
+    font-family: var(--ff-display);
+    font-size: var(--step-5);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-shadow: 0 6px 40px rgb(0 0 0 / 0.45);
+  }
+  .hero-title :global(.hero-slogan em) {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--brass);
+  }
+  .hero-sub {
+    max-width: 40ch;
+    font-size: var(--step-1);
+    font-weight: 300;
+    line-height: 1.55;
+    color: rgb(243 236 223 / 0.9);
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  .hero-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    font-size: var(--step--1);
+    color: rgb(243 236 223 / 0.85);
+  }
+  .scroll-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    font-size: var(--step--2);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .scroll-cue :global(svg) {
+    animation: cue 2.4s var(--ease-in-out) infinite;
+  }
+  @keyframes cue {
+    50% {
+      transform: translate3d(0, 5px, 0);
+    }
+  }
+  .hero-hours {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hero-hours :global(svg) {
+    color: var(--brass);
+  }
+  .video-toggle {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid rgb(243 236 223 / 0.35);
+    border-radius: 999px;
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .video-toggle[hidden] {
+    display: none;
+  }
+  .video-toggle > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .video-toggle .vt-play,
+  .video-toggle[aria-pressed='true'] .vt-pause {
+    display: none;
+  }
+  .video-toggle[aria-pressed='true'] .vt-play {
+    display: inline-flex;
+  }
+  @media (min-width: 720px) {
+    .hero-hours {
+      display: inline-flex;
+    }
+  }
+  @media (min-width: 900px) {
+    .hero-content :global(.hero-logo) {
+      width: 260px;
+    }
+  }
+  @media (max-height: 640px) and (orientation: landscape) {
+    .hero-content {
+      gap: 0.75rem;
+      padding-top: calc(var(--header-h) + 1rem);
+    }
+    .hero-content :global(.hero-logo) {
+      width: 120px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-poster,
+    .scroll-cue :global(svg),
+    .hero-content :global(.hero-logo) {
+      animation: none;
+    }
+  }
+</style>

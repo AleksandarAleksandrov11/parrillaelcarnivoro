@@ -1,0 +1,17 @@
+# build
+dist/
+.astro/
+.vercel/
+node_modules/
+
+# entorno
+.env
+.env.*
+!.env.example
+
+# QA (los informes se resumen en QA.md)
+qa-output/
+
+# sistema
+.DS_Store
+*.log

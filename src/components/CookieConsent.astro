@@ -1,0 +1,264 @@
+---
+/**
+ * Banner y panel de cookies conforme a la Guía de cookies de la AEPD:
+ * - «Aceptar», «Rechazar» y «Configurar» con el mismo peso visual.
+ * - Sin casillas premarcadas; nada no esencial se carga antes del consentimiento.
+ * - El consentimiento se guarda (12 meses) y puede cambiarse en «Configurar cookies» (pie).
+ */
+---
+
+<section class="cc-banner" aria-labelledby="cc-title" aria-describedby="cc-desc" data-cc-banner>
+  <div class="cc-inner">
+    <div class="cc-text">
+      <h2 id="cc-title" class="cc-title">Tu privacidad, a tu elección</h2>
+      <p id="cc-desc">
+        Usamos cookies técnicas imprescindibles y, solo si las aceptas, de analítica (Google Analytics) y de Google Maps. Puedes cambiar tu elección cuando quieras. <a href="/politica-de-cookies/">Política de cookies</a>.
+      </p>
+    </div>
+    <div class="cc-actions">
+      <button type="button" class="cc-btn" data-cc="reject">Rechazar</button>
+      <button type="button" class="cc-btn" data-cc="configure">Configurar</button>
+      <button type="button" class="cc-btn" data-cc="accept">Aceptar</button>
+    </div>
+  </div>
+</section>
+
+<dialog class="cc-dialog" aria-labelledby="cc-pref-title" data-cc-dialog>
+  <form method="dialog" class="cc-form">
+    <div class="cc-head">
+      <h2 id="cc-pref-title">Configurar cookies</h2>
+      <p>Elige qué cookies opcionales permites. Puedes cambiar tu elección en cualquier momento desde «Configurar cookies», en el pie de la web.</p>
+    </div>
+
+    <div class="cc-row">
+      <div>
+        <h3 id="cc-tech">Técnicas (necesarias)</h3>
+        <p>Guardan tu elección de cookies. No requieren consentimiento y no rastrean tu actividad.</p>
+      </div>
+      <span class="cc-always">Siempre activas</span>
+    </div>
+
+    <div class="cc-row">
+      <div>
+        <h3><label for="cc-analytics">Analítica</label></h3>
+        <p id="cc-analytics-desc">Google Analytics 4 (cookies <code>_ga</code> y <code>_ga_*</code>): nos ayuda a saber cuántas personas visitan la web y qué secciones son más útiles. Datos agregados.</p>
+      </div>
+      <input class="cc-switch" type="checkbox" role="switch" id="cc-analytics" name="analytics" aria-describedby="cc-analytics-desc" />
+    </div>
+
+    <div class="cc-row">
+      <div>
+        <h3><label for="cc-maps">Mapas de Google</label></h3>
+        <p id="cc-maps-desc">Muestra el mapa interactivo de Google Maps en la web. Google puede instalar sus propias cookies al cargarlo.</p>
+      </div>
+      <input class="cc-switch" type="checkbox" role="switch" id="cc-maps" name="maps" aria-describedby="cc-maps-desc" />
+    </div>
+
+    <div class="cc-dialog-actions">
+      <button type="button" class="cc-btn" data-cc="reject">Rechazar todo</button>
+      <button type="button" class="cc-btn" data-cc="save">Guardar selección</button>
+      <button type="button" class="cc-btn" data-cc="accept">Aceptar todo</button>
+    </div>
+    <p class="cc-more"><a href="/politica-de-cookies/">Más información en la política de cookies</a></p>
+  </form>
+</dialog>
+
+<script>
+  import { initConsent } from '../scripts/consent';
+  initConsent();
+</script>
+
+<style>
+  .cc-banner {
+    display: none;
+    position: fixed;
+    z-index: 80;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0 0 env(safe-area-inset-bottom);
+    color: var(--text-on-dark);
+  }
+  :global(html.js:not([data-consent])) .cc-banner {
+    display: block;
+    animation: cc-in 0.8s var(--ease-out) 0.4s both;
+  }
+  @keyframes cc-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 1.5rem, 0);
+    }
+  }
+  .cc-inner {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1rem var(--gutter) 1rem;
+    background: rgb(19 17 16 / 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line-on-dark);
+    box-shadow: 0 -20px 60px rgb(0 0 0 / 0.4);
+  }
+  .cc-title {
+    font-size: var(--step-1);
+    margin-bottom: 0.25rem;
+  }
+  .cc-text p {
+    font-size: var(--step--1);
+    line-height: 1.55;
+    color: var(--muted-on-dark);
+  }
+  .cc-text a {
+    color: var(--text-on-dark);
+  }
+  .cc-actions,
+  .cc-dialog-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  /* Los tres botones comparten exactamente el mismo estilo (mismo peso visual). */
+  .cc-btn {
+    min-height: 46px;
+    padding: 0.7rem 0.6rem;
+    border: 1px solid rgb(243 236 223 / 0.6);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-on-dark);
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+      background-color 0.3s var(--ease-out),
+      color 0.3s var(--ease-out);
+  }
+  @media (hover: hover) {
+    .cc-btn:hover {
+      background: var(--cream);
+      color: var(--ink);
+    }
+  }
+  @media (min-width: 900px) {
+    .cc-inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 1.1rem max(var(--gutter), calc((100vw - var(--container-wide)) / 2));
+    }
+    .cc-actions {
+      grid-template-columns: repeat(3, 9.5rem);
+    }
+  }
+  .cc-dialog {
+    width: min(100% - 2rem, 620px);
+    max-height: min(100% - 2rem, 760px);
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--line-on-dark);
+    border-radius: 4px;
+    background: var(--coal);
+    color: var(--text-on-dark);
+    overflow: auto;
+  }
+  .cc-dialog::backdrop {
+    background: rgb(0 0 0 / 0.65);
+    backdrop-filter: blur(4px);
+  }
+  .cc-form {
+    display: grid;
+    gap: 0;
+  }
+  .cc-head {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+  .cc-head h2 {
+    font-size: var(--step-3);
+    margin-bottom: 0.5rem;
+  }
+  .cc-head p,
+  .cc-row p {
+    font-size: var(--step--1);
+    color: var(--muted-on-dark);
+    line-height: 1.55;
+  }
+  .cc-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 1rem;
+    padding: 1.1rem 1.5rem;
+    border-top: 1px solid var(--line-on-dark);
+  }
+  .cc-row h3 {
+    font-family: var(--ff-sans);
+    font-size: var(--step-0);
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-bottom: 0.25rem;
+  }
+  .cc-row code {
+    font-size: 0.9em;
+    color: var(--text-on-dark);
+  }
+  .cc-always {
+    font-size: var(--step--2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass);
+    padding-top: 0.2rem;
+  }
+  .cc-switch {
+    appearance: none;
+    position: relative;
+    width: 52px;
+    height: 30px;
+    margin-top: 0.1rem;
+    border-radius: 999px;
+    border: 1px solid rgb(243 236 223 / 0.55);
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s var(--ease-out);
+  }
+  .cc-switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--text-on-dark);
+    transition: transform 0.3s var(--ease-out);
+  }
+  .cc-switch:checked {
+    background: var(--wine);
+    border-color: var(--wine);
+  }
+  .cc-switch:checked::after {
+    transform: translateX(22px);
+  }
+  .cc-dialog-actions {
+    padding: 1.25rem 1.5rem 0.5rem;
+    border-top: 1px solid var(--line-on-dark);
+  }
+  .cc-more {
+    padding: 0.5rem 1.5rem 1.5rem;
+    font-size: var(--step--1);
+  }
+  @media (max-width: 359px) {
+    .cc-actions,
+    .cc-dialog-actions {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .cc-dialog-actions {
+      grid-template-columns: 1fr;
+    }
+    .cc-btn {
+      padding-inline: 0.4rem;
+      letter-spacing: 0.04em;
+    }
+  }
+</style>

@@ -1,0 +1,521 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { business, legal } from '../../data/site';
+---
+
+<LegalLayout
+  title="Política de privacidad"
+  metaTitle="Política de privacidad | Restaurante Parrilla El Carnívoro"
+  description="Cómo trata Ivosi 2022, S.L. tus datos en Parrilla El Carnívoro: reservas por WhatsApp, consultas, analítica y mapas con consentimiento, y tus derechos."
+  path="/politica-de-privacidad/"
+  updated="11 de noviembre de 2026"
+>
+  <p class="lead">
+    En {business.name} nos tomamos en serio tu privacidad. En esta política te explicamos, con claridad, qué datos personales tratamos cuando visitas
+    www.parrillaelcarnivoro.es o cuando contactas con nosotros por correo electrónico, teléfono o WhatsApp, para qué los usamos y qué derechos tienes.
+  </p>
+  <p>
+    Esta información se facilita conforme al Reglamento (UE) 2016/679, General de Protección de Datos (RGPD), y a la Ley Orgánica 3/2018, de Protección de
+    Datos Personales y garantía de los derechos digitales (LOPDGDD). Siguiendo la recomendación de la Agencia Española de Protección de Datos (AEPD), la
+    presentamos por capas: primero un resumen con la información básica y, a continuación, el detalle de cada apartado.
+  </p>
+
+  <h2 id="informacion-basica">Información básica sobre protección de datos</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Resumen de la información básica sobre protección de datos">
+    <table>
+      <caption>Resumen de la información básica sobre protección de datos</caption>
+      <thead>
+        <tr>
+          <th scope="col">Epígrafe</th>
+          <th scope="col">Información básica</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Responsable</th>
+          <td>
+            {legal.company} ({business.name}), N.I.F. {legal.nif}. Contacto: <a href={`mailto:${legal.email}`}>{legal.email}</a>.
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Finalidad</th>
+          <td>
+            Atender tus consultas por correo electrónico, WhatsApp o teléfono; gestionar tus reservas; medir el uso de la web y mostrar el mapa de Google, solo
+            si lo aceptas; y mantener la web segura y en funcionamiento.
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Legitimación</th>
+          <td>
+            Tu consentimiento (art. 6.1.a RGPD); la aplicación de medidas precontractuales a petición tuya para gestionar reservas (art. 6.1.b RGPD); nuestro
+            interés legítimo en la seguridad de la web (art. 6.1.f RGPD); el cumplimiento de obligaciones legales (art. 6.1.c RGPD); y tu consentimiento
+            explícito si nos comunicas alergias o intolerancias, solo para adaptar tu servicio (art. 9.2.a RGPD).
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Destinatarios</th>
+          <td>
+            No cedemos tus datos a terceros, salvo obligación legal. Nos prestan servicios Vercel (alojamiento web), Google (correo Gmail, Google Analytics y
+            Google Maps) y Meta (WhatsApp, si eliges ese canal). Puede haber transferencias internacionales a EE. UU. con garantías adecuadas.
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Derechos</th>
+          <td>
+            Acceso, rectificación, supresión, oposición, limitación del tratamiento, portabilidad, retirada del consentimiento y a no ser objeto de
+            decisiones automatizadas, escribiendo a <a href={`mailto:${legal.email}`}>{legal.email}</a> y acreditando tu identidad. También puedes reclamar
+            ante la AEPD (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Información adicional</th>
+          <td>Consulta la información detallada en los apartados siguientes de esta página.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <strong>Importante: el formulario de reserva no nos envía tus datos.</strong> Cuando rellenas el formulario de reserva de esta web, es tu propio navegador
+    el que compone el mensaje, en tu dispositivo, y abre WhatsApp con el texto ya preparado. La web no guarda ese contenido ni tiene ningún servidor que lo
+    reciba: solo recibimos tus datos si tú decides enviar el mensaje por WhatsApp. Te lo explicamos con más detalle en el
+    <a href="#formulario-de-reserva">apartado 2</a>.
+  </p>
+
+  <h2 id="responsable">1. Responsable del tratamiento</h2>
+  <p>El responsable del tratamiento de tus datos personales es:</p>
+  <dl>
+    <dt>Titular</dt>
+    <dd>{legal.company}</dd>
+    <dt>Nombre comercial</dt>
+    <dd>{business.name}</dd>
+    <dt>N.I.F.</dt>
+    <dd>{legal.nif}</dd>
+    <dt>Domicilio</dt>
+    <dd>{legal.address}</dd>
+    <dt>Correo electrónico</dt>
+    <dd><a href={`mailto:${legal.email}`}>{legal.email}</a></dd>
+    <dt>Teléfono y WhatsApp</dt>
+    <dd><a href={business.phone.tel}>{business.phone.display}</a></dd>
+    <dt>Sitio web</dt>
+    <dd><a href="/">www.parrillaelcarnivoro.es</a></dd>
+  </dl>
+  {/* TODO: confirmar con el cliente: datos de inscripción de Ivosi 2022, S.L. en el Registro Mercantil (registro provincial, tomo, folio, hoja e inscripción), por si se quieren mostrar también aquí; son obligatorios en el aviso legal. */}  <p>
+    <strong>Delegado de protección de datos.</strong> No hemos designado un delegado de protección de datos, ya que la actividad de un restaurante no se
+    encuentra entre los supuestos en los que es obligatorio (art. 37 RGPD y art. 34 LOPDGDD). Para cualquier cuestión relacionada con la privacidad puedes
+    escribirnos directamente a <a href={`mailto:${legal.email}`}>{legal.email}</a>.
+  </p>
+
+  <h2 id="datos">2. Qué datos tratamos y de dónde proceden</h2>
+  <p>
+    Solo tratamos los datos que tú mismo nos facilitas al contactar con nosotros y, si lo aceptas, algunos datos de navegación. Los obtenemos directamente
+    de ti o, en su caso, de la persona que hace la reserva en tu nombre. No compramos datos ni los obtenemos de otras fuentes.
+  </p>
+
+  <h3>Cuando nos escribes por correo electrónico</h3>
+  <p>
+    Tratamos tu dirección de correo electrónico, tu nombre si lo indicas y el contenido de tu mensaje, junto con cualquier otro dato que decidas incluir en
+    él (por ejemplo, un teléfono de contacto o los detalles de una celebración).
+  </p>
+
+  <h3>Cuando nos llamas o nos escribes por WhatsApp</h3>
+  <p>
+    Tratamos tu número de teléfono, tu nombre, el nombre y la imagen de perfil de WhatsApp que tengas visibles según tu configuración, el contenido de los
+    mensajes y los datos de la reserva que nos indiques: fecha, hora, número de personas, zona preferida (salón o terraza) y los comentarios que quieras
+    añadir, como una celebración o una alergia.
+  </p>
+
+  <h3 id="formulario-de-reserva">El formulario de reserva no envía tus datos a ningún servidor</h3>
+  <p>El formulario de reserva de esta web funciona así:</p>
+  <ol>
+    <li>Rellenas tu nombre, el número de personas, la fecha, la hora, la zona (salón o terraza) y, si quieres, unos comentarios (alergias, celebración…).</li>
+    <li>Al pulsar el botón de reserva, tu navegador compone el mensaje de forma local, en tu propio dispositivo, sin enviarlo a ningún sitio.</li>
+    <li>
+      Se abre WhatsApp (mediante un enlace wa.me) con el texto ya escrito y dirigido a nuestro número, el {business.phone.display}. Para mostrártelo, el texto
+      preparado viaja dentro de ese enlace hasta WhatsApp, servicio de Meta, igual que ocurre con cualquier enlace de WhatsApp.
+    </li>
+    <li>Tú decides si envías el mensaje, si lo modificas antes o si lo descartas. Solo si lo envías recibimos tus datos, a través de WhatsApp.</li>
+  </ol>
+  <p>
+    La web no tiene base de datos ni ningún servidor que reciba o almacene lo que escribes en el formulario. Si has aceptado las cookies de analítica, lo
+    único que se comunica a Google Analytics sobre el formulario son dos eventos («generate_lead» y «reservation_whatsapp») que indican que se ha pulsado el
+    botón de reserva por WhatsApp, acompañados de datos estadísticos que no te identifican (el número de personas, la zona y la franja de desayuno, comida o
+    cena). Nunca se envían tu nombre, la fecha, la hora exacta ni tus comentarios.
+  </p>
+
+  <h3>Alergias, intolerancias y otros datos de salud</h3>
+  <p>
+    Si nos comunicas una alergia, una intolerancia u otra necesidad alimentaria (en los comentarios del mensaje de reserva por WhatsApp, por teléfono, por
+    correo o en el propio restaurante), ese dato se considera un dato de salud, que el RGPD protege de forma especial. Solo lo tratamos si nos lo indicas
+    expresamente para que lo tengamos en cuenta: al hacerlo, nos das tu consentimiento explícito (art. 9.2.a RGPD) para usarlo con una única finalidad, adaptar
+    tu servicio y evitar riesgos en la cocina y en la sala. No lo utilizamos para nada más. Comunicárnoslo es voluntario y puedes retirar tu consentimiento
+    en cualquier momento, pero si no nos lo indicas no podremos tenerlo en cuenta al preparar tu comida. La información sobre alérgenos de nuestros platos
+    está disponible en el restaurante, conforme al Reglamento (UE) 1169/2011: pregunta a nuestro personal.
+  </p>
+
+  <h3>Datos de navegación</h3>
+  <ul>
+    <li>
+      <strong>Datos técnicos de conexión.</strong> Al visitar la web, tu navegador se conecta con los servidores de nuestro proveedor de alojamiento, Vercel,
+      que trata necesariamente datos técnicos como tu dirección IP, el tipo de navegador, la página solicitada y la fecha y hora de la petición para poder
+      servirte la página y proteger la web frente a ataques y usos abusivos. No usamos estos datos para identificarte.
+    </li>
+    <li>
+      <strong>Analítica, solo con tu consentimiento.</strong> Si aceptas las cookies de analítica, utilizamos Google Analytics 4 con el modo de
+      consentimiento de Google (Consent Mode v2) en su modalidad básica: sin tu consentimiento, el código de Google Analytics ni siquiera se descarga y no se
+      envía nada a Google. Con tu consentimiento se instalan las cookies <code>_ga</code> (2 años, distingue a los usuarios) y <code>_ga_&lt;ID&gt;</code> (2
+      años, mantiene el estado de la sesión), y se tratan un identificador seudónimo, las páginas que visitas, el tipo de dispositivo y navegador, la
+      ubicación aproximada, la procedencia de la visita y algunos eventos de uso (por ejemplo, que pulses los botones de WhatsApp, de llamada o «Cómo llegar»),
+      para obtener estadísticas agregadas. Google recibe tu dirección IP al establecer la conexión y la usa para estimar la ubicación aproximada; según
+      informa Google, Google Analytics 4 no registra ni almacena las direcciones IP. Si después retiras el consentimiento, esas cookies se borran y se deja de
+      enviar información.
+    </li>
+    <li>
+      <strong>Mapa de Google, solo con tu consentimiento.</strong> El mapa interactivo de Google Maps solo se carga si aceptas «Mapas de Google» en el panel
+      de cookies o si pulsas «Ver mapa interactivo». En ese momento tu navegador se conecta con Google, que recibe tu dirección IP y puede instalar sus propias
+      cookies en google.com, como <code>NID</code> (6 meses), <code>AEC</code> (6 meses) o <code>SOCS</code> (13 meses), y otras si tienes una sesión
+      iniciada en tu cuenta de Google.
+    </li>
+    <li>
+      <strong>Almacenamiento técnico.</strong> Guardamos en tu navegador tu elección sobre las cookies (<code>pec-consent</code>, en el almacenamiento local,
+      durante 12 meses) y un indicador para no repetir la animación de entrada en la misma sesión (<code>pec-visited</code>, en el almacenamiento de sesión,
+      que se borra al cerrar el navegador). Ambos son técnicos, se quedan en tu dispositivo, no los recibimos y no requieren consentimiento.
+    </li>
+  </ul>
+  <p>Encontrarás el detalle de cada cookie y cómo gestionarlas en nuestra <a href="/politica-de-cookies/">política de cookies</a>.</p>
+
+  <h3>Lo que no hacemos</h3>
+  <ul>
+    <li>La web no tiene registro de usuarios, pagos en línea ni formularios que envíen datos a un servidor.</li>
+    <li>
+      Las fuentes tipográficas, las fotografías y el vídeo de portada se sirven desde nuestro propio alojamiento, sin peticiones a Google Fonts ni a otros
+      servicios externos.
+    </li>
+    <li>
+      Nuestro perfil de Instagram ({business.instagram.handle}) aparece solo como enlace: no hay contenido de Instagram incrustado en la web. Si haces clic,
+      pasarás a Instagram, que aplica su propia política de privacidad.
+    </li>
+    <li>No usamos cookies publicitarias, no elaboramos perfiles, no tomamos decisiones automatizadas sobre ti y no vendemos tus datos.</li>
+  </ul>
+  {/* TODO: confirmar con el cliente: que no envía comunicaciones comerciales (listas de difusión o estados de WhatsApp dirigidos a clientes, promociones por correo) con los datos de quienes reservan o consultan; si lo hace, añadir esa finalidad con consentimiento previo y expreso (art. 21 LSSI-CE). */}
+
+  <h2 id="finalidades">3. Para qué usamos tus datos y con qué base jurídica</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Finalidades del tratamiento, datos utilizados y base jurídica">
+    <table>
+      <caption>Finalidades del tratamiento, datos utilizados y base jurídica</caption>
+      <thead>
+        <tr>
+          <th scope="col">Finalidad</th>
+          <th scope="col">Datos</th>
+          <th scope="col">Base jurídica</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Responder a las consultas que nos envías por correo electrónico.</td>
+          <td>Correo electrónico, nombre y contenido del mensaje.</td>
+          <td>
+            Tu consentimiento, que prestas al escribirnos (art. 6.1.a RGPD). Si la consulta se refiere a una reserva o a un servicio que quieres contratar,
+            como un menú de grupo, la aplicación de medidas precontractuales a petición tuya (art. 6.1.b RGPD).
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Gestionar tus reservas y atender tus consultas por WhatsApp o teléfono: confirmar, modificar o cancelar la reserva y avisarte de cualquier
+            incidencia.
+          </td>
+          <td>Nombre, teléfono, perfil de WhatsApp, datos de la reserva y comentarios.</td>
+          <td>
+            La aplicación de medidas precontractuales a petición tuya para las reservas (art. 6.1.b RGPD) y tu consentimiento para el resto de consultas (art.
+            6.1.a RGPD).
+          </td>
+        </tr>
+        <tr>
+          <td>Adaptar el servicio a las alergias o intolerancias que nos comuniques.</td>
+          <td>Datos de salud que nos indiques.</td>
+          <td>Tu consentimiento explícito (art. 9.2.a RGPD), únicamente para esta finalidad.</td>
+        </tr>
+        <tr>
+          <td>Medir de forma estadística el uso de la web con Google Analytics 4.</td>
+          <td>Identificador de la cookie, páginas visitadas, dispositivo, ubicación aproximada y eventos de uso.</td>
+          <td>Tu consentimiento (art. 6.1.a RGPD y art. 22.2 de la LSSI-CE).</td>
+        </tr>
+        <tr>
+          <td>Mostrar el mapa interactivo de Google Maps.</td>
+          <td>Dirección IP y cookies de Google.</td>
+          <td>Tu consentimiento (art. 6.1.a RGPD y art. 22.2 de la LSSI-CE).</td>
+        </tr>
+        <tr>
+          <td>Garantizar la seguridad y el correcto funcionamiento de la web: servir las páginas, prevenir ataques y abusos, y recordar tu elección de cookies.</td>
+          <td>Datos técnicos de conexión (IP, navegador, fecha y hora) y preferencia de cookies.</td>
+          <td>Nuestro interés legítimo en mantener una web segura y operativa (art. 6.1.f RGPD).</td>
+        </tr>
+        <tr>
+          <td>Cumplir nuestras obligaciones legales y atender el ejercicio de tus derechos.</td>
+          <td>Los datos estrictamente necesarios en cada caso.</td>
+          <td>El cumplimiento de una obligación legal (art. 6.1.c RGPD).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Cuando tratamos datos por interés legítimo, lo hacemos con los datos mínimos imprescindibles y tras valorar que no prevalecen tus derechos e intereses;
+    aun así, puedes oponerte en cualquier momento como se explica en el <a href="#derechos">apartado 6</a>.
+  </p>
+  <p>
+    Facilitarnos tus datos es voluntario. No obstante, sin los datos básicos de la reserva (nombre, número de personas, fecha, hora y un medio de contacto) no
+    podremos gestionarla.
+  </p>
+  <p>
+    Puedes retirar tu consentimiento en cualquier momento, sin que ello afecte a la licitud del tratamiento anterior. Para las cookies de analítica y de Google
+    Maps, basta con pulsar «Configurar cookies» en el pie de cualquier página de la web.
+  </p>
+
+  <h2 id="conservacion">4. Cuánto tiempo conservamos tus datos</h2>
+  <p>
+    Conservamos tus datos solo durante el tiempo necesario para atender tu consulta o tu reserva. Después, cuando la ley lo exige, los mantenemos bloqueados
+    (art. 32 LOPDGDD) durante los plazos legales en los que pudieran derivarse responsabilidades, a disposición exclusiva de jueces y tribunales, el
+    Ministerio Fiscal o las autoridades competentes. Transcurridos esos plazos, los suprimimos.
+  </p>
+  <ul>
+    <li>
+      <strong>Consultas por correo electrónico:</strong> el tiempo necesario para responderte y resolver la consulta.
+      {/* TODO: confirmar con el cliente: plazo concreto de borrado de los correos ya atendidos (p. ej., 12 meses desde la última comunicación). */}
+    </li>
+    <li>
+      <strong>Reservas y consultas por WhatsApp o teléfono:</strong> hasta la fecha de la reserva y el tiempo necesario para atender posibles incidencias o
+      reclamaciones relacionadas con ella.
+      {/* TODO: confirmar con el cliente: plazo concreto de borrado de conversaciones de WhatsApp y notas de reserva tras el servicio (p. ej., 3 o 12 meses). */}
+    </li>
+    <li>
+      <strong>Alergias e intolerancias:</strong> solo hasta prestar el servicio de la reserva en la que nos las comunicas. No las guardamos para futuras
+      visitas.
+      {/* TODO: confirmar con el cliente: que estos datos no se conservan después del servicio (ni en notas, libreta de reservas ni chats). */}
+    </li>
+    <li>
+      <strong>Facturas:</strong> si nos pides una factura a tu nombre (por ejemplo, de una comida de grupo), sus datos se conservan durante los plazos que
+      exigen la normativa mercantil y la tributaria (con carácter general, seis años según el art. 30 del Código de Comercio y cuatro años según la Ley General
+      Tributaria).
+    </li>
+    <li>
+      <strong>Google Analytics:</strong> las cookies <code>_ga</code> y <code>_ga_&lt;ID&gt;</code> duran hasta 2 años, salvo que retires el consentimiento o
+      las borres antes. Los datos asociados se conservan en Google Analytics durante el plazo de retención configurado en nuestra cuenta, que no supera los 14
+      meses.
+      {/* TODO: confirmar con el cliente: plazo de retención de datos configurado en la propiedad de GA4 (2 o 14 meses). */}
+    </li>
+    <li>
+      <strong>Google Maps:</strong> no recibimos ningún dato. Google conserva sus cookies durante los plazos indicados en el apartado 2 y trata la información
+      conforme a su propia política de privacidad.
+    </li>
+    <li>
+      <strong>Tu elección de cookies:</strong> 12 meses en tu navegador (<code>pec-consent</code>). El indicador <code>pec-visited</code> se borra al cerrar el
+      navegador.
+    </li>
+    <li>
+      <strong>Datos técnicos de conexión:</strong> los trata el proveedor de alojamiento durante el tiempo limitado necesario para fines de seguridad y
+      funcionamiento.
+      {/* TODO: confirmar con el cliente: plazo de conservación de los registros de Vercel según el plan contratado. */}
+    </li>
+    <li>
+      <strong>Solicitudes de ejercicio de derechos:</strong> conservamos la solicitud y nuestra respuesta durante el tiempo necesario para acreditar que la
+      atendimos, dentro de los plazos de prescripción aplicables.
+    </li>
+  </ul>
+
+  <h2 id="destinatarios">5. Destinatarios y encargados del tratamiento</h2>
+  <p>
+    No vendemos tus datos ni los cedemos a terceros, salvo cuando exista una obligación legal (por ejemplo, ante la Agencia Tributaria, juzgados y tribunales,
+    las Fuerzas y Cuerpos de Seguridad o las autoridades de protección de datos).
+  </p>
+  <p>
+    Para que la web funcione y para comunicarnos contigo utilizamos los siguientes proveedores, que pueden acceder a datos personales en la medida
+    imprescindible para prestar su servicio:
+  </p>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Proveedores que pueden acceder a datos personales">
+    <table>
+      <caption>Proveedores que pueden acceder a datos personales</caption>
+      <thead>
+        <tr>
+          <th scope="col">Proveedor</th>
+          <th scope="col">Servicio</th>
+          <th scope="col">Datos y papel</th>
+          <th scope="col">Ubicación y garantías</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Vercel Inc.</td>
+          <td>Alojamiento y entrega de la web mediante una red global de servidores (CDN).</td>
+          <td>Datos técnicos de conexión. Actúa como encargado del tratamiento.</td>
+          <td>EE. UU., con servidores en distintos países: Marco de Privacidad de Datos UE-EE. UU. y/o cláusulas contractuales tipo.</td>
+        </tr>
+        <tr>
+          <td>Google Ireland Limited</td>
+          <td>Correo electrónico Gmail, con el que recibimos y respondemos tus mensajes.</td>
+          <td>Los correos que nos envías y los datos que contienen. Actúa como proveedor del servicio de correo.</td>
+          <td>
+            Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Google LLC): Marco de Privacidad de Datos
+            UE-EE. UU. y/o cláusulas contractuales tipo.
+          </td>
+        </tr>
+        <tr>
+          <td>Google Ireland Limited</td>
+          <td>Google Analytics 4, solo si aceptas las cookies de analítica.</td>
+          <td>Datos de navegación seudonimizados. Actúa como encargado del tratamiento.</td>
+          <td>
+            Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Google LLC): Marco de Privacidad de Datos
+            UE-EE. UU. y/o cláusulas contractuales tipo.
+          </td>
+        </tr>
+        <tr>
+          <td>Google Ireland Limited</td>
+          <td>Google Maps, solo si aceptas «Mapas de Google» o pulsas «Ver mapa interactivo».</td>
+          <td>
+            Dirección IP y cookies propias de Google. Nosotros no recibimos estos datos: los trata Google como responsable, conforme a su propia política de
+            privacidad.
+          </td>
+          <td>
+            Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Google LLC): Marco de Privacidad de Datos
+            UE-EE. UU. y/o cláusulas contractuales tipo.
+          </td>
+        </tr>
+        <tr>
+          <td>Meta Platforms Ireland Limited</td>
+          <td>WhatsApp, cuando eliges este canal para escribirnos o reservar.</td>
+          <td>
+            Tu número, tu perfil y los mensajes, cifrados de extremo a extremo. WhatsApp es el servicio de mensajería que tú eliges y trata los datos conforme a
+            sus propias condiciones y política de privacidad.
+          </td>
+          <td>
+            Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Meta Platforms, Inc.): Marco de Privacidad
+            de Datos UE-EE. UU. y/o cláusulas contractuales tipo.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {/* TODO: confirmar con el cliente: la dirección @gmail.com es una cuenta de Gmail de consumo, que no incluye contrato de encargado del tratamiento (art. 28 RGPD); valorar migrar a Google Workspace u otro proveedor con contrato de encargo (y dominio propio). */}
+  {/* TODO: confirmar con el cliente: si usa la aplicación WhatsApp Business o una cuenta personal de WhatsApp para atender reservas. */}
+  <p>Puedes consultar cómo tratan los datos estos proveedores en sus políticas de privacidad:</p>
+  <ul>
+    <li><a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Política de privacidad de Vercel</a></li>
+    <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de privacidad de Google</a></li>
+    <li>
+      <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener"
+        >Cómo utiliza Google la información de los sitios web que usan sus servicios</a
+      >
+    </li>
+    <li><a href="https://www.whatsapp.com/legal/privacy-policy-eea" target="_blank" rel="noopener">Política de privacidad de WhatsApp (Espacio Económico Europeo)</a></li>
+  </ul>
+
+  <h3>Transferencias internacionales de datos</h3>
+  <p>
+    Algunos de estos proveedores tienen su sede en Estados Unidos o pueden acceder a los datos desde allí (Vercel Inc., Google LLC y Meta Platforms, Inc.).
+    Estas transferencias se realizan con las garantías que exige el RGPD:
+  </p>
+  <ul>
+    <li>
+      el <strong>Marco de Privacidad de Datos UE-EE. UU.</strong>, para las empresas adheridas a él, en virtud de la decisión de adecuación de la Comisión
+      Europea de 10 de julio de 2023 (Decisión de Ejecución (UE) 2023/1795); y/o
+    </li>
+    <li>
+      las <strong>cláusulas contractuales tipo</strong> aprobadas por la Comisión Europea (Decisión de Ejecución (UE) 2021/914), junto con las medidas
+      complementarias que aplica cada proveedor.
+    </li>
+  </ul>
+  <p>
+    Puedes comprobar qué empresas están adheridas al Marco de Privacidad de Datos en
+    <a href="https://www.dataprivacyframework.gov/" target="_blank" rel="noopener">dataprivacyframework.gov</a> y pedirnos más información sobre estas
+    garantías escribiendo a <a href={`mailto:${legal.email}`}>{legal.email}</a>.
+  </p>
+
+  <h2 id="derechos">6. Tus derechos</h2>
+  <p>En relación con tus datos personales, puedes ejercer en cualquier momento los siguientes derechos:</p>
+  <ul>
+    <li><strong>Acceso:</strong> saber si tratamos tus datos y obtener una copia de ellos.</li>
+    <li><strong>Rectificación:</strong> corregir los datos inexactos o completar los incompletos.</li>
+    <li><strong>Supresión:</strong> pedir que borremos tus datos cuando ya no sean necesarios o cuando retires tu consentimiento, entre otros supuestos.</li>
+    <li><strong>Oposición:</strong> oponerte a que tratemos tus datos, en particular cuando lo hacemos por interés legítimo.</li>
+    <li><strong>Limitación del tratamiento:</strong> pedir que conservemos tus datos sin utilizarlos, por ejemplo, mientras comprobamos su exactitud.</li>
+    <li><strong>Portabilidad:</strong> recibir los datos que nos has facilitado en un formato estructurado y de uso común, o que se los enviemos a otro responsable.</li>
+    <li><strong>Retirada del consentimiento:</strong> en cualquier momento, sin que afecte a la licitud del tratamiento previo.</li>
+    <li>
+      <strong>No ser objeto de decisiones automatizadas:</strong> no ser objeto de decisiones basadas únicamente en un tratamiento automatizado, incluida la
+      elaboración de perfiles. En cualquier caso, no tomamos este tipo de decisiones.
+    </li>
+  </ul>
+
+  <h3>Cómo ejercer tus derechos</h3>
+  <p>
+    Escríbenos a <a href={`mailto:${legal.email}?subject=${encodeURIComponent('Protección de datos: ejercicio de derechos')}`}>{legal.email}</a> con el
+    asunto «Protección de datos» o, si lo prefieres, por correo postal a {legal.company}, {legal.address}. Indica en tu solicitud:
+  </p>
+  <ul>
+    <li>tu nombre y apellidos;</li>
+    <li>el derecho que quieres ejercer y, si es posible, los datos o el tratamiento a los que se refiere;</li>
+    <li>una dirección de correo electrónico o postal donde responderte.</li>
+  </ul>
+  <p>
+    Para proteger tus datos, necesitamos comprobar que la solicitud la haces tú. Normalmente bastará con que nos escribas desde el mismo correo o número de
+    teléfono con el que contactaste; si tenemos dudas razonables sobre tu identidad, podremos pedirte que la acredites por un medio proporcionado, como tu
+    DNI, NIE o pasaporte (art. 12.6 RGPD). Si actúas mediante un representante, deberá aportar también el documento que acredite la representación. Ejercer tus derechos es gratuito y te
+    responderemos en el plazo de un mes desde la recepción de la solicitud, que podrá ampliarse en dos meses más cuando la complejidad o el número de
+    solicitudes lo requieran; en ese caso, te informaremos de la ampliación dentro del primer mes.
+  </p>
+  <p>
+    Para retirar tu consentimiento a las cookies de analítica o de Google Maps no necesitas escribirnos: pulsa «Configurar cookies» en el pie de cualquier
+    página. Si nos escribiste por WhatsApp, también puedes pedirnos que eliminemos la conversación de nuestro dispositivo.
+  </p>
+
+  <h3>Reclamación ante la autoridad de control</h3>
+  <p>
+    Si consideras que no hemos tratado tus datos correctamente o que no hemos atendido debidamente tus derechos, puedes presentar una reclamación ante la
+    Agencia Española de Protección de Datos (AEPD), C/ Jorge Juan, 6, 28001 Madrid,
+    <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>. Te agradeceremos que, antes, nos escribas para intentar resolverlo.
+  </p>
+
+  <h2 id="menores">7. Menores de edad</h2>
+  <p>
+    Las consultas y reservas a través de la web y de nuestros canales de contacto deben hacerlas personas mayores de 14 años. Conforme al art. 7 de la
+    LOPDGDD, los menores de 14 años no pueden prestar por sí mismos su consentimiento para el tratamiento de sus datos: si tienes menos de 14 años, pide a tu
+    padre, madre o tutor que haga la reserva o la consulta por ti. Si detectamos que hemos recibido datos de un menor de 14 años sin la autorización de sus representantes legales, los
+    eliminaremos.
+  </p>
+
+  <h2 id="seguridad">8. Seguridad de los datos</h2>
+  <p>
+    Aplicamos medidas técnicas y organizativas apropiadas al riesgo para proteger tus datos frente a pérdidas, accesos no autorizados o alteraciones (art. 32
+    RGPD). Entre ellas:
+  </p>
+  <ul>
+    <li>la web se sirve siempre mediante conexión cifrada (HTTPS);</li>
+    <li>la web no almacena datos personales: no tiene base de datos ni formularios que envíen información a un servidor;</li>
+    <li>los mensajes de WhatsApp están cifrados de extremo a extremo;</li>
+    <li>solo accede a tus datos el personal del restaurante que los necesita para atender tu consulta o tu reserva, con deber de confidencialidad.</li>
+  </ul>
+  <p>
+    Ningún sistema es completamente infalible. Si se produjera una violación de seguridad que afectara a tus datos, actuaríamos conforme a los arts. 33 y 34
+    del RGPD: la notificaríamos a la AEPD cuando proceda y, si pudiera suponer un alto riesgo para tus derechos, te informaríamos sin dilación.
+  </p>
+
+  <h2 id="exactitud">9. Exactitud de los datos</h2>
+  <p>
+    Te pedimos que los datos que nos facilites sean veraces, exactos y estén actualizados, y que nos comuniques cualquier cambio. Tú eres responsable de la
+    veracidad de los datos que nos proporcionas.
+  </p>
+  <p>
+    Si haces una reserva para otras personas o nos comunicas datos de tus acompañantes (por ejemplo, la alergia de un invitado), debes haberles informado
+    previamente de esta política y contar con su consentimiento para facilitárnoslos.
+  </p>
+
+  <h2 id="cambios">10. Cambios en esta política</h2>
+  <p>
+    Podemos actualizar esta política para adaptarla a cambios legales, a criterios de la AEPD o a nuevos servicios de la web. Al principio de esta página
+    encontrarás siempre la fecha de la última actualización. Si el cambio es relevante, lo indicaremos de forma visible en la web y, cuando sea necesario, te
+    pediremos de nuevo tu consentimiento.
+  </p>
+  <p>
+    Para conocer el resto de condiciones de uso de la web, consulta el <a href="/aviso-legal/">aviso legal</a> y la
+    <a href="/politica-de-cookies/">política de cookies</a>. Si tienes cualquier duda, estamos a tu disposición en nuestra página de
+    <a href="/contacto/">contacto</a>.
+  </p>
+</LegalLayout>

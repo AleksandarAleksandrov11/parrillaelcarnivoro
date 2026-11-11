@@ -1,0 +1,397 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { business, legal } from '../../data/site';
+---
+
+<LegalLayout
+  title="Política de cookies"
+  metaTitle="Política de cookies | Restaurante Parrilla El Carnívoro"
+  description="Cookies de la web de Restaurante Parrilla El Carnívoro: técnicas, Google Analytics y Google Maps, para qué sirven y cómo aceptarlas, rechazarlas o retirarlas."
+  path="/politica-de-cookies/"
+  updated="11 de noviembre de 2026"
+>
+  <h2 id="que-son">1. Qué son las cookies y otras tecnologías similares</h2>
+  <p>
+    Una cookie es un pequeño archivo de texto que un sitio web guarda en tu navegador cuando lo visitas y que ese mismo sitio, o un tercero, puede leer
+    en visitas posteriores. Las cookies sirven para fines muy distintos: desde recordar tus preferencias o mantener la seguridad de la navegación hasta
+    medir cuántas personas visitan una página o mostrar publicidad.
+  </p>
+  <p>
+    Además de las cookies, existen otras tecnologías que permiten guardar o leer información en tu dispositivo con fines parecidos. En esta web
+    utilizamos dos de ellas:
+  </p>
+  <ul>
+    <li>
+      <strong>Almacenamiento local (<code>localStorage</code>):</strong> guarda datos en tu navegador de forma duradera, hasta que la propia web o tú los
+      borréis.
+    </li>
+    <li>
+      <strong>Almacenamiento de sesión (<code>sessionStorage</code>):</strong> guarda datos solo mientras dura la sesión de navegación y se borra
+      automáticamente al cerrar la pestaña o el navegador.
+    </li>
+  </ul>
+  <p>
+    A diferencia de las cookies, lo que se guarda con estas tecnologías no viaja a ningún servidor con cada visita: se queda en tu dispositivo. Aun así,
+    el artículo 22.2 de la LSSI-CE se aplica a cualquier dispositivo de almacenamiento y recuperación de datos en el equipo del usuario, no solo a las
+    cookies, por lo que en esta política nos referimos a todas ellas como «cookies» y las incluimos en la tabla del
+    <a href="#cookies-utilizadas">apartado 4</a>.
+  </p>
+
+  <h2 id="normativa">2. Normativa aplicable y responsable</h2>
+  <p>
+    Esta política se ha redactado conforme al artículo 22.2 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de
+    comercio electrónico (LSSI-CE), al Reglamento (UE) 2016/679 general de protección de datos (RGPD), a la Ley Orgánica 3/2018, de protección de datos
+    personales y garantía de los derechos digitales (LOPDGDD), y siguiendo los criterios de la Guía sobre el uso de las cookies de la Agencia Española de
+    Protección de Datos (AEPD), en su versión actualizada de 2023.
+  </p>
+  <p>
+    De acuerdo con estas normas, solo podemos utilizar en tu dispositivo cookies que no sean estrictamente necesarias para el funcionamiento de la web si
+    antes te hemos informado de forma clara y completa y nos has dado tu consentimiento. Las cookies técnicas, imprescindibles para prestarte el servicio
+    que solicitas, están exentas de ese consentimiento.
+  </p>
+  <p>El responsable de esta web y de las cookies propias que utiliza es:</p>
+  <dl>
+    <dt>Titular</dt>
+    <dd>{legal.company}</dd>
+    <dt>N.I.F.</dt>
+    <dd>{legal.nif}</dd>
+    <dt>Nombre comercial</dt>
+    <dd>{business.name}</dd>
+    <dt>Domicilio</dt>
+    <dd>{legal.address}</dd>
+    <dt>Correo electrónico</dt>
+    <dd><a href={`mailto:${legal.email}`}>{legal.email}</a></dd>
+    <dt>Teléfono y WhatsApp</dt>
+    <dd><a href={business.phone.tel}>{business.phone.display}</a></dd>
+  </dl>
+
+  <h2 id="tipos">3. Tipos de cookies que utiliza esta web</h2>
+  <p>
+    Las cookies se pueden clasificar según quién las gestiona, cuánto tiempo permanecen en tu dispositivo y para qué sirven. Esta web, que es un sitio
+    informativo sin tienda en línea, sin área de clientes y sin formularios que envíen datos a un servidor, utiliza muy pocas.
+  </p>
+
+  <h3>Según la entidad que las gestiona</h3>
+  <ul>
+    <li>
+      <strong>Propias:</strong> las gestionamos nosotros desde nuestro propio dominio. Son <code>pec-consent</code> y <code>pec-visited</code>, y se quedan
+      siempre en tu navegador: no las recibimos ni las enviamos a nadie.
+    </li>
+    <li>
+      <strong>De terceros:</strong> las gestiona otra entidad que trata la información obtenida a través de ellas. En esta web, solo las de Google, y
+      únicamente si las aceptas. Las cookies de Google Analytics se guardan en el dominio de esta web, pero las gestiona Google, por lo que las tratamos
+      como cookies de terceros.
+    </li>
+  </ul>
+
+  <h3>Según el tiempo que permanecen en tu dispositivo</h3>
+  <ul>
+    <li><strong>De sesión:</strong> desaparecen al cerrar la pestaña o el navegador. Es el caso de <code>pec-visited</code>.</li>
+    <li><strong>Persistentes:</strong> se conservan durante el plazo indicado en la tabla del apartado 4, salvo que las borres antes.</li>
+  </ul>
+
+  <h3>Según su finalidad</h3>
+  <ul>
+    <li>
+      <strong>Técnicas o necesarias:</strong> permiten que la web funcione correctamente y que recordemos tu decisión sobre las cookies. Están exentas de
+      consentimiento conforme al artículo 22.2 de la LSSI-CE y están siempre activas.
+    </li>
+    <li>
+      <strong>Analíticas o de medición:</strong> nos permiten saber, de forma agregada, cuántas personas visitan la web, qué páginas consultan, desde qué
+      tipo de dispositivo y cómo han llegado hasta nosotros, para mejorar sus contenidos. Utilizamos Google Analytics 4 y solo se activan si las aceptas.
+    </li>
+    <li>
+      <strong>De terceros por contenido incrustado (Google Maps):</strong> al mostrar el mapa interactivo de Google Maps, Google puede instalar sus propias
+      cookies en su dominio google.com, con las finalidades que él determina (preferencias, seguridad y, en algún caso, publicidad en los servicios de
+      Google). El mapa solo se carga si lo aceptas.
+    </li>
+  </ul>
+  <p>
+    Nosotros no utilizamos cookies publicitarias ni de personalización de anuncios, y no elaboramos perfiles a partir de tu navegación. En Google
+    Analytics, la web nunca concede a Google permiso para el almacenamiento con fines publicitarios: aunque aceptes la analítica, solo se autoriza la
+    medición estadística. Ten en cuenta, no obstante, que si cargas el mapa de Google Maps, algunas de las cookies que Google instala en su propio dominio
+    pueden servirle también para sus propios fines, incluida la publicidad en los servicios de Google, como se indica en la tabla del apartado 4.
+  </p>
+
+  <h2 id="cookies-utilizadas">4. Cookies que utilizamos</h2>
+  <p>
+    Estas son las cookies y tecnologías de almacenamiento que pueden utilizarse al navegar por esta web. En el caso de Google Maps, se indican las
+    principales cookies que Google declara para sus servicios:
+  </p>
+  {/* TODO: confirmar con el cliente: ID de medición de Google Analytics 4 (empieza por «G-»; variable de entorno PUBLIC_GA_ID) para indicar el nombre exacto de la cookie _ga_ seguida de ese identificador. */}
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Cookies y tecnologías de almacenamiento de www.parrillaelcarnivoro.es">
+    <table>
+      <caption>Cookies y tecnologías de almacenamiento de www.parrillaelcarnivoro.es</caption>
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Titular</th>
+          <th scope="col">Finalidad</th>
+          <th scope="col">Duración</th>
+          <th scope="col">Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>pec-consent</code><br />(almacenamiento local)</td>
+          <td>{legal.company} (propia)</td>
+          <td>
+            Guarda tu elección sobre las cookies (qué categorías opcionales aceptas o rechazas) y su fecha de caducidad, para respetar tu decisión y no
+            volver a preguntarte en cada página.
+          </td>
+          <td>12 meses desde tu última elección</td>
+          <td>Técnica · propia. Exenta de consentimiento.</td>
+        </tr>
+        <tr>
+          <td><code>pec-visited</code><br />(almacenamiento de sesión)</td>
+          <td>{legal.company} (propia)</td>
+          <td>
+            Indica que ya has visitado alguna página de la web durante esta sesión, para no repetir la animación de entrada de la página de inicio.
+          </td>
+          <td>Sesión (se borra al cerrar la pestaña o el navegador)</td>
+          <td>Técnica · propia. Exenta de consentimiento.</td>
+        </tr>
+        <tr>
+          <td><code>_ga</code></td>
+          <td>Google Ireland Ltd.</td>
+          <td>
+            Distingue a los usuarios mediante un identificador aleatorio y seudónimo, para elaborar estadísticas agregadas de visitas con Google Analytics 4.
+          </td>
+          <td>2 años</td>
+          <td>Analítica · de terceros. Solo con tu consentimiento.</td>
+        </tr>
+        <tr>
+          <td><code>_ga_&lt;ID&gt;</code></td>
+          <td>Google Ireland Ltd.</td>
+          <td>Mantiene el estado de la sesión de navegación, para medir las visitas y su duración en Google Analytics 4.</td>
+          <td>2 años</td>
+          <td>Analítica · de terceros. Solo con tu consentimiento.</td>
+        </tr>
+        <tr>
+          <td><code>NID</code></td>
+          <td>Google Ireland Ltd. (dominio google.com)</td>
+          <td>
+            Recuerda tus preferencias en los servicios de Google, como el idioma. Google también puede usarla para mostrar publicidad en sus servicios a
+            quien no ha iniciado sesión.
+          </td>
+          <td>6 meses</td>
+          <td>De terceros (Google Maps). Solo si aceptas «Mapas de Google» o pulsas «Ver mapa interactivo».</td>
+        </tr>
+        <tr>
+          <td><code>AEC</code></td>
+          <td>Google Ireland Ltd. (dominio google.com)</td>
+          <td>
+            Seguridad: garantiza que las solicitudes realizadas durante una sesión de navegación las hace el propio usuario y no otros sitios web.
+          </td>
+          <td>6 meses</td>
+          <td>De terceros (Google Maps). Solo si aceptas «Mapas de Google» o pulsas «Ver mapa interactivo».</td>
+        </tr>
+        <tr>
+          <td><code>SOCS</code></td>
+          <td>Google Ireland Ltd. (dominio google.com)</td>
+          <td>Guarda el estado de tus elecciones sobre las cookies en los servicios de Google.</td>
+          <td>13 meses</td>
+          <td>De terceros (Google Maps). Solo si aceptas «Mapas de Google» o pulsas «Ver mapa interactivo».</td>
+        </tr>
+        <tr>
+          <td>Otras cookies de google.com</td>
+          <td>Google Ireland Ltd. (dominio google.com)</td>
+          <td>
+            Si tienes una sesión iniciada en tu cuenta de Google, al cargar el mapa Google puede leer o instalar otras cookies propias de autenticación,
+            seguridad y preferencias vinculadas a tu cuenta.
+          </td>
+          <td>Según la política de cookies de Google</td>
+          <td>De terceros (Google Maps). Solo si aceptas «Mapas de Google» o pulsas «Ver mapa interactivo».</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    En el nombre de la cookie <code>_ga_&lt;ID&gt;</code>, «&lt;ID&gt;» corresponde al identificador de nuestra propiedad de Google Analytics. Las
+    finalidades y los plazos de las cookies de Google son los que el propio Google publica y pueden cambiar; puedes consultarlos en cualquier momento en
+    <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Cómo utiliza Google las cookies</a>.
+  </p>
+
+  <h2 id="sin-consentimiento">5. Qué ocurre si no das tu consentimiento</h2>
+  <p>
+    Mientras no aceptes las cookies opcionales, o si las rechazas, en esta web solo se utilizan las dos tecnologías técnicas propias descritas en la tabla
+    (<code>pec-consent</code> y <code>pec-visited</code>). En concreto:
+  </p>
+  <ul>
+    <li>
+      <strong>No se instala ninguna cookie no esencial.</strong> Ni propia ni de terceros.
+    </li>
+    <li>
+      <strong>No se hace ninguna petición a Google Analytics.</strong> Usamos el modo de consentimiento de Google (Consent Mode v2) en su modalidad
+      básica: antes de cargar cualquier otro elemento, la web fija como «denegado» el almacenamiento con fines analíticos y publicitarios, y el código de
+      Google Analytics (gtag.js) ni siquiera se descarga hasta que aceptas la analítica.
+    </li>
+    <li>
+      <strong>No se hace ninguna petición a Google Maps.</strong> En lugar del mapa verás una fotografía de la fachada con nuestra dirección, el botón
+      «Ver mapa interactivo» y el enlace «Cómo llegar», que solo abre Google Maps en una pestaña nueva si lo pulsas.
+    </li>
+    <li>
+      <strong>No se cargan contenidos de otros terceros.</strong> Las fuentes tipográficas y el vídeo de portada se sirven desde el mismo alojamiento
+      que la propia web (no se piden a Google Fonts ni a otros servicios), y nuestra cuenta de Instagram ({business.instagram.handle}) aparece solo como
+      enlace, sin publicaciones ni contenidos incrustados.
+    </li>
+  </ul>
+  <p>
+    Puedes navegar por toda la web, consultar la carta y solicitar tu reserva rechazando todas las cookies opcionales. El formulario de reserva no utiliza
+    cookies: tu navegador compone el mensaje y abre WhatsApp con el texto ya escrito para que decidas si lo envías. A partir de ese momento estarás en
+    WhatsApp, servicio de Meta Platforms Ireland Ltd., que aplica sus propias condiciones y su propia política de cookies.
+  </p>
+  <p>
+    Si aceptas la analítica, además de las visitas a las páginas medimos algunas acciones, como la consulta de la carta, los clics en WhatsApp, en el
+    teléfono o en «Cómo llegar» y el envío del formulario de reserva a WhatsApp. En este último caso solo se registra el evento, junto con el número de
+    personas, la zona (salón o terraza) y el turno (desayuno, comida o cena) elegidos; nunca tu nombre, la fecha ni la hora de la reserva, tus
+    comentarios ni tus datos de contacto.
+  </p>
+
+  <h2 id="aviso-de-cookies">6. Cómo funciona el aviso de cookies</h2>
+  <p>
+    Siguiendo el sistema de información por capas que recomienda la AEPD, la primera vez que entras en la web te mostramos un aviso en la parte inferior
+    de la pantalla (primera capa), y esta política de cookies, enlazada desde ese aviso, es la segunda capa con toda la información:
+  </p>
+  <ol>
+    <li>
+      <strong>Aviso inicial.</strong> Te explica brevemente qué cookies usamos, enlaza a esta política y te ofrece tres botones: «Aceptar», «Rechazar» y
+      «Configurar». Los tres tienen exactamente el mismo diseño, tamaño y color, de modo que rechazar es tan fácil como aceptar.
+    </li>
+    <li>
+      <strong>Panel de configuración.</strong> Con «Configurar» se abre un panel en el que puedes decidir por separado sobre cada categoría opcional,
+      «Analítica» y «Mapas de Google», mediante interruptores que aparecen desactivados mientras no los actives tú: no hay casillas premarcadas. Las
+      cookies técnicas aparecen como «Siempre activas». Desde el panel puedes «Rechazar todo», «Guardar selección» o «Aceptar todo».
+    </li>
+  </ol>
+  <p>Además, ten en cuenta que:</p>
+  <ul>
+    <li>
+      Cerrar el panel sin elegir, seguir navegando o desplazarte por la página no se considera consentimiento. Mientras no tomes una decisión, no se
+      activa ninguna cookie opcional y el aviso seguirá apareciendo.
+    </li>
+    <li>
+      Pulsar «Ver mapa interactivo» equivale a aceptar únicamente la categoría «Mapas de Google», y esa decisión se guarda como el resto. Si aún no habías
+      elegido nada, la analítica queda desactivada, el aviso deja de mostrarse y puedes activarla cuando quieras desde «Configurar cookies».
+    </li>
+    <li>
+      Guardamos tu elección durante 12 meses en <code>pec-consent</code>, un plazo inferior al máximo de 24 meses que recomienda la AEPD. Pasado ese
+      tiempo, te volveremos a preguntar.
+    </li>
+    <li>
+      Si tu navegador no permite guardar información (por ejemplo, en algunos modos de navegación privada) o borras los datos de esta web, no podremos
+      recordar tu elección y te la volveremos a pedir.
+    </li>
+  </ul>
+
+  <h2 id="cambiar-consentimiento">7. Cómo cambiar o retirar tu consentimiento</h2>
+  <p>
+    Puedes cambiar tu elección o retirar el consentimiento que nos hayas dado en cualquier momento, de forma tan sencilla como lo diste. Pulsa este
+    botón para abrir el panel de configuración:
+  </p>
+  <p>
+    <button type="button" class="btn btn--primary" data-cookie-settings>Configurar cookies</button>
+  </p>
+  <p>
+    También tienes el botón «Configurar cookies» en el pie de cualquier página de la web. Si retiras tu consentimiento:
+  </p>
+  <ul>
+    <li>
+      <strong>Analítica:</strong> se deja de enviar información a Google Analytics y se borran de tu navegador las cookies <code>_ga</code> y
+      <code>_ga_&lt;ID&gt;</code>.
+    </li>
+    <li>
+      <strong>Mapas de Google:</strong> el mapa interactivo se retira de la página y no vuelve a cargarse, salvo que vuelvas a pulsar «Ver mapa
+      interactivo» o actives de nuevo esta categoría en el panel. Las cookies que Google ya hubiera instalado en
+      su dominio google.com no podemos borrarlas desde esta web, porque pertenecen a otro dominio; puedes eliminarlas desde la configuración de tu
+      navegador, como se explica en el <a href="#navegadores">apartado 8</a>.
+    </li>
+  </ul>
+  <p>
+    La retirada del consentimiento no afecta a la licitud del tratamiento realizado antes de retirarlo (artículo 7.3 del RGPD). Si tienes JavaScript
+    desactivado, el botón no funcionará, pero en ese caso tampoco se carga ninguna cookie opcional.
+  </p>
+
+  <h2 id="navegadores">8. Cómo bloquear o eliminar las cookies desde tu navegador</h2>
+  <p>
+    Además de usar nuestro panel, puedes permitir, bloquear o eliminar las cookies y los datos de los sitios web desde la configuración de tu navegador.
+    Estas son las páginas de ayuda oficiales de los navegadores más habituales:
+  </p>
+  <ul>
+    <li>
+      <a href="https://support.google.com/chrome/answer/95647?hl=es" target="_blank" rel="noopener">Google Chrome: eliminar, permitir y gestionar cookies</a>
+    </li>
+    <li>
+      <a href="https://support.mozilla.org/es/kb/clear-cookies-and-site-data-firefox" target="_blank" rel="noopener"
+        >Mozilla Firefox: borrar cookies y datos de sitios</a
+      >
+    </li>
+    <li>
+      <a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari en el Mac: borrar la caché y las cookies</a>
+      y <a href="https://support.apple.com/es-es/105082" target="_blank" rel="noopener">Safari en el iPhone: borrar el historial, la caché y las cookies</a>
+    </li>
+    <li>
+      <a href="https://support.microsoft.com/es-es/edge/manage-cookies-in-microsoft-edge-view-allow-block-delete-and-use" target="_blank" rel="noopener"
+        >Microsoft Edge: ver, permitir, bloquear y eliminar cookies</a
+      >
+    </li>
+  </ul>
+  <p>
+    Ten en cuenta que, si borras los datos de esta web, también se eliminará tu elección sobre las cookies y volverás a ver el aviso. Si bloqueas todas
+    las cookies, la web seguirá funcionando, aunque es posible que el mapa de Google Maps no se muestre correctamente.
+  </p>
+  <p>
+    Para impedir que Google Analytics recoja datos en cualquier web que lo utilice, Google ofrece también un
+    <a href="https://tools.google.com/dlpage/gaoptout?hl=es" target="_blank" rel="noopener">complemento de inhabilitación para navegadores</a>.
+  </p>
+
+  <h2 id="transferencias">9. Transferencias internacionales de datos</h2>
+  <p>
+    Si aceptas las cookies de analítica o de Google Maps, la información que se obtiene a través de ellas la trata Google Ireland Ltd., que forma parte
+    del grupo Google, en el que se integra Google LLC, con sede en Estados Unidos. Por ello, esos datos pueden transferirse a Estados Unidos o ser
+    accesibles desde allí. Si no aceptas estas cookies, no se produce ninguna transferencia a Google desde esta web.
+  </p>
+  <p>Estas transferencias se amparan en las garantías previstas en el RGPD:</p>
+  <ul>
+    <li>
+      el <strong>Marco de Privacidad de Datos UE-EE. UU.</strong>, al que está adherida Google LLC, en virtud de la decisión de adecuación de la Comisión
+      Europea de 10 de julio de 2023 (Decisión de Ejecución (UE) 2023/1795); puedes comprobarlo en
+      <a href="https://www.dataprivacyframework.gov/" target="_blank" rel="noopener">dataprivacyframework.gov</a>; y
+    </li>
+    <li>las cláusulas contractuales tipo aprobadas por la Comisión Europea, en los casos en que Google las aplica.</li>
+  </ul>
+  <p>Para saber cómo trata Google tus datos, puedes consultar:</p>
+  <ul>
+    <li><a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener">Política de privacidad de Google</a></li>
+    <li><a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank" rel="noopener">Cómo utiliza Google las cookies</a></li>
+    <li>
+      <a href="https://policies.google.com/technologies/partner-sites?hl=es" target="_blank" rel="noopener"
+        >Cómo utiliza Google la información de los sitios web que usan sus servicios</a
+      >
+    </li>
+  </ul>
+
+  <h2 id="mas-informacion">10. Más información sobre el tratamiento de tus datos</h2>
+  <p>
+    En nuestra <a href="/politica-de-privacidad/">política de privacidad</a> encontrarás toda la información sobre cómo tratamos tus datos personales,
+    los proveedores con los que trabajamos y cómo ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y
+    portabilidad. Los datos identificativos completos del titular de la web figuran en el <a href="/aviso-legal/">aviso legal</a>.
+  </p>
+  <p>
+    Si tienes cualquier duda sobre esta política de cookies, escríbenos a <a href={`mailto:${legal.email}`}>{legal.email}</a> o utiliza cualquiera de los
+    canales de nuestra página de <a href="/contacto/">contacto</a>. Si consideras que no hemos atendido correctamente tus derechos, puedes presentar una
+    reclamación ante la Agencia Española de Protección de Datos en
+    <a href="https://www.aepd.es/" target="_blank" rel="noopener">www.aepd.es</a>.
+  </p>
+
+  <h2 id="actualizacion">11. Actualización de esta política de cookies</h2>
+  <p>
+    Podemos modificar esta política de cookies cuando cambie la normativa o los criterios de la AEPD, o cuando incorporemos o retiremos cookies o
+    servicios de terceros en la web. La fecha de la última actualización figura siempre al principio de esta página, por lo que te recomendamos
+    revisarla de vez en cuando.
+  </p>
+  <p>
+    Si el cambio afecta a cookies que requieren tu consentimiento, por ejemplo porque añadimos una nueva finalidad o un nuevo tercero, te volveremos a
+    pedir tu consentimiento mediante el aviso de cookies antes de utilizarlas.
+  </p>
+</LegalLayout>

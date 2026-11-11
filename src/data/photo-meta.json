@@ -1,0 +1,172 @@
+{
+  "salon-restaurante-el-carnivoro-collado-villalba": {
+    "width": 1920,
+    "height": 1285,
+    "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAADwAwCdASoYABAAPu1iqk2ppaQiMAgBMB2JQBOmUABsUQyXMQBQPZcAAP7pBHOekC8yzYu8phjE3diG78KcLTYcDwy2Ac4BmlHUeQu03qc1k+ExN5obLGkqBZNpgVMoYAA="
+  },
+  "fachada-terraza-exterior-el-carnivoro": {
+    "width": 1200,
+    "height": 822,
+    "lqip": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAQBACdASoYABAAPu1krU2ppaSiMAgBMB2JQBdmUABEV+y56zKvQ/F/gAD54y6m560Xq9yDb1do4y+LWEPdK+8AOfU+90iE+BHuF9T7+fUJZUm1ldW/uWw3yYkDcUJZiAAAAA=="
+  },
+  "fachada-calle-restaurante-el-carnivoro": {
+    "width": 1224,
+    "height": 914,
+    "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAADQBACdASoYABIAPu1ur1IppiQiqAgBMB2JZQDCgA3UorWhZGdM0JlhaYh/Q2+YAAD+uebFFEiVOOQGeksXxFd2iputfkGobPPbMR/BTnqfzW067LK1RQADdmKEoqxQnXTfhhOm4DELRBZhgA2PHAAA"
+  },
+  "barra-restaurante-el-carnivoro": {
+    "width": 1200,
+    "height": 979,
+    "lqip": "data:image/webp;base64,UklGRpAAAABXRUJQVlA4IIQAAABQBQCdASoYABQAPu1oq08ppiOiKA1RMB2JYgCdOUFSPi6K2AOKgEoqKlW5TBmqJ/X2+sAA/t1+vzTTCIUfuNzOP5U1PhFZTfgXLRCc6EkjT8lUMnHgv5mzzkwRf8aNfBQ4+97DehAlrzBkVUgO9JsWNFK/QJvrzx9IyVrFYcgbWWgAAAA="
+  },
+  "vinoteca-restaurante-el-carnivoro": {
+    "width": 1200,
+    "height": 1794,
+    "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAQBACdASoQABgAPu1iqk4ppaQiMAgBMB2JYgCdMoRwACVfxtzDekUmAAD9t6+uysEBJlOzA7EEFoWeEmgUir35FozzLnIbKDAMLZfnEzr626a4U5eZTy4p+pKCzV1/jgZ8QAAA"
+  },
+  "pizarra-cortes-carne-el-carnivoro": {
+    "width": 1200,
+    "height": 1793,
+    "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAADwAwCdASoQABgAPu1kqk4ppaQiMAgBMB2JZgCdH8ABzqDkmiP0+p6AAP2lqTpfY4bP91U41Ow93u4nnty73BJgLMqeDAumH/Dtk+1ewrj9mai1Aq3t8iYShx0s3toky310yjmKdaOPqGtt0MRH/wAA"
+  },
+  "carta-el-carnivoro-mesa": {
+    "width": 1200,
+    "height": 938,
+    "lqip": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAABQBQCdASoYABMAPu1mrVAppSQisBgIATAdiWYAnTKDyeQX5gq2V+ws2A+3Ma7zKGL77gAA/BPxyo4ctiCxWjvu/JeWbF1PmDgSxFZCXn1M+WIrBuAW1JKfqe3ZJxVwvqq3RWZa7ZsK4ki+JaNdLrzgxXyUIXyYFz3DghHbeAAAAA=="
+  },
+  "terraza-cubierta-el-carnivoro": {
+    "width": 1599,
+    "height": 777,
+    "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADQAwCdASoYAAwAPu1Ct1apoqakGAEwHYliAJ0ygAmXGejo+YuFC2AA/tzhEWfzOl7bDXMX/DPusjISPESiixkmOGmql1jng2tLIdY9/tG9eMdxwFyPrkS0hIFjqD6looHlRgAA"
+  },
+  "terraza-cubierta-mesas-el-carnivoro": {
+    "width": 1599,
+    "height": 777,
+    "lqip": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAwCdASoYAAwAPu1orU2ppqSiMAgBMB2JYwCdABX1rFj39qpGTQU2APcfyaWCKztj81XkqImS8tpOiXukikZezTAocvvY4ZLi6FT2v30+VhfeOJLyTP6vAAA="
+  },
+  "terraza-mural-sierra-el-carnivoro": {
+    "width": 991,
+    "height": 777,
+    "lqip": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAADQBACdASoYABMAPu1qqk8ppiOiMBgIATAdiUAWHYEoBlCH3Pg4cij3DLJuLJn1gAD+eOWFiesLtHDDr3gtIAKm3yP3taDqMg6JKFcgsXLw5IV9WnhQ7BqL2ex6N0kkIbc2uY2ug+1eFScbKWAemiLzwGXPQE5JDaJAAAAA"
+  },
+  "parrilla-carbon-carnes-el-carnivoro": {
+    "width": 2016,
+    "height": 908,
+    "lqip": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQBACdASoYAAsAPu1krU2ppaSiMAgBMB2JQBOmUABfZr7fyZuZMxosAAD+7qG9hyBuWVj5jZo9fbsljbB/zdh2ALEkh+nOIiQAAA=="
+  },
+  "chuleton-parrilla-carbon-el-carnivoro": {
+    "width": 1200,
+    "height": 1195,
+    "lqip": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAACwBQCdASoYABgAPu1oqVAppaOiqA1RMB2JaACdMoPEKcB4gArJM4RGeQ7DJC7NaIw+/zZl4tAAzgGPgXFrpfOUVyd9ln2eUvLofGepeQj3WmFdfErY/OYl0Wfy0ucceaiMnO5wbx6plUoF0fu2zdXpYeJAHBs7MitA9ojuCnrhHRLUixj+KwF1c8ojOdQiZJU9my7PDchQumj4DBRm0tpGa1PPIAAA"
+  },
+  "chuleton-tomahawk-el-carnivoro": {
+    "width": 1200,
+    "height": 1195,
+    "lqip": "data:image/webp;base64,UklGRq4AAABXRUJQVlA4IKIAAABwBQCdASoYABgAPu1oqU+ppiOiKA1RMB2JaACdMt8BWPeut6acLZTpDZbdcKUnzXZQzPvgAPoygfsT2unQ/jEzdeSjkIgq0snPXb0Q3zn/QPYNSsM0HWxgJFG5OAvxyiMe8pQSMQ+4Y/6I8JArQTBmxvtyLSmHFxR6tm7zTVecoHTJNcwtSuH5gAZcCYyfxUDn6q5xYjcFDb/CWgMhPwyv4AA="
+  },
+  "entrana-parrilla-el-carnivoro": {
+    "width": 1200,
+    "height": 1195,
+    "lqip": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAAAQBgCdASoYABgAPu1orVCppaQiqAqpMB2JZgCdMoRwMM/BKVxCRIfq5N++MSCQwQnhY0D7kTwsVAAA/rptIYjVwx1Kx6OlhFtFP8285nXQwQQ9AqqJgjhgfwkSaur0HXVpcaL6+OJn7VJFSma4PlkSJ3HJxxw40icvXksmkbqlUxhi0Tr0Hg2e09NczdxdwjfzIAKkD2QDBIAA"
+  },
+  "carnes-brasa-pizarra-el-carnivoro": {
+    "width": 1707,
+    "height": 1134,
+    "lqip": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAACQBACdASoYABAAPu1kqU2ppaQiMAgBMB2JYgCdMoMpAEZodAFdIPQMbpQx0gAA/KxyER0ILGeDVkFWrxfPz97IWJ4FZ4Vf5X9seTLhlQzI4brVbENJ9mlfRO9QzEAaekJyQAPdE3YkNy7lcojdxyIuAAA="
+  },
+  "t-bone-brasa-el-carnivoro": {
+    "width": 1428,
+    "height": 1802,
+    "lqip": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAADQBACdASoTABgAPu1wsVIppiSiqAgBMB2JQBdmbIAe9cgHRi336orTARcnqVLUgAD3x3U6yXN3nWNvnrNmgX2cgrFtk/Xn2Q4SgvIF4Qv8yCmL/DJcor6KIvI1mpik8ilhZPksNSMvYC+6CuQo+W2AIHFUyOOwAAAAAA=="
+  },
+  "paletilla-cordero-asada-el-carnivoro": {
+    "width": 906,
+    "height": 1254,
+    "lqip": "data:image/webp;base64,UklGRpAAAABXRUJQVlA4IIQAAADwBQCdASoRABgAPu1sq06ppqOiMBgIATAdiWgAnTKEfJ9HgdXJljfDP92o6QpciTTh3jY0UOMTcADJRq4pzMIYT94WdX/sh4F7Xu6FXL9/kCcIuvy9bcWzuLGk4k/khGM3a2odWTZYuRiP47fSByNNoka/jdw/CaCkdpxwHXBQ7LUAAAA="
+  },
+  "contramuslo-pollo-parrilla-el-carnivoro": {
+    "width": 1195,
+    "height": 777,
+    "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAABQAwCdASoYABAAPu1kqk4ppaQiMAgBMB2JagCdAAoK+CoKoAD+jO4UHbLqO4d+VRl9xvmbaD8xXw+l7liqHsBir02qveadL9g7zo+0imEWbSbKdKr5CV1W00H0s1xQgJDgAAAA"
+  },
+  "hamburguesa-el-carnivoro": {
+    "width": 2048,
+    "height": 1770,
+    "lqip": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAACQBQCdASoYABUAPu1oqU+ppiOiKA1RMB2JaACdMzQ/d2ABTtDU7CfWp5tAMGO0xeMCAlOIAADiV7IUt2e9JnE2wSLBy9qHFew7qEV3CnvdIezNWJHiDj1c+i27AUgDn+n1Hyyhbzj7vLtUIEvQ7pdqltlreLJaPSwe/MaF0PQ+EMFCr3tGC0QXtjnW2PGsjoNCDkZz+ZXU9dn7Kblerq2XfAAAAA=="
+  },
+  "morcilla-brasa-huevos-el-carnivoro": {
+    "width": 1536,
+    "height": 2048,
+    "lqip": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAAAQBQCdASoSABgAPu1uq1EppiOiqAqpMB2JYgCdMtCBSBIwU+yG+hC3cavNxCc/fvjAAP6qErxtRIU3WlqYKeAzIUEenp0kVwMoRp7Dd5fj/vgZuSh9ZG/2ZEYRbyceiMewj9JqJyGgkC72K1y/un1RBActH8V8MJBQmtg1dgAAAA=="
+  },
+  "pescado-brasa-ensalada-el-carnivoro": {
+    "width": 1536,
+    "height": 2048,
+    "lqip": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAAAwBQCdASoSABgAPu1kqE2ppaQiMBgMATAdiWQAnTLfAVwJ1auAsvB91Z8azOWdJe77wADNtBlsckVGtklhaLdk14RCcODw/8AZRfFAKNpNGpixeCJyddhHEvxcHXi8G4+4azQJEoXiZpqJYvkSFMitAB5qbsO+9oAAAA=="
+  },
+  "patatas-gajo-salsas-el-carnivoro": {
+    "width": 1536,
+    "height": 2048,
+    "lqip": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAADQBACdASoSABgAPulgo02pJaMiMAwBIB0JZACsIKnCXj0L49pGzXXV3giczwNSCAD+SSgPWFL+Eu/Ok913Zg0YKozCOT4ko4+rJEn6Mx/9zijBTUHKZdso4mvlXmP1SQjUgow2OjY4NokVhjhol06Z0SD7AWlXqVWF25QAAAA="
+  },
+  "crepe-tarta-queso-el-carnivoro": {
+    "width": 1242,
+    "height": 932,
+    "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAABwBACdASoYABIAPu1opU2ppqMiMBgMATAdiUAWI+yApAkD5wXnIXX7IaukAADeM8ygwwWM88dzkcLGemeFYTZsYYmd1FqHNmcEuQjDnnHGVKEtGN+eVcbIB/tXk5hia6Ki7z0LgAA="
+  },
+  "bacalao-ajoarriero-el-carnivoro": {
+    "width": 2048,
+    "height": 1494,
+    "lqip": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAADQBACdASoYABEAPu1qq08ppiOiMBgIATAdiWQAuzNCwamxy9RfqrkGn4P9fqbpCAD+7pC92FoVC2gnN6N6KZFc1zhQUUHHhVvPxoUAdPoDuB+bntrpwnqeyvk1IjcrFXQc1UTeA79h5MwEA3KS9DhZrEvgahyBTzeQAA=="
+  },
+  "gambon-brasa-el-carnivoro": {
+    "width": 1705,
+    "height": 1286,
+    "lqip": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAACQBQCdASoYABIAPu1kqU2ppaQiMBgMATAdiWgAsR8ceE9AABhtAeujVOk7l9vwj06xz4RXAADN+r2oWNsAqmcnQMWwdBKQbGimDVjA+tq/sBLtapZklozWKCd4Rv9CP9sTnG8Q8TZUMi0sim5C6CNezjxw5dS8HdXEcJxxZ7BYIAAA"
+  },
+  "provolone-cazuela-el-carnivoro": {
+    "width": 2048,
+    "height": 1405,
+    "lqip": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADwAwCdASoYABAAPu1iqk2ppaQiMAgBMB2JagC7LwABe0cxgMDaD98AAP7c0wsH0qjNSVjfQTmZL5BlDQdlTfy2VMGYAPTh/v9JhB9pKzHPMZTC5mUhUj5uZ9v/AAAA"
+  },
+  "parrillada-verduras-el-carnivoro": {
+    "width": 1690,
+    "height": 908,
+    "lqip": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAABwBACdASoYAA0APu1kqU2ppaQiMAgBMB2JaACdMoRwN6SAKyZ6TZWi/8DBjAD4T3wXm2dS67SejrffaMhI5477exLn29l22T44IomGXBxOutyP4wmZgG7DgpOwy1EGfII0AA=="
+  },
+  "ensalada-queso-cabra-el-carnivoro": {
+    "width": 1200,
+    "height": 1408,
+    "lqip": "data:image/webp;base64,UklGRpAAAABXRUJQVlA4IIQAAAAQBQCdASoUABgAPu1sqlGppaOiqAqpMB2JagCdMoR1QAoJPJctWC1ojm+sW7ac0bQAAP2v+uO8wD5g1udE1QwHzPfVrsa8HsPQrluziVzI3DqokEO8FOx1IL9trKsepB2MJct34sEl/vl7UFefzonot2bfwcwqeUVMZP1QIlE2mXWAAAA="
+  },
+  "chuletillas-cordero-el-carnivoro": {
+    "width": 2048,
+    "height": 2040,
+    "lqip": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAACQBQCdASoYABgAPu1wsFKppiSiqAgBMB2JaACdMtU45oAAr+tWCNl5GcqyIDDRcqU4OimXgAD+4Mk9Pb/4pxLyt8U1K93aNYf+QPBXhJ2/hKUPbUwhXSEbBNqFqdc2e4lQqC0ZX/uidkuydDdtYyXwlWhUhRVIpiocQ4/76vl2cEXnbTqBP2Vq7vZi1s6IQGaL1K6fLffsQkJfZMkiSN0+RohZOrtAAAA="
+  },
+  "arroz-con-leche-el-carnivoro": {
+    "width": 1926,
+    "height": 1962,
+    "lqip": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAACwBQCdASoYABgAPu1mqk8ppaOiKA1RMB2JZgCdMxgBpBNQt36vUzRG54HEFmI4d5Sk3wDU6AAA/ul18DMBBbsumQf+RGxbxKvRMXp+FwyNrY9wYs0fEFZQtOQPYn2ogyCG1yaiLqvKnUk3Ab46eS/FIjHpmFhQ7lOiUfxIoZnbv0F92ey8KoaPB7imeU0mvg65z4kF0lkoA1WFfoeI0AAA"
+  },
+  "postre-casero-el-carnivoro": {
+    "width": 1200,
+    "height": 1334,
+    "lqip": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAADQBQCdASoWABgAPu1qq1EppaOiqAqpMB2JbACdMoR6buWBqqiiR0N/TUQVx8zCGM2N7DgpAsmQAP6iq3/VwBIubQwYge6wddL88Ij+NO+QOAxHs+SjmYhuGhXZYxKAvb0EUSjxoCoVISp5WXHLgvEXgdZ4v5HytARUaGhE/a4/ZqaCLBtsKrLJQfQTh0hFbk+6HAt4gAA="
+  },
+  "hero-parrilla-carbon-poster": {
+    "width": 1920,
+    "height": 1080,
+    "lqip": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADQAwCdASoYAA4APu1iqU2ppaOiMAgBMB2JZACdABZjS1dCXg1Q8AAA9riwG8xQmV4rKfKeyJzdNpVCRf3w17+ksE1sq79CK3SG2pyypE1KDG8Gy8CVfAAA"
+  },
+  "hero-parrilla-carbon-poster-vertical": {
+    "width": 608,
+    "height": 1080,
+    "lqip": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADwAwCdASoOABgAPu1iqU2ppaOiMAgBMB2JZgCdMoRwABY9fQCiR6bgAP7gffWoJ4/ytLS0wjt2yyWP77e0PiK/SuqoHCxBeQyW5oXRfHBqtXFyffhz0UIEkD0l4SfNbzXLQFngawAAAA=="
+  },
+  "brasas-parrilla-el-carnivoro-poster": {
+    "width": 480,
+    "height": 640,
+    "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABQBQCdASoSABgAPu1oq02ppiQiMAgBMB2JaADBDoR8eCnGo6qunXRl5k89ycV73+xebU4A/vKut4M34w9zvJ9mgSfRjcJPzHaQvJ5xJZ7eYch6GsNawlfMA9ZfFXgq1/VP6bvaRePn76g+ljQUAAAA"
+  }
+}

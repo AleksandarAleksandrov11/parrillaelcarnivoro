@@ -1,0 +1,75 @@
+---
+/**
+ * Foto responsive: AVIF + WebP con srcset/sizes, width/height explícitos,
+ * carga diferida por defecto y placeholder desenfocado (LQIP) como fondo.
+ * Para la imagen LCP: priority={true} (eager + fetchpriority="high").
+ */
+import { Picture } from 'astro:assets';
+import { photo, lqip, type PhotoName } from '../data/photos';
+
+interface Props {
+  name: PhotoName;
+  alt: string;
+  sizes: string;
+  widths?: number[];
+  priority?: boolean;
+  class?: string;
+  imgClass?: string;
+  /** Proporción del contenedor (p. ej. "4 / 5"); si no se indica, la de la foto. */
+  ratio?: string;
+  /** Rellena el contenedor padre (sin proporción propia), p. ej. celdas de una rejilla. */
+  fill?: boolean;
+  position?: string;
+  reveal?: 'mask' | 'fade' | false;
+  delay?: number;
+  curtain?: string;
+  /** Sobrescribe la calidad por defecto de todos los formatos (normalmente no hace falta). */
+  quality?: number;
+}
+
+const {
+  name,
+  alt,
+  sizes,
+  widths = [360, 540, 720, 960, 1280, 1600, 2000],
+  priority = false,
+  class: className = '',
+  imgClass = '',
+  ratio,
+  fill = false,
+  position = 'center',
+  reveal = false,
+  delay = 0,
+  curtain,
+  quality,
+} = Astro.props;
+
+const img = await photo(name);
+const usable = widths.filter((w) => w <= img.width);
+if (!usable.length || usable[usable.length - 1] < img.width) usable.push(img.width);
+const style = [
+  `background-image:url(${lqip(name)})`,
+  fill ? 'height:100%' : ratio ? `aspect-ratio:${ratio}` : `aspect-ratio:${img.width} / ${img.height}`,
+  curtain ? `--curtain:${curtain}` : '',
+  delay ? `--d:${delay}` : '',
+]
+  .filter(Boolean)
+  .join(';');
+---
+
+<span class:list={['media', className]} style={style} data-reveal={reveal || undefined}>
+  <Picture
+    src={img}
+    alt={alt}
+    widths={[...new Set(usable)]}
+    sizes={sizes}
+    formats={['avif', 'webp']}
+    fallbackFormat="jpg"
+    quality={quality}
+    loading={priority ? 'eager' : 'lazy'}
+    decoding={priority ? 'sync' : 'async'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    class={imgClass}
+    style={`object-position:${position}`}
+  />
+</span>

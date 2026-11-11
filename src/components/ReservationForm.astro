@@ -1,0 +1,469 @@
+---
+/**
+ * Formulario de reserva por WhatsApp (sin backend). La lógica está en
+ * src/scripts/reservation.ts y el calendario en src/scripts/datepicker.ts.
+ */
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+
+// Franjas dentro del horario 10:00–01:00.
+// TODO: confirmar con el cliente las horas de cocina de desayunos, comidas y cenas.
+const range = (from: string, to: string, step = 30) => {
+  const out: string[] = [];
+  const [fh, fm] = from.split(':').map(Number);
+  const [th, tm] = to.split(':').map(Number);
+  for (let m = fh * 60 + fm; m <= th * 60 + tm; m += step) out.push(`${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`);
+  return out;
+};
+const slots = [
+  { id: 'desayuno', label: 'Desayuno', times: range('10:00', '12:00') },
+  { id: 'comida', label: 'Comida', times: range('13:00', '16:00') },
+  { id: 'cena', label: 'Cena', times: range('20:00', '23:30') },
+];
+const people = Array.from({ length: 20 }, (_, i) => String(i + 1));
+const WEEK = [
+  ['L', 'lunes'],
+  ['M', 'martes'],
+  ['X', 'miércoles'],
+  ['J', 'jueves'],
+  ['V', 'viernes'],
+  ['S', 'sábado'],
+  ['D', 'domingo'],
+];
+---
+
+<form class="rf on-light" novalidate data-reservation aria-labelledby="reserva-title" aria-describedby="rf-privacy" data-track-zone="formulario-reserva">
+  <div class="rf-summary" role="alert" data-rf-summary hidden></div>
+
+  <div class="field">
+    <label for="rf-name">Nombre <span class="req" aria-hidden="true">*</span></label>
+    <input id="rf-name" name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby="rf-name-error" data-control="name" />
+    <p class="error" id="rf-name-error" data-error-for="name" hidden></p>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="rf-people">Personas <span class="req" aria-hidden="true">*</span></label>
+      <select id="rf-people" name="people" required aria-describedby="rf-people-error" data-control="people">
+        <option value="">Elige</option>
+        {people.map((p) => <option value={p}>{p === '1' ? '1 persona' : `${p} personas`}</option>)}
+        <option value="+20">Más de 20</option>
+      </select>
+      <p class="error" id="rf-people-error" data-error-for="people" hidden></p>
+    </div>
+
+    <div class="field" data-datepicker>
+      <span class="label" id="rf-date-label">Fecha <span class="req" aria-hidden="true">*</span></span>
+      <input type="hidden" name="date" />
+      <button
+        type="button"
+        class="date-trigger"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-labelledby="rf-date-label rf-date-text"
+        aria-describedby="rf-date-hint rf-date-error"
+        data-date-trigger
+        data-control="date"
+      >
+        <span id="rf-date-text" data-date-text>Elige un día</span>
+        <Icon name="calendar" size={20} />
+      </button>
+      <p class="hint" id="rf-date-hint">Abrimos lunes, jueves, viernes, sábado y domingo.</p>
+      <p class="error" id="rf-date-error" data-error-for="date" hidden></p>
+
+      <dialog class="calendar" aria-labelledby="cal-title" data-calendar>
+        <div class="cal-head">
+          <button type="button" class="cal-nav" data-cal-prev>
+            <Icon name="chevron-left" size={20} />
+            <span class="visually-hidden">Mes anterior</span>
+          </button>
+          <h2 class="cal-title" id="cal-title" aria-live="polite" data-cal-title>Calendario</h2>
+          <button type="button" class="cal-nav" data-cal-next>
+            <Icon name="chevron-right" size={20} />
+            <span class="visually-hidden">Mes siguiente</span>
+          </button>
+        </div>
+        <table class="cal-grid">
+          <caption class="visually-hidden">Elige una fecha. Usa las flechas para moverte entre los días.</caption>
+          <thead>
+            <tr>
+              {
+                WEEK.map(([s, l]) => (
+                  <th scope="col" abbr={l}>
+                    {s}
+                  </th>
+                ))
+              }
+            </tr>
+          </thead>
+          <tbody data-cal-body></tbody>
+        </table>
+        <div class="cal-foot">
+          <p class="cal-legend"><span class="dot" aria-hidden="true"></span> Martes y miércoles cerrado</p>
+          <button type="button" class="cal-close" data-cal-close>Cerrar</button>
+        </div>
+      </dialog>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="rf-time">Hora <span class="req" aria-hidden="true">*</span></label>
+    <select id="rf-time" name="time" required aria-describedby="rf-time-hint rf-time-error" data-control="time">
+      <option value="">Elige una hora</option>
+      {
+        slots.map((s) => (
+          <optgroup label={s.label} data-slot={s.id}>
+            {s.times.map((t) => (
+              <option value={t}>{t}</option>
+            ))}
+          </optgroup>
+        ))
+      }
+    </select>
+    <p class="hint" id="rf-time-hint" data-time-hint aria-live="polite"></p>
+    <p class="error" id="rf-time-error" data-error-for="time" hidden></p>
+  </div>
+
+  <fieldset class="field zones">
+    <legend>Zona preferida</legend>
+    <div class="zone-options">
+      <label class="zone"><input type="radio" name="zone" value="salon" /> <span>Salón</span></label>
+      <label class="zone"><input type="radio" name="zone" value="terraza" /> <span>Terraza</span></label>
+      <label class="zone"><input type="radio" name="zone" value="indiferente" checked /> <span>Indiferente</span></label>
+    </div>
+  </fieldset>
+
+  <div class="field">
+    <label for="rf-notes">Comentarios <span class="optional">(opcional)</span></label>
+    <textarea id="rf-notes" name="notes" rows="3" maxlength="500" placeholder="Alergias, una celebración, una trona…"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn--primary btn--block rf-submit">
+    <Icon name="whatsapp" />
+    Enviar reserva por WhatsApp
+  </button>
+  <p class="rf-alt">o llámanos al <a href={business.phone.tel} data-track="phone">{business.phone.display}</a></p>
+
+  <div class="rf-done" role="status" data-rf-done hidden>
+    <p>Hemos abierto WhatsApp con tu mensaje listo para enviar. Si no se ha abierto, <a href="https://wa.me/34915013983" target="_blank" rel="noopener" data-rf-link>pulsa aquí</a>.</p>
+  </div>
+
+  <p class="rf-privacy" id="rf-privacy">
+    Al enviar se abrirá WhatsApp con tu mensaje; la reserva no queda confirmada hasta que te respondamos. Esta web no guarda ni envía tus datos a ningún servidor. Más información en la <a href="/politica-de-privacidad/">política de privacidad</a>.
+  </p>
+  <noscript><p class="rf-noscript">Para usar el formulario necesitas JavaScript. También puedes reservar escribiéndonos por WhatsApp o llamando al {business.phone.display}.</p></noscript>
+</form>
+
+<script>
+  import { initReservation } from '../scripts/reservation';
+  initReservation();
+</script>
+
+<style>
+  .rf {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    background: var(--cream);
+    border: 1px solid var(--line-on-light);
+    box-shadow: 0 30px 80px rgb(28 25 22 / 0.12);
+  }
+  .row {
+    display: grid;
+    gap: 1.25rem;
+  }
+  @media (min-width: 560px) {
+    .row {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+  }
+  .field {
+    display: grid;
+    gap: 0.45rem;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+  }
+  label,
+  .label,
+  legend {
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-on-light);
+  }
+  .req {
+    color: var(--wine);
+  }
+  .optional {
+    font-weight: 400;
+    color: var(--muted-on-light);
+  }
+  input[type='text'],
+  select,
+  textarea,
+  .date-trigger {
+    width: 100%;
+    min-height: 52px;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgb(28 25 22 / 0.35);
+    border-radius: 3px;
+    background: #fff;
+    color: var(--text-on-light);
+    font-size: 1rem;
+    transition:
+      border-color 0.25s var(--ease-out),
+      box-shadow 0.25s var(--ease-out);
+  }
+  select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted-on-light) 50%), linear-gradient(135deg, var(--muted-on-light) 50%, transparent 50%);
+    background-position:
+      calc(100% - 20px) 50%,
+      calc(100% - 14px) 50%;
+    background-size: 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 2.5rem;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 96px;
+  }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  .date-trigger:focus-visible {
+    outline: 2px solid var(--wine);
+    outline-offset: 1px;
+    border-color: var(--wine);
+  }
+  [aria-invalid='true'] {
+    border-color: var(--wine-bright) !important;
+    box-shadow: 0 0 0 1px var(--wine-bright);
+  }
+  .date-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    text-align: left;
+    color: var(--muted-on-light);
+  }
+  .date-trigger.has-value {
+    color: var(--text-on-light);
+  }
+  .date-trigger :global(svg) {
+    flex: none;
+    color: var(--wine);
+  }
+  .hint {
+    font-size: var(--step--2);
+    color: var(--muted-on-light);
+  }
+  .hint:empty {
+    display: none;
+  }
+  .error {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: #8a0010;
+  }
+  .rf-summary {
+    padding: 1rem 1.2rem;
+    border-left: 3px solid var(--wine-bright);
+    background: #fbeaea;
+    color: #5e0008;
+    font-size: var(--step--1);
+  }
+  .rf-summary :global(ul) {
+    margin-top: 0.35rem;
+    padding-left: 1.1rem;
+  }
+  .zones legend {
+    margin-bottom: 0.5rem;
+  }
+  .zone-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .zone {
+    position: relative;
+    display: inline-flex;
+  }
+  .zone input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+  .zone span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid rgb(28 25 22 / 0.3);
+    border-radius: 999px;
+    font-size: var(--step--1);
+    font-weight: 500;
+    transition:
+      background-color 0.25s var(--ease-out),
+      color 0.25s var(--ease-out);
+  }
+  .zone input:checked + span {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--cream);
+  }
+  .zone input:focus-visible + span {
+    outline: 2px solid var(--wine);
+    outline-offset: 2px;
+  }
+  .rf-submit {
+    margin-top: 0.5rem;
+  }
+  .rf-alt {
+    text-align: center;
+    font-size: var(--step--1);
+  }
+  .rf-alt a {
+    color: var(--wine);
+    font-weight: 700;
+  }
+  .rf-done {
+    padding: 0.9rem 1.1rem;
+    border-left: 3px solid #3c7a3a;
+    background: #eaf4e8;
+    font-size: var(--step--1);
+  }
+  .rf-done a {
+    color: var(--wine);
+    font-weight: 700;
+  }
+  .rf-privacy,
+  .rf-noscript {
+    font-size: var(--step--2);
+    line-height: 1.55;
+    color: var(--muted-on-light);
+  }
+  .rf-privacy a {
+    color: var(--wine);
+  }
+
+  /* Calendario --------------------------------------------------------------- */
+  .calendar {
+    width: min(100% - 2rem, 380px);
+    margin: auto;
+    padding: 1.25rem;
+    border: 1px solid var(--line-on-dark);
+    border-radius: 6px;
+    background: var(--coal);
+    color: var(--text-on-dark);
+    box-shadow: 0 40px 100px rgb(0 0 0 / 0.5);
+  }
+  .calendar::backdrop {
+    background: rgb(0 0 0 / 0.55);
+    backdrop-filter: blur(3px);
+  }
+  .cal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+  .cal-title {
+    font-size: var(--step-2);
+    text-transform: capitalize;
+  }
+  .cal-nav {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--line-on-dark);
+  }
+  .cal-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .cal-grid {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .cal-grid th {
+    padding-bottom: 0.4rem;
+    font-size: var(--step--2);
+    font-weight: 600;
+    color: var(--muted-on-dark);
+  }
+  .cal-grid :global(td) {
+    padding: 2px;
+    text-align: center;
+  }
+  .cal-grid :global(.cal-day) {
+    width: 100%;
+    aspect-ratio: 1;
+    min-height: 40px;
+    border-radius: 50%;
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-on-dark);
+    transition: background-color 0.2s var(--ease-out);
+  }
+  .cal-grid :global(.cal-day.is-today) {
+    box-shadow: inset 0 0 0 1px var(--brass);
+  }
+  .cal-grid :global(.cal-day[aria-disabled='true']) {
+    color: rgb(243 236 223 / 0.42);
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+  .cal-grid :global(.cal-day.is-closed) {
+    color: rgb(243 236 223 / 0.42);
+  }
+  .cal-grid :global(.cal-day[aria-pressed='true']) {
+    background: var(--wine);
+    color: var(--cream);
+  }
+  @media (hover: hover) {
+    .cal-grid :global(.cal-day:not([aria-disabled='true']):hover) {
+      background: rgb(243 236 223 / 0.12);
+    }
+  }
+  .cal-grid :global(.cal-day:focus-visible) {
+    outline: 2px solid var(--brass);
+    outline-offset: 1px;
+  }
+  .cal-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.9rem;
+    font-size: var(--step--2);
+    color: var(--muted-on-dark);
+  }
+  .cal-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgb(243 236 223 / 0.42);
+  }
+  .cal-close {
+    min-height: 44px;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--line-on-dark);
+    border-radius: 999px;
+    font-size: var(--step--2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-on-dark);
+  }
+</style>

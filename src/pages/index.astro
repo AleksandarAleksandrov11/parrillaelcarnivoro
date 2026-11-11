@@ -1,0 +1,686 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Intro from '../components/Intro.astro';
+import Hero from '../components/Hero.astro';
+import Photo from '../components/Photo.astro';
+import SplitText from '../components/SplitText.astro';
+import Icon from '../components/Icon.astro';
+import Gallery from '../components/Gallery.astro';
+import HoursTable from '../components/HoursTable.astro';
+import MapFacade from '../components/MapFacade.astro';
+import ReserveCta from '../components/ReserveCta.astro';
+import { heroPoster, PORTRAIT_MQ } from '../lib/hero';
+import { restaurantSchema, websiteSchema, abs } from '../lib/schema';
+import { euros, findItem, formatPrice, minPrice, priceLabel } from '../lib/format';
+import { gallery } from '../data/gallery';
+import { reviews } from '../data/reviews';
+import { business } from '../data/site';
+import type { PhotoName } from '../data/photos';
+
+const poster = await heroPoster();
+
+// TODO: confirmar con el cliente que cada foto corresponde al corte indicado (nombres de archivo de la web anterior).
+const meatDefs: { name: string; photo: PhotoName; alt: string }[] = [
+  { name: 'Chuletón', photo: 'chuleton-parrilla-carbon-el-carnivoro', alt: 'Chuletón a la parrilla de carbón trinchado sobre pizarra' },
+  { name: 'Entraña', photo: 'entrana-parrilla-el-carnivoro', alt: 'Entraña a la brasa cortada en lonchas, jugosa por dentro' },
+  { name: 'T-Bone', photo: 't-bone-brasa-el-carnivoro', alt: 'T-Bone a la brasa servido sobre pizarra' },
+  { name: 'Tomahawk', photo: 'chuleton-tomahawk-el-carnivoro', alt: 'Gran chuletón con hueso a la brasa con patatas y verduras' },
+];
+const meats = meatDefs.map((m) => ({ ...m, item: findItem('carnes', m.name) }));
+
+const moreCuts = ['Chuletón madurado de vaca', 'Steak Ribeye', 'Entrecot', 'Solomillo', 'Picaña', 'Vacío', 'Tira de asado', 'Secreto', 'Pluma ibérica', 'Paletilla de cordero'];
+
+const menus = [
+  {
+    id: 'desayunos',
+    title: 'Desayunos',
+    price: `Desde ${euros(minPrice('desayunos', 'Desayunos'))}`,
+    text: 'Tostadas, bocatas y café recién hecho desde las 10:00, en la barra o en la terraza.',
+  },
+  {
+    id: 'menu-del-dia',
+    title: 'Menú del día',
+    price: euros(minPrice('menu-del-dia')),
+    text: 'De lunes a viernes. Publicamos el menú de cada día en nuestro Instagram.',
+  },
+  {
+    id: 'menu-cenas',
+    title: 'Menú cenas y fines de semana',
+    price: euros(minPrice('menu-cenas')),
+    text: 'Primero, segundo y postre, con pan, una bebida y café o chupito.',
+  },
+  {
+    id: 'grupos',
+    title: 'Menú de grupos',
+    price: `Desde ${euros(minPrice('grupos'))}/persona`,
+    text: 'Para celebraciones a partir de 4 personas, con primeros para compartir.',
+  },
+];
+
+// Composición fija sin huecos: filas completas a 2 y 4 columnas.
+const featured = gallery.filter((g) => g.featured);
+
+const schema = [
+  restaurantSchema([abs('/og/inicio.jpg'), abs('/og/carta.jpg'), abs('/og/nuestra-historia.jpg'), abs('/og/contacto.jpg')]),
+  websiteSchema(),
+];
+---
+
+<BaseLayout
+  title="Restaurante parrilla en Collado Villalba | El Carnívoro"
+  description="Carne a la brasa de carbón en Collado Villalba, sierra de Madrid: chuletón, entraña y T-Bone, menú del día, desayunos y gran terraza. Reservas: 91 501 39 83."
+  path="/"
+  ogImage={{ path: '/og/inicio.jpg', alt: 'Carne a la parrilla de carbón en Restaurante Parrilla El Carnívoro, Collado Villalba' }}
+  schema={schema}
+  intro
+>
+  <Fragment slot="head">
+    <link rel="preload" as="image" type="image/avif" imagesrcset={poster.portAvif} imagesizes="100vw" media={PORTRAIT_MQ} fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" imagesrcset={poster.landAvif} imagesizes="100vw" media={`not all and ${PORTRAIT_MQ}`} fetchpriority="high" />
+  </Fragment>
+
+  <Intro />
+  <Hero />
+
+  {/* Introducción --------------------------------------------------------*/}
+  <section id="descubre" class="section intro-sec bg-paper grain" aria-labelledby="descubre-title">
+    <div class="container intro-grid">
+      <div class="intro-copy">
+        <span class="eyebrow" data-reveal="fade">Collado Villalba · Sierra de Madrid</span>
+        <SplitText as="h2" id="descubre-title" class="display" text="La mejor carne a la parrilla _de la sierra de Madrid_" />
+        <div class="stack intro-text" style="--flow:1.1em">
+          <p class="lead" data-reveal style="--d:150">
+            Si buscas dónde comer buena carne en la sierra de Madrid, has llegado al lugar indicado. En El Carnívoro seleccionamos los mejores cortes y los cocinamos sobre brasa de carbón para que cada bocado conserve todo su jugo y el sabor más intenso.
+          </p>
+          <p data-reveal style="--d:250">Una experiencia gastronómica para disfrutar sin prisas, con buena compañía y buen vino, en nuestro restaurante de Collado Villalba.</p>
+        </div>
+        <ul class="facts" role="list">
+          <li data-reveal style="--d:100">
+            <span class="fact-title">Parrilla de carbón</span>
+            <span class="fact-text">Brasa viva para cada corte</span>
+          </li>
+          <li data-reveal style="--d:200">
+            <span class="fact-title">Salón y gran terraza</span>
+            <span class="fact-text">Dentro o al aire de la sierra</span>
+          </li>
+          <li data-reveal style="--d:300">
+            <span class="fact-title">De 10:00 a 01:00</span>
+            <span class="fact-text">Del desayuno a la sobremesa</span>
+          </li>
+        </ul>
+      </div>
+      <div class="intro-media">
+        <div class="im-main" data-parallax="0.08">
+          <Photo
+            name="carnes-brasa-pizarra-el-carnivoro"
+            alt="Carnes a la brasa recién cortadas servidas sobre tablas de pizarra en El Carnívoro"
+            sizes="(min-width: 1000px) 40vw, 90vw"
+            ratio="4 / 5"
+            reveal="mask"
+            curtain="#2b2621"
+          />
+        </div>
+        <div class="im-small" data-parallax="0.22">
+          <Photo name="pizarra-cortes-carne-el-carnivoro" alt="Pizarra con el despiece de la vaca y los cortes de la casa" sizes="(min-width: 1000px) 18vw, 40vw" ratio="3 / 4" reveal="mask" delay={250} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Carnes destacadas -----------------------------------------------------*/}
+  <section id="carnes" class="section bg-coal grain meats" aria-labelledby="carnes-title">
+    <div class="container container--wide">
+      <div class="sec-head">
+        <span class="eyebrow" data-reveal="fade">Parrilla de carbón</span>
+        <SplitText as="h2" id="carnes-title" class="display" text="Cortes _con carácter_" />
+        <p class="lead muted" data-reveal style="--d:200">Piezas seleccionadas que se asan sobre carbón y llegan a la mesa en su punto. Los cortes más especiales se preparan con reserva previa.</p>
+      </div>
+      <ul class="meat-grid" role="list">
+        {
+          meats.map((m, i) => (
+            <li class="meat" data-reveal style={`--d:${i * 120}`}>
+              <a href="/carta/#carnes" class="meat-link">
+                <Photo name={m.photo} alt={m.alt} sizes="(min-width: 1100px) 25vw, (min-width: 640px) 50vw, 100vw" ratio="4 / 5" class="meat-photo" />
+                <span class="meat-body">
+                  <span class="meat-num" aria-hidden="true">
+                    0{i + 1}
+                  </span>
+                  <span class="meat-name">{m.name}</span>
+                  <span class="meat-price" aria-label={priceLabel(m.item.prices[0])}>
+                    {formatPrice(m.item.prices[0])}
+                  </span>
+                  {m.item.note && <span class="meat-note">{m.item.note}</span>}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="more-cuts" data-reveal>
+        <p class="more-title">Y además, en nuestra parrilla</p>
+        <p class="more-list">{moreCuts.join(' · ')}</p>
+        <a class="link" href="/carta/#carnes">Ver todas las carnes <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  {/* Salón y terraza -------------------------------------------------------*/}
+  <section class="section bg-cream grain spaces" aria-labelledby="espacios-title">
+    <div class="container container--wide spaces-grid">
+      <div class="spaces-copy">
+        <span class="eyebrow" data-reveal="fade">Un restaurante con encanto</span>
+        <SplitText as="h2" id="espacios-title" class="display" text="Salón _y terraza_" />
+        <p class="lead" data-reveal style="--d:150">
+          El calor de un salón acogedor o el aire de la sierra en nuestra gran terraza: tú eliges. Ven a disfrutar de nuestras carnes, a tomar unas cervezas con amigos —siempre con su tapa— o a empezar el día con un buen desayuno.
+        </p>
+        <a class="link" href="/nuestra-historia/" data-reveal="fade" style="--d:300">Conoce nuestra historia <Icon name="arrow" /></a>
+      </div>
+      <figure class="space space--a">
+        <Photo
+          name="salon-restaurante-el-carnivoro-collado-villalba"
+          alt="Salón interior de El Carnívoro con mesas de madera, ladrillo visto y lámparas de luz cálida"
+          sizes="(min-width: 1000px) 45vw, 100vw"
+          ratio="5 / 4"
+          reveal="mask"
+          curtain="#e9dfcc"
+        />
+        <figcaption>El salón</figcaption>
+      </figure>
+      <figure class="space space--b">
+        <Photo
+          name="terraza-cubierta-el-carnivoro"
+          alt="Gran terraza cubierta con pérgola de madera y mural de paisaje de sierra"
+          sizes="(min-width: 1000px) 35vw, 100vw"
+          ratio="4 / 3"
+          reveal="mask"
+          curtain="#e9dfcc"
+          delay={200}
+        />
+        <figcaption>La terraza</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  {/* Desayunos y menús -----------------------------------------------------*/}
+  <section class="section bg-wood grain menus" aria-labelledby="menus-title">
+    <div class="container container--wide">
+      <div class="sec-head sec-head--center">
+        <span class="eyebrow eyebrow--center" data-reveal="fade">A cualquier hora</span>
+        <SplitText as="h2" id="menus-title" class="display" text="Del desayuno _a la cena_" />
+      </div>
+      <ul class="menu-cards" role="list">
+        {
+          menus.map((m, i) => (
+            <li data-reveal style={`--d:${i * 110}`}>
+              <a class="menu-card" href={`/carta/#${m.id}`}>
+                <span class="mc-title">{m.title}</span>
+                <span class="mc-price">{m.price}</span>
+                <span class="mc-text">{m.text}</span>
+                <span class="mc-more">
+                  Ver detalles <Icon name="arrow" size={18} />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* Galería destacada -----------------------------------------------------*/}
+  <section class="section bg-ink grain" aria-labelledby="galeria-title">
+    <div class="container container--wide">
+      <div class="sec-head sec-head--split">
+        <div>
+          <span class="eyebrow" data-reveal="fade">Galería</span>
+          <SplitText as="h2" id="galeria-title" class="display" text="El fuego, _la mesa,_ la sierra" />
+        </div>
+        <a class="link" href="/nuestra-historia/#galeria" data-reveal="fade">Ver la galería completa <Icon name="arrow" /></a>
+      </div>
+      <Gallery items={featured} label="Selección de fotos de El Carnívoro" layout="featured" />
+    </div>
+  </section>
+
+  {/* Opiniones -------------------------------------------------------------*/}
+  <section class="section bg-bone grain reviews" aria-labelledby="opiniones-title">
+    <div class="container container--wide">
+      <div class="sec-head sec-head--center">
+        <span class="eyebrow eyebrow--center" data-reveal="fade">Opiniones</span>
+        <SplitText as="h2" id="opiniones-title" class="display" text="Lo que dicen _nuestros clientes_" />
+      </div>
+      <ul class="review-grid" role="list">
+        {
+          reviews.map((r, i) => (
+            <li data-reveal style={`--d:${i * 140}`}>
+              <figure class="review">
+                <span class="quote-mark" aria-hidden="true">
+                  “
+                </span>
+                <blockquote>
+                  <p class="review-highlight">{r.highlight}</p>
+                  <p class="review-text">{r.text}</p>
+                </blockquote>
+                <figcaption>
+                  <span class="review-source">Opinión de un cliente</span>
+                  <span class="review-tags">{r.tags.join(' · ')}</span>
+                </figcaption>
+              </figure>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* Horario y ubicación ---------------------------------------------------*/}
+  <section id="visitanos" class="section bg-smoke grain visit" aria-labelledby="visitanos-title">
+    <div class="container container--wide visit-grid">
+      <div class="visit-copy">
+        <span class="eyebrow" data-reveal="fade">Ven a visitarnos</span>
+        <SplitText as="h2" id="visitanos-title" class="display" text="Horario _y ubicación_" />
+        <address class="visit-address" data-reveal>
+          <Icon name="pin" size={20} />
+          <span>{business.address.oneLine}</span>
+        </address>
+        <div data-reveal style="--d:100">
+          <HoursTable />
+        </div>
+        <div class="visit-actions" data-reveal style="--d:200">
+          <a class="btn btn--primary" href={business.phone.tel} data-track="phone">
+            <Icon name="phone" />
+            {business.phone.display}
+          </a>
+          <a class="btn btn--ghost" href={business.maps.directions} target="_blank" rel="noopener" data-track="directions">
+            <Icon name="route" />
+            Cómo llegar
+          </a>
+        </div>
+      </div>
+      <div class="visit-map" data-reveal="fade" style="--d:150">
+        <MapFacade />
+      </div>
+    </div>
+  </section>
+
+  <ReserveCta />
+</BaseLayout>
+
+<style>
+  .sec-head {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 760px;
+    margin-bottom: var(--space-xl);
+  }
+  .sec-head--center {
+    margin-inline: auto;
+    justify-items: center;
+    text-align: center;
+  }
+  .sec-head--split {
+    max-width: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .sec-head--split > div {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  /* Introducción */
+  .intro-grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+  .intro-copy {
+    display: grid;
+    gap: 1.4rem;
+  }
+  .intro-text {
+    max-width: 56ch;
+  }
+  .facts {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line-on-light);
+  }
+  .facts li {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .fact-title {
+    font-family: var(--ff-display);
+    font-size: var(--step-2);
+    line-height: 1.1;
+    color: var(--wine);
+  }
+  .fact-text {
+    font-size: var(--step--1);
+    color: var(--muted-on-light);
+  }
+  .intro-media {
+    position: relative;
+    padding: 0 12% 14% 0;
+  }
+  .im-small {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 42%;
+    box-shadow: 0 30px 60px rgb(28 25 22 / 0.25);
+    border: 6px solid var(--paper);
+  }
+  @media (min-width: 640px) {
+    .facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1000px) {
+    .intro-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+  }
+
+  /* Carnes */
+  .meats .sec-head {
+    margin-bottom: var(--space-l);
+  }
+  .meat-grid {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.75rem);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .meat-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1100px) {
+    .meat-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .meat:nth-child(even) {
+      margin-top: var(--space-l);
+    }
+  }
+  .meat-link {
+    display: grid;
+    gap: 1rem;
+    text-decoration: none;
+  }
+  .meat-link :global(.meat-photo img) {
+    transition: transform 1.2s var(--ease-out);
+  }
+  @media (hover: hover) {
+    .meat-link:hover :global(.meat-photo img) {
+      transform: scale(1.05);
+    }
+    .meat-link:hover .meat-name {
+      color: var(--brass);
+    }
+  }
+  .meat-body {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0.25rem 0.9rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line-on-dark);
+  }
+  .meat-num {
+    font-size: var(--step--2);
+    letter-spacing: 0.2em;
+    color: var(--brass);
+  }
+  .meat-name {
+    font-family: var(--ff-display);
+    font-size: var(--step-3);
+    line-height: 1;
+    transition: color 0.4s var(--ease-out);
+  }
+  .meat-price {
+    font-size: var(--step--1);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .meat-note {
+    grid-column: 2 / -1;
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  .more-cuts {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    margin-top: var(--space-xl);
+    text-align: center;
+  }
+  .more-title {
+    font-size: var(--step--2);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted-on-dark);
+  }
+  .more-list {
+    max-width: 52ch;
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: var(--step-2);
+    line-height: 1.4;
+  }
+
+  /* Salón y terraza */
+  .spaces-grid {
+    display: grid;
+    gap: var(--space-l);
+  }
+  .spaces-copy {
+    display: grid;
+    gap: 1.25rem;
+    align-content: center;
+    max-width: 52ch;
+  }
+  .space figcaption {
+    margin-top: 0.75rem;
+    font-size: var(--step--2);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted-on-light);
+  }
+  @media (min-width: 1000px) {
+    .spaces-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: auto auto;
+      column-gap: var(--space-m);
+      row-gap: var(--space-l);
+    }
+    .spaces-copy {
+      grid-column: 1 / 6;
+      grid-row: 1;
+    }
+    .space--a {
+      grid-column: 6 / 13;
+      grid-row: 1 / 3;
+    }
+    .space--b {
+      grid-column: 2 / 6;
+      grid-row: 2;
+    }
+  }
+
+  /* Menús */
+  .menu-cards {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .menu-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1180px) {
+    .menu-cards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .menu-cards li {
+    display: flex;
+  }
+  .menu-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 0.9rem;
+    width: 100%;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border: 1px solid rgb(201 168 106 / 0.28);
+    background: linear-gradient(180deg, rgb(28 25 22 / 0.75), rgb(11 10 9 / 0.85));
+    text-decoration: none;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .menu-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(90% 70% at 50% 120%, rgb(155 0 14 / 0.5), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-out);
+  }
+  @media (hover: hover) {
+    .menu-card:hover::before {
+      opacity: 1;
+    }
+  }
+  .mc-title {
+    font-family: var(--ff-display);
+    font-size: var(--step-3);
+    line-height: 1;
+  }
+  .mc-price {
+    font-size: var(--step-0);
+    font-weight: 600;
+    color: var(--brass);
+    font-variant-numeric: tabular-nums;
+  }
+  .mc-text {
+    font-size: var(--step--1);
+    color: var(--muted-on-dark);
+  }
+  .mc-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* Opiniones */
+  .review-grid {
+    display: grid;
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+  @media (min-width: 900px) {
+    .review-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .review {
+    position: relative;
+    display: grid;
+    gap: 1.25rem;
+    height: 100%;
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    background: rgb(249 246 240 / 0.7);
+    border: 1px solid var(--line-on-light);
+  }
+  .quote-mark {
+    font-family: var(--ff-display);
+    font-size: 5rem;
+    line-height: 0.6;
+    color: var(--wine);
+    height: 2.2rem;
+  }
+  .review blockquote {
+    display: grid;
+    gap: 1rem;
+  }
+  .review-highlight {
+    font-family: var(--ff-display);
+    font-size: var(--step-2);
+    line-height: 1.2;
+    font-style: italic;
+  }
+  .review-text {
+    font-size: var(--step--1);
+    color: var(--muted-on-light);
+  }
+  .review figcaption {
+    display: grid;
+    gap: 0.25rem;
+    align-self: end;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line-on-light);
+  }
+  .review-source {
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brass-ink);
+  }
+  .review-tags {
+    font-size: var(--step--1);
+    color: var(--muted-on-light);
+  }
+
+  /* Visítanos */
+  .visit-grid {
+    display: grid;
+    gap: var(--space-l);
+  }
+  .visit-copy {
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+  }
+  .visit-address {
+    display: flex;
+    gap: 0.75rem;
+    font-style: normal;
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+  .visit-address :global(svg) {
+    flex: none;
+    margin-top: 0.3rem;
+    color: var(--brass);
+  }
+  .visit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .visit-map {
+    min-height: 440px;
+  }
+  @media (min-width: 1000px) {
+    .visit-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: stretch;
+    }
+  }
+</style>

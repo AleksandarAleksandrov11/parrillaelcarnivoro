@@ -1,0 +1,144 @@
+---
+/** Menú cerrado (cenas y fines de semana, grupos…) con su «sello» de precio. */
+import type { SetMenu } from '../data/carta';
+import { euros, priceLabel } from '../lib/format';
+
+interface Props {
+  menu: SetMenu;
+  showName?: boolean;
+}
+const { menu, showName = true } = Astro.props;
+const perPerson = menu.price.per === 'persona';
+// Jerarquía limpia: si el nombre del menú no se muestra, los platos cuelgan directamente del h2 de la sección.
+const CourseTag = showName ? 'h4' : 'h3';
+---
+
+<article class="set-menu" aria-label={`${menu.name}: ${priceLabel(menu.price)}`}>
+  {showName && <h3 class="sm-name">{menu.name}</h3>}
+  {
+    menu.courses.map((c) => (
+      <div class="course">
+        <CourseTag class="course-title">{c.title}</CourseTag>
+        {c.hint && <p class="course-hint">{c.hint}</p>}
+        <ul role="list" class="options">
+          {c.options.map((o) => (
+            <li>{o}</li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+  {
+    menu.includes && (
+      <p class="includes">
+        {menu.includes.map((x, i) => (
+          <>
+            {i > 0 && (
+              <span class="plus" aria-hidden="true">
+                +
+              </span>
+            )}
+            <span>{x}</span>
+          </>
+        ))}
+      </p>
+    )
+  }
+  <p class="seal">
+    <span class="seal-amount">{euros(menu.price.amount)}</span>
+    {perPerson && <span class="seal-per">por persona</span>}
+  </p>
+</article>
+
+<style>
+  .set-menu {
+    display: grid;
+    justify-items: center;
+    gap: 1.5rem;
+    padding: clamp(1.75rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2.5rem);
+    text-align: center;
+    border: 1px solid rgb(201 168 106 / 0.32);
+    background: linear-gradient(180deg, rgb(28 25 22 / 0.55), rgb(11 10 9 / 0.65));
+    position: relative;
+  }
+  .set-menu::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgb(201 168 106 / 0.14);
+    pointer-events: none;
+  }
+  .sm-name {
+    font-size: var(--step-3);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--brass);
+  }
+  .course {
+    display: grid;
+    gap: 0.4rem;
+    justify-items: center;
+  }
+  .course + .course::before {
+    content: '';
+    display: block;
+    width: 64px;
+    height: 1px;
+    margin: 0 auto 1.1rem;
+    background: rgb(201 168 106 / 0.6);
+  }
+  .course-title {
+    font-family: var(--ff-sans);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  .course-hint {
+    font-size: var(--step--1);
+    font-style: italic;
+    color: var(--muted-on-dark);
+  }
+  .options {
+    display: grid;
+    gap: 0.25rem;
+    font-family: var(--ff-display);
+    font-size: var(--step-1);
+    line-height: 1.35;
+    font-variant-numeric: lining-nums;
+  }
+  .includes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem 0.6rem;
+    font-size: var(--step-0);
+  }
+  .plus {
+    color: var(--wine-bright);
+    font-weight: 700;
+  }
+  .seal {
+    display: grid;
+    place-items: center;
+    min-width: 168px;
+    padding: 0.85rem 1.75rem;
+    border-radius: 50%;
+    background: var(--wine);
+    color: var(--cream);
+    box-shadow: 0 14px 40px rgb(155 0 14 / 0.35);
+  }
+  .seal-amount {
+    font-family: var(--ff-sans);
+    font-size: var(--step-2);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .seal-per {
+    font-size: var(--step--2);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+</style>

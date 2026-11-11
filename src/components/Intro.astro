@@ -1,0 +1,143 @@
+---
+/**
+ * Animación de entrada (≈1,3 s) solo en la primera visita de la sesión a la home.
+ * Es CSS puro sobre el hero ya pintado (no bloquea el LCP), se puede saltar
+ * (botón, Esc o clic) y no se muestra con prefers-reduced-motion.
+ */
+import { Picture } from 'astro:assets';
+import icon from '../assets/brand/icono-el-carnivoro.png';
+---
+
+<div class="intro-layer" data-intro>
+  <div class="intro-panel" aria-hidden="true">
+    <div class="intro-mark">
+      <Picture src={icon} alt="" widths={[96, 192]} sizes="96px" formats={['avif', 'webp']} fallbackFormat="png" loading="eager" decoding="async" />
+      <span class="intro-line"></span>
+      <span class="intro-word">Pasión por la carne</span>
+    </div>
+  </div>
+  <button type="button" class="intro-skip" data-intro-skip>Saltar introducción</button>
+</div>
+
+<script>
+  const html = document.documentElement;
+  const layer = document.querySelector<HTMLElement>('[data-intro]');
+  if (layer && html.classList.contains('intro')) {
+    const finish = () => {
+      html.classList.add('intro-done');
+      window.setTimeout(() => {
+        html.classList.remove('intro');
+        layer.remove();
+      }, 500);
+      window.removeEventListener('keydown', onKey);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && finish();
+    layer.querySelector('[data-intro-skip]')?.addEventListener('click', finish);
+    layer.addEventListener('click', finish);
+    window.addEventListener('keydown', onKey);
+    window.setTimeout(() => {
+      html.classList.remove('intro');
+      layer.remove();
+      window.removeEventListener('keydown', onKey);
+    }, 1700);
+  } else {
+    layer?.remove();
+  }
+</script>
+
+<style>
+  .intro-layer {
+    display: none;
+  }
+  :global(html.intro) .intro-layer {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: auto;
+    animation: intro-layer-out 0.01s linear 1.35s forwards;
+  }
+  .intro-panel {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(60% 50% at 50% 55%, rgb(155 0 14 / 0.25), transparent 70%),
+      var(--ink);
+    animation: intro-lift 0.55s var(--ease-in-out) 0.85s forwards;
+  }
+  .intro-mark {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    animation: intro-mark-out 0.4s var(--ease-out) 0.8s forwards;
+  }
+  .intro-mark :global(img) {
+    width: 96px;
+    height: auto;
+    opacity: 0;
+    transform: scale(0.88);
+    animation: intro-in 0.6s var(--ease-out) 0.05s forwards;
+  }
+  .intro-line {
+    width: 140px;
+    height: 1px;
+    background: var(--brass);
+    transform: scaleX(0);
+    animation: intro-line 0.6s var(--ease-in-out) 0.2s forwards;
+  }
+  .intro-word {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--text-on-dark);
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+    animation: intro-in 0.6s var(--ease-out) 0.3s forwards;
+  }
+  .intro-skip {
+    position: absolute;
+    right: var(--gutter);
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    padding: 0.7rem 1rem;
+    font-size: var(--step--2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted-on-dark);
+    animation: intro-mark-out 0.3s linear 0.8s forwards;
+  }
+  :global(html.intro-done) .intro-layer {
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out);
+    pointer-events: none;
+  }
+  @keyframes intro-in {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes intro-line {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes intro-mark-out {
+    to {
+      opacity: 0;
+      transform: translate3d(0, -12px, 0);
+    }
+  }
+  @keyframes intro-lift {
+    to {
+      transform: translate3d(0, -100%, 0);
+    }
+  }
+  @keyframes intro-layer-out {
+    to {
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+</style>

@@ -1,0 +1,40 @@
+{
+  "name": "parrilla-el-carnivoro",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Web de Restaurante Parrilla El Carnívoro (Collado Villalba). Astro, salida estática, desplegable en Vercel.",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "node scripts/serve-dist.mjs",
+    "check": "astro check",
+    "assets:images": "node scripts/prepare-images.mjs",
+    "assets:video": "bash scripts/prepare-video.sh",
+    "assets:icons": "node scripts/prepare-icons.mjs",
+    "assets:textures": "node scripts/make-textures.mjs",
+    "assets:og": "node scripts/og-images.mjs",
+    "qa": "node scripts/qa/run-all.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/cormorant-garamond": "^5.3.0",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "astro": "^7.4.10",
+    "lenis": "^1.3.27",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@axe-core/playwright": "^4.14.0",
+    "@vercel/routing-utils": "^6.6.1",
+    "lighthouse": "^13.6.0",
+    "linkinator": "^8.1.0",
+    "playwright": "^1.63.0",
+    "schema-dts": "^2.1.0",
+    "typescript": "^5.9.0",
+    "vnu-jar": "^26.11.9"
+  }
+}

@@ -1,0 +1,286 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import SplitText from '../../components/SplitText.astro';
+import Gallery from '../../components/Gallery.astro';
+import Icon from '../../components/Icon.astro';
+import ReserveCta from '../../components/ReserveCta.astro';
+import { getImage } from 'astro:assets';
+import { gallery } from '../../data/gallery';
+import { photo } from '../../data/photos';
+import { breadcrumbSchema } from '../../lib/schema';
+
+const crumbs = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Nuestra historia', path: '/nuestra-historia/' },
+];
+
+const firePoster = await getImage({ src: await photo('brasas-parrilla-el-carnivoro-poster'), width: 480, format: 'webp' });
+---
+
+<BaseLayout
+  title="Nuestra historia | Carne a la brasa en la sierra de Madrid"
+  description="El Carnívoro: carne a la brasa de carbón en Collado Villalba, a los pies de la sierra de Guadarrama. Salón acogedor, gran terraza y galería de fotos."
+  path="/nuestra-historia/"
+  ogImage={{ path: '/og/nuestra-historia.jpg', alt: 'Salón del Restaurante Parrilla El Carnívoro en Collado Villalba' }}
+  schema={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    title="Fuego, carne _y sierra_"
+    kicker="Nuestra historia"
+    intro="Un restaurante de Collado Villalba dedicado a la carne a la parrilla de carbón, a los pies de la sierra de Guadarrama."
+    photo="salon-restaurante-el-carnivoro-collado-villalba"
+    crumbs={crumbs}
+  />
+
+  {/* Nuestra casa ---------------------------------------------------------*/}
+  <section class="section bg-paper grain" aria-labelledby="casa-title">
+    <div class="container story-grid">
+      <div class="story-copy">
+        <span class="eyebrow" data-reveal="fade">Nuestra casa</span>
+        <SplitText as="h2" id="casa-title" class="display" text="Una idea _muy clara_" />
+        {/*
+          TODO: confirmar con el cliente: año de apertura, quién lleva el restaurante y su trayectoria.
+          Cuando se conozcan, añadir aquí un párrafo con esos datos (sin inventarlos).
+        */}
+        <p class="lead" data-reveal style="--d:120">
+          En El Carnívoro tenemos una idea muy clara: servir en Collado Villalba la mejor carne a la parrilla de la sierra de Madrid. Un lugar para comer sin prisas, en buena compañía, con música de fondo y una atención cercana.
+        </p>
+        <p data-reveal style="--d:200">
+          Abrimos desde las diez de la mañana hasta la una de la madrugada: el día empieza con un desayuno en la barra o en la terraza, sigue con el menú del día y termina, sin prisas, alrededor de la parrilla.
+        </p>
+      </div>
+      <figure class="story-figure" data-parallax="0.1">
+        <Photo name="carta-el-carnivoro-mesa" alt="La carta de El Carnívoro sobre la mesa, con el lema «La mejor carne de la sierra»" sizes="(min-width: 1000px) 40vw, 100vw" ratio="4 / 5" reveal="mask" curtain="#e9dfcc" />
+        <figcaption>«La mejor carne de la sierra», nuestra carta.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  {/* La parrilla de carbón ------------------------------------------------*/}
+  <section class="section bg-coal grain fire" aria-labelledby="fuego-title">
+    <div class="container container--wide fire-grid">
+      <div class="fire-media">
+        <div class="fire-video" data-reveal="fade">
+          <video
+            muted
+            playsinline
+            loop
+            preload="none"
+            poster={firePoster.src}
+            width="480"
+            height="640"
+            aria-hidden="true"
+            data-ambient
+            data-src-av1="/video/brasas-parrilla.webm?v=2026-11"
+            data-src-h264="/video/brasas-parrilla.mp4?v=2026-11"></video>
+          <span class="fire-tag">Nuestras brasas</span>
+        </div>
+        <div class="fire-photo" data-parallax="0.16">
+          <Photo name="parrilla-carbon-carnes-el-carnivoro" alt="La parrilla de carbón del restaurante llena de carnes al fuego" sizes="(min-width: 1000px) 30vw, 70vw" ratio="4 / 3" reveal="mask" delay={200} />
+        </div>
+      </div>
+      <div class="fire-copy">
+        <span class="eyebrow" data-reveal="fade">La parrilla de carbón</span>
+        <SplitText as="h2" id="fuego-title" class="display" text="El fuego _como oficio_" />
+        <p class="lead" data-reveal style="--d:120">
+          Cocinamos sobre brasa de carbón. Es una forma de cocinar que pide paciencia: el calor intenso sella la pieza, el humo le da su aroma y el reposo hace el resto. Así buscamos en cada corte los bocados más jugosos y los sabores más intensos.
+        </p>
+        <p class="muted" data-reveal style="--d:200">
+          Del chuletón y el T-Bone a la entraña, la picaña o el secreto, cada pieza tiene su punto. Los cortes más especiales, como el chuletón madurado de vaca o el tomahawk, se preparan con reserva previa.
+        </p>
+        {/* TODO: confirmar con el cliente: origen de la carne (raza, proveedores, zona) y tiempos de maduración, para contarlo aquí. */}
+        <a class="link" href="/carta/#carnes" data-reveal="fade" style="--d:300">Ver las carnes de la carta <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  {/* La sierra -------------------------------------------------------------*/}
+  <section class="section bg-cream grain" aria-labelledby="sierra-title">
+    <div class="container container--narrow sierra">
+      <span class="eyebrow eyebrow--center" data-reveal="fade">Collado Villalba</span>
+      <SplitText as="h2" id="sierra-title" class="display" text="A los pies _de Guadarrama_" />
+      <p class="lead" data-reveal style="--d:150">
+        Collado Villalba es la puerta de la sierra de Guadarrama, y en la sierra la carne a la brasa forma parte de la manera de comer. Queremos estar a la altura: ser una parada obligatoria para quien busca la auténtica carne de la sierra y una experiencia que apetezca repetir.
+      </p>
+      <div class="rule" aria-hidden="true"><span></span></div>
+    </div>
+  </section>
+
+  {/* Salón y terraza -------------------------------------------------------*/}
+  <section class="section bg-bone grain" aria-labelledby="espacios-title">
+    <div class="container container--wide">
+      <div class="spaces-head">
+        <span class="eyebrow" data-reveal="fade">Salón y terraza</span>
+        <SplitText as="h2" id="espacios-title" class="display" text="Dentro o _al aire de la sierra_" />
+        <p class="lead" data-reveal style="--d:150">
+          Dentro, un salón cálido de madera y ladrillo, con la barra y la vinoteca. Fuera, una gran terraza cubierta bajo una pérgola de madera, con un mural de paisaje de montaña, y mesas en la calle para tomar algo al sol. Con la bebida, siempre una tapa.
+        </p>
+      </div>
+      <div class="spaces-mosaic">
+        <figure class="sm-a">
+          <Photo name="barra-restaurante-el-carnivoro" alt="La barra del restaurante con botellero iluminado y plantas colgantes" sizes="(min-width: 1000px) 30vw, 100vw" ratio="4 / 5" reveal="mask" curtain="#c9b99c" />
+          <figcaption>La barra</figcaption>
+        </figure>
+        <figure class="sm-b">
+          <Photo name="terraza-mural-sierra-el-carnivoro" alt="Mesas de la terraza cubierta bajo la pérgola, con el mural de la sierra al fondo" sizes="(min-width: 1000px) 40vw, 100vw" ratio="5 / 4" reveal="mask" curtain="#c9b99c" delay={150} />
+          <figcaption>La terraza cubierta</figcaption>
+        </figure>
+        <figure class="sm-c">
+          <Photo name="vinoteca-restaurante-el-carnivoro" alt="La vinoteca, con botelleros de madera junto al ladrillo visto" sizes="(min-width: 1000px) 25vw, 100vw" ratio="3 / 4" reveal="mask" curtain="#c9b99c" delay={300} />
+          <figcaption>La vinoteca</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  {/* Galería completa ------------------------------------------------------*/}
+  <section id="galeria" class="section bg-ink grain" aria-labelledby="galeria-title">
+    <div class="container container--wide">
+      <div class="gal-head">
+        <span class="eyebrow" data-reveal="fade">Galería</span>
+        <SplitText as="h2" id="galeria-title" class="display" text="Nuestra casa _en imágenes_" />
+        <p class="lead muted" data-reveal style="--d:150">Platos, rincones del local, la terraza y nuestra parrilla. Pulsa en cualquier foto para verla a pantalla completa.</p>
+      </div>
+      <Gallery items={gallery} filters label="Galería de fotos de El Carnívoro" />
+    </div>
+  </section>
+
+  <ReserveCta />
+</BaseLayout>
+
+<script>
+  // Clip ambiental de las brasas: solo se descarga al acercarse a la pantalla,
+  // y nunca con movimiento reducido o ahorro de datos.
+  const video = document.querySelector<HTMLVideoElement>('[data-ambient]');
+  type Conn = { saveData?: boolean; effectiveType?: string };
+  const conn = (navigator as Navigator & { connection?: Conn }).connection;
+  const skip = window.matchMedia('(prefers-reduced-motion: reduce)').matches || conn?.saveData === true || /(^|-)2g$/.test(conn?.effectiveType ?? '');
+  if (video && !skip) {
+    let started = false;
+    new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          if (!started) {
+            started = true;
+            const av1 = video.canPlayType('video/webm; codecs="av01.0.05M.08"') === 'probably';
+            video.src = (av1 ? video.dataset.srcAv1 : video.dataset.srcH264) || '';
+          }
+          video.play().catch(() => {});
+        } else if (started) video.pause();
+      },
+      { rootMargin: '200px 0px' },
+    ).observe(video);
+  }
+</script>
+
+<style>
+  .story-grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+  .story-copy {
+    display: grid;
+    gap: 1.3rem;
+    max-width: 60ch;
+  }
+  .story-figure figcaption,
+  .spaces-mosaic figcaption {
+    margin-top: 0.75rem;
+    font-size: var(--step--2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted-on-light);
+  }
+  @media (min-width: 1000px) {
+    .story-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+
+  .fire-grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+  .fire-media {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 1rem;
+  }
+  .fire-video {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background: var(--smoke);
+    border-radius: 2px;
+  }
+  .fire-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fire-tag {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.35rem 0.7rem;
+    font-size: var(--step--2);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: rgb(11 10 9 / 0.7);
+    color: var(--cream);
+  }
+  .fire-photo {
+    margin-bottom: -2rem;
+  }
+  .fire-copy {
+    display: grid;
+    gap: 1.3rem;
+    max-width: 58ch;
+  }
+  @media (min-width: 1000px) {
+    .fire-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .sierra {
+    display: grid;
+    justify-items: center;
+    gap: 1.4rem;
+    text-align: center;
+  }
+  .sierra .rule {
+    width: 220px;
+    margin-top: 1rem;
+  }
+
+  .spaces-head,
+  .gal-head {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 760px;
+    margin-bottom: var(--space-xl);
+  }
+  .spaces-mosaic {
+    display: grid;
+    gap: var(--space-m);
+  }
+  @media (min-width: 760px) {
+    .spaces-mosaic {
+      grid-template-columns: 0.8fr 1.2fr 0.7fr;
+      align-items: start;
+    }
+    .sm-b {
+      margin-top: var(--space-xl);
+    }
+    .sm-c {
+      margin-top: var(--space-l);
+    }
+  }
+</style>

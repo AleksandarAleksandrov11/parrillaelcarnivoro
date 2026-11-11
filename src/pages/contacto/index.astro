@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ReservationForm from '../../components/ReservationForm.astro';
+import HoursTable from '../../components/HoursTable.astro';
+import MapFacade from '../../components/MapFacade.astro';
+import SplitText from '../../components/SplitText.astro';
+import Icon from '../../components/Icon.astro';
+import { business, whatsappUrl, defaultWhatsappText } from '../../data/site';
+import { breadcrumbSchema } from '../../lib/schema';
+
+const crumbs = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Contacto', path: '/contacto/' },
+];
+---
+
+<BaseLayout
+  title="Reservas y contacto | El Carnívoro, terraza en Collado Villalba"
+  description="Reserva en El Carnívoro por WhatsApp o al 91 501 39 83. C/ Pasaje Piscina Delfe, 3, Collado Villalba. Abierto lunes y de jueves a domingo, de 10:00 a 01:00."
+  path="/contacto/"
+  ogImage={{ path: '/og/contacto.jpg', alt: 'Fachada y terraza exterior de Restaurante Parrilla El Carnívoro en Collado Villalba' }}
+  schema={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    title="Contacto _y reservas_"
+    kicker="Ven a visitarnos"
+    intro="Una parada obligatoria si quieres comer la auténtica carne de la sierra de Guadarrama. Estaremos encantados de recibirte y de recomendarte nuestros mejores platos."
+    photo="fachada-terraza-exterior-el-carnivoro"
+    crumbs={crumbs}
+    compact
+  />
+
+  <section class="section bg-paper grain contact" aria-labelledby="reserva-title">
+    <div class="container container--wide contact-grid">
+      <div class="contact-form" id="reserva">
+        <span class="eyebrow" data-reveal="fade">Reserva por WhatsApp</span>
+        <SplitText as="h2" id="reserva-title" class="display" text="Elige día, hora _y mesa_" />
+        <p class="lead form-intro" data-reveal style="--d:120">
+          Rellena el formulario y te abriremos WhatsApp con el mensaje listo para enviarlo. Te responderemos para confirmar la reserva.
+        </p>
+        <div data-reveal style="--d:200">
+          <ReservationForm />
+        </div>
+      </div>
+
+      <aside class="contact-aside" aria-labelledby="datos-title">
+        <h2 id="datos-title" class="visually-hidden">Datos de contacto</h2>
+        <div class="card" data-reveal style="--d:150">
+          <p class="card-kicker">Llámanos</p>
+          <a class="big-phone" href={business.phone.tel} data-track="phone">{business.phone.display}</a>
+          <a class="btn btn--primary btn--block" href={whatsappUrl(defaultWhatsappText)} target="_blank" rel="noopener" data-track="whatsapp">
+            <Icon name="whatsapp" />
+            Escríbenos por WhatsApp
+          </a>
+        </div>
+
+        <dl class="details" data-reveal style="--d:200">
+          <div>
+            <dt><Icon name="pin" size={18} /> Dirección</dt>
+            <dd>
+              <address>{business.address.street}<br />{business.address.postalCode} {business.address.locality} ({business.address.region})</address>
+              <a class="link" href={business.maps.directions} target="_blank" rel="noopener" data-track="directions">Cómo llegar <Icon name="arrow" /></a>
+            </dd>
+          </div>
+          <div>
+            <dt><Icon name="mail" size={18} /> Email</dt>
+            <dd><a href={`mailto:${business.email}`}>{business.email}</a></dd>
+          </div>
+          <div>
+            <dt><Icon name="instagram" size={18} /> Instagram</dt>
+            <dd><a href={business.instagram.url} target="_blank" rel="noopener">{business.instagram.handle}</a></dd>
+          </div>
+          <div>
+            <dt><Icon name="clock" size={18} /> Horario</dt>
+            <dd class="on-light"><HoursTable class="on-light" /></dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section bg-smoke grain" aria-labelledby="mapa-title">
+    <div class="container container--wide">
+      <div class="map-head">
+        <span class="eyebrow" data-reveal="fade">Ubicación</span>
+        <SplitText as="h2" id="mapa-title" class="display" text="Cómo _llegar_" />
+        <p class="lead muted" data-reveal style="--d:120">Estamos en el Pasaje Piscina Delfe, en el centro de Collado Villalba.</p>
+      </div>
+      <div class="map-box" data-reveal="fade" style="--d:150">
+        <MapFacade />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    gap: var(--space-xl);
+  }
+  .contact-form {
+    display: grid;
+    gap: 1.2rem;
+    align-content: start;
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+  .form-intro {
+    color: var(--muted-on-light);
+  }
+  .contact-aside {
+    display: grid;
+    gap: var(--space-l);
+    align-content: start;
+  }
+  .card {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    background: var(--ink);
+    color: var(--text-on-dark);
+  }
+  .card-kicker {
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  .big-phone {
+    font-family: var(--ff-display);
+    font-size: var(--step-4);
+    line-height: 1;
+    font-variant-numeric: lining-nums;
+    text-decoration: none;
+  }
+  @media (hover: hover) {
+    .big-phone:hover {
+      color: var(--brass);
+    }
+  }
+  .details {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .details > div {
+    display: grid;
+    gap: 0.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line-on-light);
+  }
+  .details dt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brass-ink);
+  }
+  .details dd {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .details address {
+    font-style: normal;
+  }
+  .details a:not(.link) {
+    color: var(--wine);
+    font-weight: 600;
+    word-break: break-word;
+  }
+  @media (min-width: 1000px) {
+    .contact-grid {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+    .contact-aside {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+  .map-head {
+    display: grid;
+    gap: 1rem;
+    max-width: 760px;
+    margin-bottom: var(--space-l);
+  }
+  .map-box {
+    height: clamp(420px, 60vh, 620px);
+  }
+</style>

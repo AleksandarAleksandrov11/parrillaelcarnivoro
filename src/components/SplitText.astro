@@ -1,0 +1,43 @@
+---
+/**
+ * Titular revelado palabra a palabra. El troceado se hace en el servidor (sin JS):
+ * cada palabra queda en una máscara y se desliza con transform al entrar en pantalla.
+ * Las palabras entre guiones bajos (_así_) se muestran en cursiva de acento.
+ */
+interface Props {
+  text: string;
+  as?: 'h1' | 'h2' | 'h3' | 'p' | 'span';
+  class?: string;
+  id?: string;
+  delay?: number;
+}
+const { text, as: Tag = 'h2', class: className, id, delay = 0 } = Astro.props;
+
+type Tok = { word: string; em: boolean };
+const tokens: Tok[] = [];
+let em = false;
+for (const raw of text.split(/\s+/).filter(Boolean)) {
+  let w = raw;
+  const opens = w.startsWith('_');
+  if (opens) {
+    em = true;
+    w = w.slice(1);
+  }
+  const closes = w.endsWith('_');
+  if (closes) w = w.slice(0, -1);
+  tokens.push({ word: w, em });
+  if (closes) em = false;
+}
+---
+
+<Tag class:list={['split', className]} id={id} style={delay ? `--d:${delay}` : undefined}>
+  {
+    tokens.map((t, i) => (
+      <>
+        <span class="w">
+          <span style={`--i:${i}`}>{t.em ? <em>{t.word}</em> : t.word}</span>
+        </span>{' '}
+      </>
+    ))
+  }
+</Tag>

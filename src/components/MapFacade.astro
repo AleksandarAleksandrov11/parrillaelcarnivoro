@@ -1,0 +1,99 @@
+---
+/**
+ * Fachada del mapa: el iframe de Google Maps solo se carga si el usuario ha aceptado
+ * «Mapas de Google» en el panel de cookies o si pulsa «Ver mapa interactivo».
+ */
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+---
+
+<div class="map" data-map data-src={business.maps.embed} data-track-zone="mapa">
+  <Photo name="fachada-calle-restaurante-el-carnivoro" alt="" fill sizes="(min-width: 1000px) 50vw, 100vw" class="map-photo" />
+  <div class="map-facade" data-map-facade>
+    <Icon name="pin" size={34} />
+    <p class="map-title">{business.address.street}<br />{business.address.postalCode} {business.address.locality}</p>
+    <p class="map-note">El mapa interactivo se carga desde Google Maps, que puede usar sus propias cookies.</p>
+    <div class="map-actions">
+      <button type="button" class="btn btn--light" data-map-load>Ver mapa interactivo</button>
+      <a class="btn btn--ghost" href={business.maps.directions} target="_blank" rel="noopener" data-track="directions">
+        <Icon name="route" />
+        Cómo llegar
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initMaps } from '../scripts/maps';
+  initMaps();
+</script>
+
+<style>
+  .map {
+    position: relative;
+    isolation: isolate;
+    min-height: 420px;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--smoke);
+  }
+  .map :global(.map-photo) {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+  .map::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 60% at 50% 50%, rgb(11 10 9 / 0.55), rgb(11 10 9 / 0.88)),
+      rgb(11 10 9 / 0.2);
+  }
+  .map-facade {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 0.9rem;
+    padding: 2rem 1.25rem;
+    text-align: center;
+    color: var(--text-on-dark);
+  }
+  .map-facade > :global(svg) {
+    color: var(--brass);
+  }
+  .map-title {
+    font-family: var(--ff-display);
+    font-size: var(--step-2);
+    line-height: 1.15;
+  }
+  .map-note {
+    max-width: 38ch;
+    font-size: var(--step--1);
+    color: var(--muted-on-dark);
+  }
+  .map-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+  }
+  .map :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: grayscale(0.25) contrast(1.05);
+  }
+  .map.is-loaded .map-facade,
+  .map.is-loaded::before {
+    display: none;
+  }
+</style>

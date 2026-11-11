@@ -1,0 +1,353 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import MenuList from '../../components/MenuList.astro';
+import SetMenu from '../../components/SetMenu.astro';
+import Icon from '../../components/Icon.astro';
+import ReserveCta from '../../components/ReserveCta.astro';
+import { carta, cartaNav, cartaNotes } from '../../data/carta';
+import { breadcrumbSchema, menuSchema } from '../../lib/schema';
+import { euros } from '../../lib/format';
+
+const crumbs = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Carta', path: '/carta/' },
+];
+
+// Fondos alternos: carta en papel/crema, menús en carbón.
+const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal' : 'bg-smoke') : i % 2 ? 'bg-cream' : 'bg-paper');
+---
+
+<BaseLayout
+  title="Carta y menús | El Carnívoro, parrilla en Collado Villalba"
+  description="Chuletón, T-Bone, entraña y carnes a la brasa de carbón, entrantes, pescados y vinos. Menú del día, menú de cenas, grupos y desayunos en Collado Villalba."
+  path="/carta/"
+  ogImage={{ path: '/og/carta.jpg', alt: 'Chuletón a la parrilla de carbón de la carta de El Carnívoro' }}
+  schema={[breadcrumbSchema(crumbs), menuSchema()]}
+>
+  <PageHero
+    title="Carta _y menús_"
+    kicker="Carnes a la brasa de carbón"
+    intro="Abre boca con nuestros entrantes, elige entre las carnes a la parrilla de carbón, marida con nuestra selección de vinos y endúlzate con nuestros postres."
+    photo="chuleton-parrilla-carbon-el-carnivoro"
+    position="center 60%"
+    crumbs={crumbs}
+    compact
+  />
+
+  <nav class="carta-nav" aria-label="Secciones de la carta" data-carta-nav data-lenis-prevent>
+    <div class="cn-inner container container--wide">
+      <ul role="list" class="cn-list">
+        {
+          cartaNav.map((n) => (
+            <li>
+              <a href={`#${n.id}`} data-carta-link={n.id}>
+                {n.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </nav>
+
+  {
+    carta.map((s, i) => (
+      <section id={s.id} class:list={['section', 'carta-sec', bgFor(i, s.kind), 'grain', `kind-${s.kind}`]} aria-labelledby={`${s.id}-title`} data-carta-section>
+        <div class="container container--wide cs-grid">
+          <div class="cs-aside">
+            <div class="cs-sticky">
+              <span class="eyebrow" data-reveal="fade">
+                {s.kicker}
+              </span>
+              <h2 id={`${s.id}-title`} class="display cs-title" data-reveal>
+                {s.title}
+              </h2>
+              {s.intro && (
+                <p class="cs-intro" data-reveal style="--d:120">
+                  {s.intro}
+                </p>
+              )}
+              {s.kind === 'menu' && s.availability && (
+                <p class="cs-avail" data-reveal style="--d:180">
+                  <Icon name="clock" size={18} />
+                  {s.availability}
+                </p>
+              )}
+              <Photo
+                name={s.photo}
+                alt={s.photoAlt}
+                sizes="(min-width: 1000px) 34vw, 100vw"
+                ratio="5 / 4"
+                reveal="mask"
+                curtain={s.kind === 'menu' ? '#2b2621' : '#e9dfcc'}
+                class="cs-photo"
+                widths={[480, 720, 960, 1280]}
+              />
+            </div>
+          </div>
+
+          <div class="cs-body">
+            {s.kind === 'carta' ? (
+              <div class="on-light" data-reveal style="--d:100">
+                <MenuList section={s} />
+              </div>
+            ) : (
+              <div class="cs-menus" data-reveal style="--d:100">
+                {s.menus.map((m) =>
+                  m.courses.length ? (
+                    <SetMenu menu={m} showName={s.menus.length > 1} />
+                  ) : (
+                    <div class="daily">
+                      <p class="daily-price">
+                        <span class="daily-amount">{euros(m.price.amount)}</span>
+                        <span class="daily-per">por persona</span>
+                      </p>
+                      <p class="daily-text">El menú cambia cada día. Consulta el de hoy en nuestro Instagram o pregúntanos por teléfono.</p>
+                      {s.link && (
+                        <a class="btn btn--ghost" href={s.link.href} target="_blank" rel="noopener">
+                          <Icon name="instagram" />
+                          {s.link.label}
+                        </a>
+                      )}
+                    </div>
+                  ),
+                )}
+              </div>
+            )}
+            {s.notes && (
+              <ul role="list" class="cs-notes">
+                {s.notes.map((n) => (
+                  <li>{n}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section section--tight bg-ink grain allergens" aria-labelledby="alergenos-title">
+    <div class="container container--narrow al-inner">
+      <h2 id="alergenos-title" class="al-title">Alérgenos e información</h2>
+      <p class="al-text">{cartaNotes.allergens}</p>
+      <p class="muted">{cartaNotes.vat} Algunos cortes se sirven al peso y los marcados «con reserva previa» deben encargarse al reservar.</p>
+    </div>
+  </section>
+
+  <ReserveCta title="¿Te apetece _una buena carne?_" text="Reserva tu mesa por WhatsApp o por teléfono y, si quieres un corte especial, avísanos con antelación." />
+</BaseLayout>
+
+<script>
+  import { trackWhenReady } from '../../scripts/analytics';
+
+  // Evento GA4 «vista de carta» (solo con consentimiento de analítica).
+  trackWhenReady('view_menu', { menu_name: 'Carta' });
+
+  // Navegación sticky: resalta la sección visible y la mantiene a la vista.
+  const nav = document.querySelector<HTMLElement>('[data-carta-nav]');
+  const links = new Map(Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-carta-link]')).map((a) => [a.dataset.cartaLink!, a]));
+  const setActive = (id: string) => {
+    links.forEach((a, key) => {
+      if (key === id) {
+        a.setAttribute('aria-current', 'location');
+        const list = a.closest('ul')!;
+        const target = a.offsetLeft - list.clientWidth / 2 + a.clientWidth / 2;
+        list.scrollTo({ left: target, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      } else a.removeAttribute('aria-current');
+    });
+  };
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => e.isIntersecting && setActive(e.target.id));
+    },
+    { rootMargin: '-35% 0px -60% 0px' },
+  );
+  document.querySelectorAll<HTMLElement>('[data-carta-section]').forEach((s) => io.observe(s));
+  // En la cabecera de la página ninguna sección está activa.
+  const hero = document.querySelector<HTMLElement>('.page-hero');
+  if (hero)
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) links.forEach((a) => a.removeAttribute('aria-current'));
+    }, { rootMargin: '0px 0px -40% 0px' }).observe(hero);
+  if (nav) {
+    const sentinel = new IntersectionObserver(([e]) => nav.classList.toggle('is-stuck', e.intersectionRatio < 1), { threshold: [1], rootMargin: '-77px 0px 0px 0px' });
+    sentinel.observe(nav);
+  }
+</script>
+
+<style>
+  .carta-nav {
+    position: sticky;
+    top: calc(var(--header-h) - 1px);
+    z-index: 30;
+    background: rgb(11 10 9 / 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line-on-dark);
+  }
+  .cn-inner {
+    position: relative;
+  }
+  .cn-inner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 40px;
+    background: linear-gradient(90deg, transparent, rgb(11 10 9 / 0.97));
+    pointer-events: none;
+  }
+  .cn-list {
+    display: flex;
+    gap: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-block: 0.6rem;
+    scroll-padding-inline: 1rem;
+  }
+  .cn-list::-webkit-scrollbar {
+    display: none;
+  }
+  .cn-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-size: var(--step--1);
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--muted-on-dark);
+    transition:
+      color 0.3s var(--ease-out),
+      background-color 0.3s var(--ease-out);
+  }
+  .cn-list a[aria-current='location'] {
+    background: var(--cream);
+    color: var(--ink);
+  }
+  @media (hover: hover) {
+    .cn-list a:not([aria-current]):hover {
+      color: var(--text-on-dark);
+    }
+  }
+  .carta-sec {
+    scroll-margin-top: calc(var(--header-h) + 64px);
+  }
+  .cs-grid {
+    display: grid;
+    gap: var(--space-l);
+  }
+  .cs-sticky {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .cs-title {
+    font-size: var(--step-4);
+  }
+  .cs-intro {
+    max-width: 46ch;
+    font-size: var(--step-0);
+  }
+  .kind-carta .cs-intro {
+    color: var(--muted-on-light);
+  }
+  .kind-menu .cs-intro {
+    color: var(--muted-on-dark);
+  }
+  .cs-avail {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--step--1);
+    font-weight: 600;
+  }
+  .cs-avail :global(svg) {
+    flex: none;
+    color: var(--brass);
+  }
+  .cs-sticky :global(.cs-photo) {
+    margin-top: 0.75rem;
+  }
+  .cs-menus {
+    display: grid;
+    gap: var(--space-m);
+  }
+  .cs-notes {
+    margin-top: var(--space-m);
+    display: grid;
+    gap: 0.35rem;
+    font-size: var(--step--1);
+  }
+  .kind-carta .cs-notes {
+    color: var(--muted-on-light);
+  }
+  .kind-menu .cs-notes {
+    color: var(--muted-on-dark);
+  }
+  .daily {
+    display: grid;
+    justify-items: center;
+    gap: 1.25rem;
+    padding: clamp(2rem, 5vw, 3.5rem) 1.5rem;
+    text-align: center;
+    border: 1px solid rgb(201 168 106 / 0.32);
+  }
+  .daily-price {
+    display: grid;
+    place-items: center;
+    min-width: 180px;
+    padding: 1rem 2rem;
+    border-radius: 50%;
+    background: var(--wine);
+    color: var(--cream);
+  }
+  .daily-amount {
+    font-size: var(--step-3);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .daily-per {
+    font-size: var(--step--2);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .daily-text {
+    max-width: 44ch;
+    color: var(--muted-on-dark);
+  }
+  @media (min-width: 1000px) {
+    .cs-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(3rem, 6vw, 7rem);
+      align-items: start;
+    }
+    .cs-sticky {
+      position: sticky;
+      top: calc(var(--header-h) + 90px);
+    }
+    .cs-body {
+      padding-top: 0.5rem;
+    }
+  }
+  .allergens {
+    text-align: center;
+  }
+  .al-inner {
+    display: grid;
+    gap: 0.8rem;
+    justify-items: center;
+  }
+  .al-title {
+    font-size: var(--step-3);
+  }
+  .al-text {
+    font-size: var(--step-1);
+  }
+</style>

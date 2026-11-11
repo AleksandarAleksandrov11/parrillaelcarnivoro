@@ -1,0 +1,77 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": false,
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "parrillaelcarnivoro.es" }],
+      "destination": "https://www.parrillaelcarnivoro.es/:path",
+      "statusCode": 301
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "query", "key": "p" }],
+      "missing": [{ "type": "query", "key": "origen" }],
+      "destination": "/?origen=wp",
+      "statusCode": 301
+    },
+    { "source": "/desayunos", "destination": "/carta/#desayunos", "statusCode": 301 },
+    { "source": "/desayunos/", "destination": "/carta/#desayunos", "statusCode": 301 },
+    { "source": "/menu-grupos", "destination": "/carta/#grupos", "statusCode": 301 },
+    { "source": "/menu-grupos/", "destination": "/carta/#grupos", "statusCode": 301 },
+    { "source": "/parrillaelcarnivoro/carta", "destination": "/carta/#menu-del-dia", "statusCode": 301 },
+    { "source": "/parrillaelcarnivoro/carta/", "destination": "/carta/#menu-del-dia", "statusCode": 301 },
+    { "source": "/galeria", "destination": "/nuestra-historia/#galeria", "statusCode": 301 },
+    { "source": "/galeria/", "destination": "/nuestra-historia/#galeria", "statusCode": 301 },
+    { "source": "/aviso-legal", "destination": "/aviso-legal/", "statusCode": 301 },
+    { "source": "/politica-de-privacidad", "destination": "/politica-de-privacidad/", "statusCode": 301 },
+    { "source": "/politica-de-cookies", "destination": "/politica-de-cookies/", "statusCode": 301 },
+    { "source": "/wp-:rest(.*)", "destination": "/", "statusCode": 301 },
+    { "source": "/xmlrpc.php", "destination": "/", "statusCode": 301 },
+    { "source": "/feed", "destination": "/", "statusCode": 301 },
+    { "source": "/feed/", "destination": "/", "statusCode": 301 },
+    { "source": "/:base+/feed", "destination": "/", "statusCode": 301 },
+    { "source": "/:base+/feed/", "destination": "/", "statusCode": 301 },
+    { "source": "/:path((?:[^/]+/)*[^/.]+)", "destination": "/:path/", "statusCode": 301 }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()" },
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
+      ]
+    },
+    {
+      "source": "/_astro/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/video/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/og/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=86400" }]
+    },
+    {
+      "source": "/(favicon.ico|favicon-32x32.png|apple-touch-icon.png|logo-el-carnivoro.png|icons/.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=86400" }]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    }
+  ]
+}

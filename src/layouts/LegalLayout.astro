@@ -1,0 +1,172 @@
+---
+/** Plantilla de las páginas legales: cabecera sobria y texto largo en papel crema. */
+import BaseLayout from './BaseLayout.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import { legalNav } from '../data/site';
+
+interface Props {
+  title: string;
+  /** <title> SEO */
+  metaTitle: string;
+  description: string;
+  path: string;
+  /** Fecha de última actualización legible (p. ej. «11 de noviembre de 2026»). */
+  updated: string;
+}
+const { title, metaTitle, description, path, updated } = Astro.props;
+const crumbs = [
+  { name: 'Inicio', path: '/' },
+  { name: title, path },
+];
+---
+
+<BaseLayout
+  title={metaTitle}
+  description={description}
+  path={path}
+  ogImage={{ path: '/og/inicio.jpg', alt: 'Restaurante Parrilla El Carnívoro, Collado Villalba' }}
+  schema={[breadcrumbSchema(crumbs)]}
+  overlayHeader={false}
+>
+  <header class="legal-hero bg-coal grain">
+    <div class="container container--narrow lh-inner">
+      <nav aria-label="Migas de pan" class="crumbs">
+        <ol role="list">
+          <li><a href="/">Inicio</a></li>
+          <li><span aria-current="page">{title}</span></li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Información legal</p>
+      <h1 class="display lh-title">{title}</h1>
+      <p class="muted lh-updated">Última actualización: {updated}</p>
+    </div>
+  </header>
+  <section class="section bg-paper grain legal-body" aria-label={title}>
+    <div class="container container--narrow">
+      <div class="prose on-light">
+        <slot />
+      </div>
+      <nav class="legal-other" aria-label="Otros textos legales">
+        <ul role="list">
+          {
+            legalNav
+              .filter((l) => l.href !== path)
+              .map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-hero {
+    position: relative;
+    isolation: isolate;
+    padding-top: calc(var(--header-h) + var(--space-xl));
+    padding-bottom: var(--space-l);
+  }
+  .lh-inner {
+    display: grid;
+    gap: 1rem;
+  }
+  .lh-title {
+    font-size: var(--step-4);
+  }
+  .lh-updated {
+    font-size: var(--step--1);
+  }
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.6rem;
+    font-size: var(--step--1);
+    color: var(--muted-on-dark);
+  }
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 0.6rem;
+    opacity: 0.6;
+  }
+  .crumbs a {
+    display: inline-block;
+    padding-block: 0.3rem;
+    color: var(--text-on-dark);
+    text-decoration: none;
+  }
+  .legal-body :global(.prose) {
+    max-width: none;
+  }
+  .legal-body :global(.prose h2) {
+    font-size: var(--step-3);
+    margin-top: 2em;
+  }
+  .legal-body :global(.prose h2:first-child) {
+    margin-top: 0;
+  }
+  .legal-body :global(.prose h3) {
+    font-family: var(--ff-sans);
+    font-size: var(--step-0);
+    font-weight: 700;
+    letter-spacing: 0;
+    margin-top: 1.6em;
+  }
+  .legal-body :global(.prose dl) {
+    display: grid;
+    gap: 0.4rem 1.25rem;
+  }
+  .legal-body :global(.prose dt) {
+    font-weight: 700;
+  }
+  @media (min-width: 640px) {
+    .legal-body :global(.prose dl) {
+      grid-template-columns: max-content 1fr;
+    }
+  }
+  .legal-body :global(.table-wrap) {
+    overflow-x: auto;
+    margin-block: 1.5em;
+    border: 1px solid var(--line-on-light);
+  }
+  .legal-body :global(table) {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+  }
+  .legal-body :global(th),
+  .legal-body :global(td) {
+    padding: 0.7rem 0.8rem;
+    border-bottom: 1px solid var(--line-on-light);
+    text-align: left;
+    vertical-align: top;
+  }
+  .legal-body :global(thead th) {
+    background: var(--bone);
+    font-weight: 700;
+  }
+  .legal-body :global(caption) {
+    caption-side: top;
+    text-align: left;
+    padding: 0.7rem 0.8rem;
+    font-weight: 700;
+  }
+  .legal-other {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--line-on-light);
+  }
+  .legal-other ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .legal-other a {
+    color: var(--wine);
+    font-weight: 600;
+  }
+</style>
