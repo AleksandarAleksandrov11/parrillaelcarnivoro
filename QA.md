@@ -7,25 +7,29 @@ Lighthouse). Todos los scripts están en `scripts/qa/` y se ejecutan con `npm ru
 
 | # | Revisión | Herramienta | Resultado |
 |---|---|---|---|
-| 1 | Enlaces y botones | linkinator + Playwright (`links.mjs`) | ✅ 649 enlaces · 0 rotos · 0 anclas inexistentes |
+| 1 | Enlaces y botones | linkinator + Playwright (`links.mjs`, `anchors.mjs`) | ✅ 677 enlaces · 0 rotos · 0 anclas inexistentes · 16/16 saltos a ancla en su sitio |
 | 2 | Teléfono antiguo | búsqueda en todo el proyecto (`phone.mjs`) | ✅ 0 apariciones (ni el número ni su prefijo) |
-| 3 | Responsive | Playwright, 11 tamaños × 8 páginas (`responsive.mjs`) | __RESPONSIVE__ |
-| 4 | Lighthouse | Lighthouse 13, móvil y escritorio (`lighthouse.mjs`) | __LIGHTHOUSE__ |
+| 3 | Responsive | Playwright, 11 tamaños × 8 páginas (`responsive.mjs`) | ✅ 88 capturas · 0 incidencias |
+| 4 | Lighthouse | Lighthouse 13, móvil y escritorio (`lighthouse.mjs`) | ✅ escritorio 100/100/100/100 en todas · móvil A11y/BP/SEO 100, LCP ≤ 1,66 s, CLS ≤ 0,02 en todas · ⚠️ rendimiento móvil 95–100 salvo 2 mediciones sueltas por TBT (91 y 94; repetidas, 96–99; ver §4) |
 | 5 | Validación | W3C Nu (vnu.jar 26.11.9) + comprobaciones SEO/JSON-LD (`validate.mjs`) | ✅ 0 errores · 0 avisos HTML · 0 problemas SEO |
-| 6 | Cookies y GA4 | Playwright con red interceptada (`consent.mjs`) | ✅ 16/16 |
-| 7 | Formulario de WhatsApp | Playwright escritorio, iPhone y Android (`form.mjs`) | ✅ 23/23 |
+| 6 | Cookies y GA4 | Playwright con red interceptada (`consent.mjs`) | ✅ 17/17 |
+| 7 | Formulario de WhatsApp | Playwright escritorio, iPhone y Android (`form.mjs`) | ✅ 25/25 |
 | 8 | Redirecciones 301 | emulación de `vercel.json` (`redirects.mjs`) | ✅ 35/35 |
 | 9 | Contenido de la carta vs PDF | doble transcripción independiente + comparación | ✅ 52/52 platos y precios, menú de cenas completo |
-| 10 | Consola del navegador | Playwright en las 88 capturas | __CONSOLE__ |
+| 10 | Consola del navegador | Playwright en las 88 capturas | ✅ 0 errores · 0 avisos |
 | + | Accesibilidad WCAG 2.2 AA | axe-core en 25 estados (`a11y.mjs`) | ✅ 0 incumplimientos |
 
 ---
 
 ## 1. Enlaces y botones
 
-- Rastreo recursivo desde `/` con linkinator y comprobación de fragmentos (`#anclas`): **649 URLs,
-  645 OK, 0 rotas**; las 4 omitidas por linkinator son esquemas no HTTP (`tel:`, `mailto:`),
+- Rastreo recursivo desde `/` con linkinator y comprobación de fragmentos (`#anclas`): **677 URLs,
+  673 OK, 0 rotas**; las 4 omitidas por linkinator son esquemas no HTTP (`tel:`, `mailto:`),
   validados aparte.
+- Saltos directos a ancla (`anchors.mjs`), en escritorio y móvil: `/carta/#desayunos`, `#grupos`,
+  `#menu-del-dia`, `#menu-cenas`, `#vinos`, `/nuestra-historia/#galeria`, `/contacto/#reserva` y
+  `/#visitanos` dejan la sección justo bajo la cabecera (**16/16**). Son los destinos de las
+  redirecciones de las URLs antiguas.
 - Las URLs absolutas del dominio de producción (canonical, `og:image`, schema) se comprueban contra
   este build, porque el dominio todavía sirve la web antigua.
 - En cada página se verifica que todos los `tel:` son `tel:+34915013983`, todos los `mailto:` van a
@@ -39,18 +43,75 @@ Lighthouse). Todos los scripts están en `scripts/qa/` y se ejecutan con `npm ru
 
 ## 2. Teléfono
 
-`scripts/qa/phone.mjs` recorre los 98 archivos de texto del proyecto y del build (código, datos,
+`scripts/qa/phone.mjs` recorre los 104 archivos de texto del proyecto y del build (código, datos,
 Markdown, HTML, XML, JSON) buscando el número completo en todas sus formas y el prefijo aislado:
 **0 apariciones**. Para que incluso un `grep` literal salga limpio se recortó 1 px una foto cuyo
 ancho coincidía con el prefijo y el propio script compone los patrones por partes.
 
 ## 3. Responsive
 
-__RESPONSIVE_DETAIL__
+`scripts/qa/responsive.mjs` hace capturas de página completa de las 8 páginas (inicio, carta,
+nuestra historia, contacto, los tres textos legales y la 404) en **320, 375, 414, 768, 1024, 1280,
+1440 y 1920 px** y en horizontal (**iPhone SE 667×375, iPhone 14 844×390, tablet 1180×820**):
+**88 capturas**. Antes de cada captura recorre la página para disparar las animaciones de entrada y
+la carga diferida de imágenes, y comprueba en el DOM:
+
+- que no hay scroll horizontal (`scrollWidth` del documento igual al viewport);
+- que ningún elemento visible se sale por los lados (salvo los que recorta su contenedor a
+  propósito: fondos, parallax, vídeo del hero);
+- que no hay texto cortado por `overflow: hidden` o puntos suspensivos;
+- que la consola no muestra errores ni avisos (ver apartado 10).
+
+Resultado: **0 incidencias en las 88 capturas**.
+
+Además, las 88 capturas se revisaron a ojo, por tramos, buscando cortes de línea feos, solapes,
+huecos, alineaciones y jerarquía. Lo que se corrigió está en
+[Incidencias encontradas y corregidas](#incidencias-encontradas-y-corregidas-durante-la-qa)
+(apartado «Diseño responsive»). Tras las correcciones se repitió la pasada completa y se revisaron
+de nuevo la carta en móvil, los textos legales en móvil (tablas en fichas), contacto en escritorio y
+la home en 1180 y 1280 px.
 
 ## 4. Lighthouse
 
-__LIGHTHOUSE_DETAIL__
+Lighthouse 13.6 (API de Node + Chrome for Testing 153 sin interfaz), perfiles **móvil** (Moto G Power con 4G
+lenta y CPU ×4 simulada, los valores por defecto) y **escritorio**. Para medir en condiciones
+parecidas a producción, el build se sirve por **HTTPS + HTTP/2 con Brotli** en el puerto 443 y Chrome
+resuelve `www.parrillaelcarnivoro.es` a esta máquina, así que el canonical, las URLs absolutas y las
+cabeceras de `vercel.json` se evalúan como en Vercel. Cada valor es la **mediana de 3 ejecuciones**.
+
+Última pasada completa (14 combinaciones página × dispositivo):
+
+| Página | Móvil P · A · BP · SEO | LCP | CLS | TBT | Escritorio P · A · BP · SEO | LCP |
+|---|---|---|---|---|---|---|
+| `/` | 100 · 100 · 100 · 100 | 1,66 s | 0,004 | 16 ms | 100 · 100 · 100 · 100 | 0,40 s |
+| `/carta/` | 91 · 100 · 100 · 100 ¹ | 1,65 s | 0 | 373 ms | 100 · 100 · 100 · 100 | 0,40 s |
+| `/nuestra-historia/` | 96 · 100 · 100 · 100 | 1,35 s | 0 | 220 ms | 100 · 100 · 100 · 100 | 0,40 s |
+| `/contacto/` | 100 · 100 · 100 · 100 | 1,65 s | 0 | 40 ms | 100 · 100 · 100 · 100 | 0,40 s |
+| `/aviso-legal/` | 97 · 100 · 100 · 100 ² | 0,99 s | 0 | 184 ms | 100 · 100 · 100 · 100 | 0,25 s |
+| `/politica-de-privacidad/` | 96 · 100 · 100 · 100 | 0,98 s | 0,002 | 246 ms | 100 · 100 · 100 · 100 | 0,26 s |
+| `/politica-de-cookies/` | 98 · 100 · 100 · 100 | 0,98 s | 0 | 180 ms | 100 · 100 · 100 · 100 | 0,26 s |
+
+¹ En la pasada anterior la carta móvil dio **96** (TBT 232 ms) y, repetida aparte, **99** (TBT 76 ms).
+² En la pasada anterior dio **94** (TBT 278 ms); repetida aparte, **96**.
+
+Peso transferido: inicio ≈ 1 MB (póster del hero y fotos; el vídeo se carga después), carta 420 KB,
+contacto 264 KB, legales ≈ 145 KB. JavaScript propio: **5–10 KB** por página.
+
+**Objetivos del encargo.** Se cumplen en todas las páginas y en todas las pasadas: SEO 100,
+Accesibilidad 100 (≥ 95), Best Practices 100, LCP < 1,8 s (máximo 1,66 s) y CLS < 0,05 (máximo 0,02).
+Rendimiento móvil ≥ 95: se cumple en 32 de las 34 medianas medidas (dos pasadas completas y una
+repetición de las tres páginas más justas); las dos que no (carta 91 y aviso legal 94) se deben
+únicamente al TBT y al repetirlas dan 96–99.
+
+**Sobre el TBT en móvil.** Es la única métrica que oscila: la misma página legal (379 elementos y
+5 KB de JS) da entre 0 y 272 ms en ejecuciones idénticas consecutivas. En la traza, las tareas
+largas no contienen ni JavaScript, ni maquetación, ni pintado (Lighthouse las clasifica como «no
+atribuibles»), y desaparecen al repetir la medición: es ruido de la máquina virtual en la que se
+mide, multiplicado ×4 por la simulación de CPU, no trabajo de la página. Conviene confirmar los
+valores con **PageSpeed Insights** sobre el dominio real tras el despliegue.
+
+Mejoras de rendimiento aplicadas durante la QA: ver
+[Incidencias encontradas y corregidas](#incidencias-encontradas-y-corregidas-durante-la-qa).
 
 ## 5. Validación
 
@@ -73,7 +134,7 @@ __LIGHTHOUSE_DETAIL__
 
 ## 6. Cookies y GA4 (Consent Mode v2)
 
-Con un ID de GA4 de prueba y las peticiones a Google interceptadas:
+Con un ID de GA4 de prueba y las peticiones a Google interceptadas (17 comprobaciones):
 
 - Sin consentimiento: **0 peticiones** a Google Analytics, Tag Manager o Maps en las 8 páginas y
   **0 cookies**.
@@ -86,6 +147,7 @@ Con un ID de GA4 de prueba y las peticiones a Google interceptadas:
   `_ga`/`_ga_*` borradas, el mapa se retira y en la navegación siguiente no hay peticiones a Google.
 - Tras rechazar, el mapa solo se carga si el usuario pulsa «Ver mapa interactivo» (y eso no activa
   la analítica); la elección queda guardada.
+- Revocar en otra pestaña desactiva GA4 también en la pestaña que ya estaba abierta.
 
 ## 7. Formulario de reserva por WhatsApp
 
@@ -113,6 +175,8 @@ Con un ID de GA4 de prueba y las peticiones a Google interceptadas:
   Acentos, eñes, emojis, «&» y saltos de línea llegan intactos; la URL va completamente codificada.
 - **Escritorio**: se abre una pestaña nueva con `wa.me/34915013983` y la web sigue abierta.
   **iPhone 13 y Pixel 7** (emulados): navegación en la misma pestaña, que abre la app.
+- Sin JavaScript el botón de envío está deshabilitado (el formulario nunca se envía de forma nativa)
+  y una hora que ya ha pasado se rechaza al enviar (25 comprobaciones en total).
 - Ningún dato se envía a un servidor; solo se manda a GA4 (con consentimiento) el evento sin datos
   personales.
 
@@ -150,7 +214,10 @@ con canonical a `/`), cualquier ruta sin barra final → con barra, y
 
 ## 10. Consola
 
-__CONSOLE_DETAIL__
+En las mismas 88 cargas del apartado 3 se registran todos los mensajes `error` y `warning` de la
+consola y las excepciones de JavaScript (`pageerror`): **0 errores y 0 avisos** en todas las páginas y
+tamaños. La única respuesta 404 esperada es la de la propia página 404, que se excluye. Lighthouse
+tampoco registra errores de consola (auditoría `errors-in-console` superada en las 14 ejecuciones).
 
 ## Accesibilidad (WCAG 2.2 AA)
 
