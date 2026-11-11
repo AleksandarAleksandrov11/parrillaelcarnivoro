@@ -27,7 +27,7 @@ import { business, legal } from '../../data/site';
     <dd>{legal.address}</dd>
     <dt>Correo electrónico</dt>
     <dd><a href={`mailto:${business.email}`}>{business.email}</a></dd>
-    <dt>Teléfono y WhatsApp</dt>
+    <dt>Teléfono</dt>
     <dd><a href={business.phone.tel}>{business.phone.display}</a></dd>
     <dt>Sitio web</dt>
     <dd>https://www.parrillaelcarnivoro.es</dd>
@@ -80,18 +80,12 @@ import { business, legal } from '../../data/site';
     <li>facilitar datos falsos o suplantar la identidad de otra persona al solicitar una reserva o contactar con el restaurante.</li>
   </ul>
 
-  <h3>Solicitudes de reserva por WhatsApp</h3>
+  <h3>Reservas por teléfono</h3>
   <p>
-    El formulario de reserva de la web no envía datos a ningún servidor ni los guarda. Al pulsar el botón de envío, es el propio
-    navegador del usuario el que compone un mensaje con la información introducida (nombre, número de personas, fecha, hora, zona
-    —salón o terraza— y, si se desea, comentarios como alergias o una celebración) y abre WhatsApp con ese texto ya escrito,
-    dirigido al número {business.phone.display}. Es el usuario quien decide si envía el mensaje desde su propia cuenta de
-    WhatsApp.
-  </p>
-  <p>
-    Ese mensaje es una solicitud de reserva, sujeta a disponibilidad: la reserva no queda confirmada hasta que el restaurante
-    responde. El usuario es responsable de que los datos que facilita sean veraces. Si los comentarios incluyen alergias o
-    intolerancias, se recomienda recordarlas también al personal al llegar al restaurante.
+    Las reservas se solicitan llamando al {business.phone.display}. La web no tiene formularios: los botones de llamada solo abren
+    la aplicación de teléfono del dispositivo del usuario con ese número. Las reservas están sujetas a disponibilidad y quedan
+    confirmadas cuando el restaurante lo indica durante la llamada. El usuario es responsable de que los datos que facilita sean
+    veraces. Si tiene alergias o intolerancias, se recomienda recordarlas también al personal al llegar al restaurante.
   </p>
 
   <h2 id="propiedad-intelectual">4. Propiedad intelectual e industrial</h2>
@@ -126,7 +120,7 @@ import { business, legal } from '../../data/site';
       Font License 1.1.
     </li>
     <li>
-      <strong>Marcas de terceros:</strong> WhatsApp, Instagram, Google y Google Maps, así como los iconos que identifican esos
+      <strong>Marcas de terceros:</strong> Instagram, Google y Google Maps, así como los iconos que identifican esos
       servicios, son marcas de sus respectivos titulares. Se mencionan solo para identificar dichos servicios, sin que ello implique
       patrocinio ni relación comercial.
     </li>
@@ -157,12 +151,12 @@ import { business, legal } from '../../data/site';
     </li>
     <li>el uso del sitio o de sus contenidos que el usuario haga en contra de lo dispuesto en este aviso legal;</li>
     <li>
-      el funcionamiento, los contenidos o las políticas de privacidad de los servicios de terceros enlazados (WhatsApp, Instagram o
-      Google Maps);
+      el funcionamiento, los contenidos o las políticas de privacidad de los servicios de terceros enlazados (Instagram o Google
+      Maps);
     </li>
     <li>
-      la falta de recepción o el retraso de mensajes de reserva o de consulta cuando se deban a fallos de WhatsApp, del correo
-      electrónico o de la conexión del usuario.
+      la falta de recepción o el retraso de mensajes de consulta cuando se deban a fallos del correo electrónico o de la
+      conexión del usuario.
     </li>
   </ul>
   <p>
@@ -173,11 +167,6 @@ import { business, legal } from '../../data/site';
   <h2 id="enlaces">6. Enlaces a sitios de terceros</h2>
   <p>La web incluye enlaces y accesos a servicios de terceros para facilitar el contacto con el restaurante y su localización:</p>
   <ul>
-    <li>
-      <strong>WhatsApp</strong> (Meta Platforms Ireland Ltd.): el formulario de reserva y los botones de WhatsApp abren una
-      conversación con el número del restaurante en la aplicación o en la web de WhatsApp (wa.me). Es un canal que el usuario elige
-      voluntariamente y que se rige por las condiciones y la política de privacidad de WhatsApp.
-    </li>
     <li>
       <strong>Instagram</strong>: se enlaza el perfil del restaurante,
       <a href={business.instagram.url} target="_blank" rel="noopener">{business.instagram.handle}</a>. La web no incrusta
@@ -227,16 +216,15 @@ import { business, legal } from '../../data/site';
   </p>
   <ul>
     <li>
-      La web no tiene base de datos ni formularios que envíen información a un servidor. Los datos de la solicitud de reserva solo
-      salen del dispositivo del usuario si este decide enviar el mensaje por WhatsApp.
+      La web no tiene base de datos ni formularios que envíen información a un servidor. Las reservas se hacen por teléfono.
     </li>
     <li>
-      Si el usuario contacta por correo electrónico, teléfono o WhatsApp, el restaurante utiliza los datos que facilite para atender
+      Si el usuario contacta por teléfono o correo electrónico, el restaurante utiliza los datos que facilite para atender
       su consulta o gestionar su reserva.
     </li>
     <li>
-      Google Analytics 4 solo se carga si el usuario acepta las cookies de analítica. En ese caso, al abrir una solicitud de reserva
-      por WhatsApp se registra únicamente que se ha enviado, sin el nombre ni ningún otro dato escrito en el formulario.
+      Google Analytics 4 solo se carga si el usuario acepta las cookies de analítica. En ese caso, al pulsar un botón de llamada se
+      registra únicamente que se ha pulsado, nunca el número del usuario ni el contenido de la llamada.
     </li>
     <li>
       El mapa de Google Maps solo se carga si el usuario acepta la categoría «Mapas de Google» o pulsa «Ver mapa interactivo».
@@ -272,10 +260,6 @@ import { business, legal } from '../../data/site';
   <ul>
     <li>Correo electrónico: <a href={`mailto:${business.email}`}>{business.email}</a></li>
     <li>Teléfono: <a href={business.phone.tel}>{business.phone.display}</a></li>
-    <li>
-      WhatsApp:
-      <a href={`https://wa.me/${business.phone.whatsapp}`} target="_blank" rel="noopener">{business.phone.display}</a>
-    </li>
     <li>Dirección postal: {legal.company}, {legal.address}</li>
   </ul>
   <p>El horario del restaurante y la forma de llegar se pueden consultar en la página de <a href="/contacto/">contacto</a>.</p>

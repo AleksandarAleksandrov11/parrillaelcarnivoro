@@ -2,8 +2,10 @@
 
 Web de **Restaurante Parrilla El Carnívoro** (Collado Villalba, Madrid) · https://www.parrillaelcarnivoro.es
 
-Multipágina estática, rápida y accesible: Inicio, Carta, Nuestra historia, Contacto (con reserva por
-WhatsApp), textos legales y 404. Desplegable en Vercel sin tocar nada.
+Multipágina estática, rápida y accesible: Inicio, Carta, Galería (fotos y opiniones), Contacto,
+textos legales y 404. **Las reservas se hacen solo por teléfono** (91 501 39 83): botón de llamar
+siempre visible (barra fija abajo en móvil, botón flotante con el número en escritorio).
+Desplegable en Vercel sin tocar nada.
 
 > **Los textos legales deben ser revisados por el cliente o su asesor antes de publicar.**
 
@@ -17,7 +19,7 @@ WhatsApp), textos legales y 404. Desplegable en Vercel sin tocar nada.
   mismo resultado (revelados, parallax, texto palabra a palabra, transiciones entre páginas) con
   ~4 KB de JS en vez de ~45 KB, para cumplir el objetivo de «JS inicial casi 0».
   **Lenis** (scroll suave) se carga en diferido solo en escritorio.
-- Sin React/Svelte: las partes interactivas (formulario, calendario, galería, banner de cookies)
+- Sin React/Svelte: las partes interactivas (galería, banner de cookies, mapa, horario «abierto ahora»)
   son módulos TypeScript pequeños que Astro empaqueta por página.
 - Fuentes autoalojadas (Cormorant Garamond + Manrope, WOFF2 latino, `font-display: swap`,
   métricas de respaldo ajustadas) con la API de fuentes de Astro; solo se precarga la principal.
@@ -54,9 +56,9 @@ src/
     carta.ts      ← LA CARTA: platos, precios, menús, desayunos
     site.ts       ← nombre, dirección, teléfono, horario, enlaces, datos legales
     gallery.ts    ← fotos de la galería, categoría y texto alternativo
-    reviews.ts    ← opiniones reales de clientes
+    reviews.ts    ← opiniones reales de Google (selección) y nota media
   assets/photos/  ← fotos maestras (JPEG); Astro genera AVIF/WebP
-  components/     ← cabecera, pie, hero, galería, formulario, cookies…
+  components/     ← cabecera, pie, hero, galería, botón de llamar, cookies…
   pages/          ← una carpeta por URL (/carta/, /contacto/…)
   scripts/        ← JS del cliente (consentimiento, GA4, galería, reserva…)
   styles/         ← sistema de diseño (global.css)
@@ -99,9 +101,8 @@ source-assets/    ← ORIGINALES (no forman parte del build)
 - Por defecto `analytics_storage`, `ad_storage`, `ad_user_data` y `ad_personalization` están en
   `denied`. `gtag.js` solo se descarga cuando el usuario acepta la analítica en el banner; si la
   revoca, se deniega el consentimiento, se desactiva el envío y se borran las cookies `_ga`.
-- Eventos: `whatsapp_click`, `phone_click`, `directions_click` («Cómo llegar»), `view_menu`
-  (vista de la carta), `generate_lead` y `reservation_whatsapp` (envío del formulario). Ninguno
-  incluye datos personales.
+- Eventos: `phone_click` (con la zona de la web donde se pulsó), `directions_click`
+  («Cómo llegar») y `view_menu` (vista de la carta). Ninguno incluye datos personales.
 
 ## Editar la carta
 
@@ -135,19 +136,29 @@ Todo está en **`src/data/carta.ts`** (un único archivo tipado; no hay que toca
 Otros recursos: `npm run assets:video` (vídeos del hero y de las brasas; requiere ffmpeg con
 libx264 y libsvtav1), `npm run assets:icons` (favicon, iconos y logotipo), `npm run assets:textures`.
 
+## Opiniones
+
+Las reseñas de la web están en **`src/data/reviews.ts`**: una selección de las más positivas de
+Google, copiadas literalmente (nombre y la inicial del apellido). Para añadir una, copia un bloque y
+pega el texto; con `home: true` sale en la portada (las tres primeras marcadas). La nota media y el
+número de reseñas que se muestran (`googleRating`) son fijos: actualízalos de vez en cuando. El
+botón «Ver todas las reseñas en Google» usa el enlace de `business.maps.reviews` en
+`src/data/site.ts`.
+
 ## Datos del negocio
 
 Nombre, dirección, teléfono, horario, Instagram, mapa y datos legales están en
 **`src/data/site.ts`**. Se usan en toda la web y en el schema, así que basta con cambiarlos ahí.
 
-- **Teléfono único**: 91 501 39 83 (`+34915013983`), para llamadas y WhatsApp.
+- **Teléfono único**: 91 501 39 83 (`+34915013983`). Es el único canal de reservas: la web no
+  tiene formularios ni WhatsApp.
 - **Dirección**: «Local 4» en los datos comerciales y «Local 3-4» en los textos legales, tal y como
   figuraban en la web anterior. **Pendiente de confirmar con el cliente.**
 
 ## QA
 
 `npm run qa` ejecuta la revisión automática (enlaces, teléfono, capturas responsive, validación
-HTML/JSON-LD, cookies, formulario, redirecciones y consola). Los resultados están en **`QA.md`**.
+HTML/JSON-LD, cookies, accesibilidad, redirecciones, consola y Lighthouse). Los resultados están en **`QA.md`**.
 
 ## Pendiente de confirmar con el cliente
 

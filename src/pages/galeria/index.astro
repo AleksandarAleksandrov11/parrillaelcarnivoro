@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SplitText from '../../components/SplitText.astro';
+import Gallery from '../../components/Gallery.astro';
+import ReviewCard from '../../components/ReviewCard.astro';
+import ReserveCta from '../../components/ReserveCta.astro';
+import { gallery } from '../../data/gallery';
+import { reviews, googleRating } from '../../data/reviews';
+import { business } from '../../data/site';
+import { breadcrumbSchema } from '../../lib/schema';
+
+const crumbs = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Galería', path: '/galeria/' },
+];
+---
+
+<BaseLayout
+  title="Galería y opiniones | El Carnívoro, parrilla en Collado Villalba"
+  description="Fotos de nuestros platos, el salón, la terraza y la parrilla de carbón, y lo que opinan nuestros clientes: 4,4 en Google con más de 350 reseñas."
+  path="/galeria/"
+  ogImage={{ path: '/og/galeria.jpg', alt: 'Salón del Restaurante Parrilla El Carnívoro en Collado Villalba' }}
+  schema={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    title="Fuego, mesa _y sierra_"
+    kicker="Galería"
+    intro="Nuestros platos, el salón, la terraza y la parrilla de carbón. Pulsa en cualquier foto para verla a pantalla completa."
+    photo="salon-restaurante-el-carnivoro-collado-villalba"
+    photoAlt="Salón de El Carnívoro con mesas de madera, ladrillo visto y lámparas cálidas"
+    compact
+  />
+
+  <section id="fotos" class="section bg-ink grain" aria-labelledby="fotos-title">
+    <div class="container container--wide">
+      <h2 id="fotos-title" class="visually-hidden">Fotos de El Carnívoro</h2>
+      <Gallery items={gallery} filters label="Galería de fotos de El Carnívoro" />
+    </div>
+  </section>
+
+  <section id="opiniones" class="section bg-bone grain" aria-labelledby="opiniones-title">
+    <div class="container container--wide">
+      <div class="rv-head">
+        <div class="rv-title">
+          <span class="eyebrow" data-reveal="fade">Opiniones</span>
+          <SplitText as="h2" id="opiniones-title" class="display" text="Lo que dicen _nuestros clientes_" />
+        </div>
+        <div class="rv-score" data-reveal style="--d:150">
+          <p class="rv-number"><span aria-hidden="true">★</span> {googleRating.score}<span class="rv-of"> de 5</span></p>
+          <p class="rv-count">{googleRating.count} reseñas en Google</p>
+          <a class="btn btn--dark" href={business.maps.reviews} target="_blank" rel="noopener">Ver todas las reseñas en Google</a>
+        </div>
+      </div>
+      <ul role="list" class="rv-list">
+        {
+          reviews.map((r) => (
+            <li>
+              <ReviewCard review={r} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <ReserveCta />
+</BaseLayout>
+
+<style>
+  .rv-head {
+    display: grid;
+    gap: var(--space-m);
+    margin-bottom: var(--space-l);
+  }
+  .rv-title {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .rv-score {
+    display: grid;
+    justify-items: start;
+    gap: 0.5rem;
+  }
+  .rv-number {
+    font-family: var(--ff-display);
+    font-size: var(--step-5);
+    line-height: 1;
+    color: var(--text-on-light);
+  }
+  .rv-number span[aria-hidden] {
+    color: var(--brass-ink);
+    font-size: 0.6em;
+    vertical-align: 0.25em;
+  }
+  .rv-of {
+    font-size: var(--step-1);
+    color: var(--muted-on-light);
+  }
+  .rv-count {
+    margin-bottom: 0.75rem;
+    color: var(--muted-on-light);
+  }
+  .rv-list {
+    columns: 1;
+    column-gap: clamp(1rem, 2vw, 1.75rem);
+  }
+  .rv-list li {
+    break-inside: avoid;
+    margin-bottom: clamp(1rem, 2vw, 1.75rem);
+  }
+  @media (min-width: 700px) {
+    .rv-list {
+      columns: 2;
+    }
+  }
+  @media (min-width: 1100px) {
+    .rv-list {
+      columns: 3;
+    }
+    .rv-head {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+    .rv-score {
+      justify-items: end;
+      text-align: right;
+    }
+  }
+</style>

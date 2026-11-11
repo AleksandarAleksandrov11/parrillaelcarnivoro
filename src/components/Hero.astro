@@ -7,7 +7,7 @@
 import { Picture } from 'astro:assets';
 import logo from '../assets/brand/logo-el-carnivoro-blanco.png';
 import { lqip } from '../data/photos';
-import { business, hoursSummary, whatsappUrl, defaultWhatsappText } from '../data/site';
+import { business, hoursSummary } from '../data/site';
 import { heroPoster, PORTRAIT_MQ } from '../lib/hero';
 import Icon from './Icon.astro';
 import SplitText from './SplitText.astro';
@@ -29,7 +29,7 @@ const sources = {
       <source media={PORTRAIT_MQ} type="image/webp" srcset={portWebp} sizes="100vw" />
       <source type="image/avif" srcset={landAvif} sizes="100vw" />
       <source type="image/webp" srcset={landWebp} sizes="100vw" />
-      <img class="hero-poster" src={fallback} width="1920" height="1080" alt="" fetchpriority="high" loading="eager" decoding="sync" />
+      <img class="hero-poster" src={fallback} width="1920" height="1080" alt="Carne asándose sobre la parrilla de carbón de El Carnívoro" fetchpriority="high" loading="eager" decoding="sync" />
     </picture>
     <video class="hero-video" muted playsinline loop preload="none" disablepictureinpicture data-hero-video data-sources={JSON.stringify(sources)}></video>
     <div class="hero-shade"></div>
@@ -48,38 +48,27 @@ const sources = {
       class="hero-logo"
     />
     <h1 id="hero-title" class="hero-title">
-      <span class="eyebrow eyebrow--center hero-eyebrow" data-reveal="fade" style="--d:150"
-        ><span class="nw">Restaurante parrilla</span><span class="sep" aria-hidden="true"> · </span><span class="nw">Collado Villalba</span></span
-      >
+      <span class="visually-hidden">Restaurante parrilla en Collado Villalba: </span>
       <SplitText as="span" text="Pasión _por la carne_" class="hero-slogan" delay={250} />
     </h1>
     <p class="hero-sub" data-reveal style="--d:650">La mejor carne a la parrilla de carbón de la sierra de Madrid, en un salón acogedor y una gran terraza.</p>
     <div class="hero-ctas" data-reveal style="--d:800">
-      <a class="btn btn--primary" href={whatsappUrl(defaultWhatsappText)} target="_blank" rel="noopener" data-track="whatsapp">
-        <Icon name="whatsapp" />
-        Reservar por WhatsApp
+      <a class="btn btn--primary" href={business.phone.tel} data-track="phone" data-track-location="hero">
+        <Icon name="phone" />
+        Reservar: {business.phone.display}
       </a>
       <a class="btn btn--ghost" href="/carta/">Ver la carta</a>
     </div>
   </div>
 
   <div class="hero-foot container container--wide" data-reveal="fade" style="--d:1000">
-    <a class="scroll-cue" href="#descubre">
-      <span>Descubre</span>
-      <Icon name="arrow-down" size={18} />
-    </a>
     <p class="hero-hours"><Icon name="clock" size={16} /> {hoursSummary.openShort} · {hoursSummary.time}</p>
-    <button class="video-toggle" type="button" data-paused="false" hidden data-video-toggle>
-      <span class="vt-pause"><Icon name="pause" size={14} /><span>Pausar vídeo</span></span>
-      <span class="vt-play"><Icon name="play" size={14} /><span>Reproducir vídeo</span></span>
-    </button>
   </div>
 </section>
 
 <script>
   type Sources = { av1: Record<'portrait' | 'sd' | 'hd', string>; h264: Record<'portrait' | 'sd' | 'hd', string> };
   const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
-  const toggle = document.querySelector<HTMLButtonElement>('[data-video-toggle]');
 
   type Conn = { saveData?: boolean; effectiveType?: string };
   const conn = (navigator as Navigator & { connection?: Conn }).connection;
@@ -98,29 +87,18 @@ const sources = {
     if (!video || skip) return;
     const src = JSON.parse(video.dataset.sources || '{}') as Sources;
     video.src = pick(src);
-    let userPaused = false;
     const play = () => video.play().catch(() => {});
     video.addEventListener(
       'playing',
-      () => {
-        video.classList.add('is-playing');
-        if (toggle) toggle.hidden = false;
-      },
+      () => video.classList.add('is-playing'),
       { once: true },
     );
     play();
     // Pausa cuando el hero no se ve (ahorra batería y CPU).
     new IntersectionObserver(([e]) => {
-      if (userPaused) return;
       if (e.isIntersecting) play();
       else video.pause();
     }).observe(video);
-    toggle?.addEventListener('click', () => {
-      userPaused = !video.paused ? true : false;
-      if (video.paused) play();
-      else video.pause();
-      toggle.dataset.paused = String(userPaused);
-    });
   }
 
   // El vídeo no se pide hasta que el póster (LCP) está pintado y la página cargada.
@@ -219,34 +197,6 @@ const sources = {
     gap: 1rem;
     font-weight: 500;
   }
-  .hero-eyebrow {
-    color: var(--brass);
-    font-family: var(--ff-sans);
-    line-height: 1.4;
-  }
-  .hero-eyebrow .nw {
-    white-space: nowrap;
-  }
-  @media (max-width: 479px) {
-    /* En pantallas estrechas, dos líneas limpias sin separador colgando. */
-    .hero-eyebrow {
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 15rem;
-      text-align: center;
-      row-gap: 0.15rem;
-    }
-    .hero-eyebrow::before,
-    .hero-eyebrow::after {
-      display: none;
-    }
-    .hero-eyebrow .sep {
-      display: none;
-    }
-    .hero-eyebrow .nw {
-      flex-basis: 100%;
-    }
-  }
   .hero-title :global(.hero-slogan) {
     display: block;
     font-family: var(--ff-display);
@@ -277,29 +227,11 @@ const sources = {
   .hero-foot {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 1rem;
     padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
     font-size: var(--step--1);
     color: rgb(243 236 223 / 0.85);
-  }
-  .scroll-cue {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    min-height: 44px;
-    font-size: var(--step--2);
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    text-decoration: none;
-  }
-  .scroll-cue :global(svg) {
-    animation: cue 2.4s var(--ease-in-out) 2;
-  }
-  @keyframes cue {
-    50% {
-      transform: translate3d(0, 5px, 0);
-    }
   }
   .hero-hours {
     display: none;
@@ -308,59 +240,6 @@ const sources = {
   }
   .hero-hours :global(svg) {
     color: var(--brass);
-  }
-  .video-toggle {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0.5rem 0.9rem;
-    border: 1px solid rgb(243 236 223 / 0.35);
-    border-radius: 999px;
-    font-size: var(--step--2);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .video-toggle[hidden] {
-    display: none;
-  }
-  /* Deja libre la esquina del botón flotante de WhatsApp (salvo en pantallas muy anchas). */
-  @media (max-width: 999px) {
-    .hero-foot {
-      padding-right: 64px;
-    }
-  }
-  @media (min-width: 1000px) and (max-width: 1799px) {
-    .hero-foot {
-      padding-right: 84px;
-    }
-  }
-  @media (max-width: 479px) {
-    .video-toggle {
-      padding: 0.5rem;
-      width: 44px;
-      justify-content: center;
-    }
-    .video-toggle > span > span {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
-    }
-  }
-  .video-toggle > span {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  /* El texto (y por tanto el nombre accesible) cambia: «Pausar vídeo» / «Reproducir vídeo». */
-  .video-toggle .vt-play,
-  .video-toggle[data-paused='true'] .vt-pause {
-    display: none;
-  }
-  .video-toggle[data-paused='true'] .vt-play {
-    display: inline-flex;
   }
   @media (min-width: 720px) {
     .hero-hours {
@@ -383,7 +262,6 @@ const sources = {
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-poster,
-    .scroll-cue :global(svg),
     .hero-content :global(.hero-logo) {
       animation: none;
     }

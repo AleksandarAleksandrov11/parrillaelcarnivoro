@@ -1,5 +1,5 @@
 // QA 1 · Enlaces y botones: rastreo completo con linkinator (internos, externos, anclas)
-// y comprobación específica de tel:, mailto:, wa.me y atributos data-* con URLs.
+// y comprobación específica de tel:, mailto:, que no quede ningún enlace de WhatsApp y atributos data-* con URLs.
 import { LinkChecker } from 'linkinator';
 import { chromium } from 'playwright';
 import { BASE, PAGES, startServer, writeReport } from './lib.mjs';
@@ -28,7 +28,7 @@ try {
   const botWalls = broken.filter((l) => /instagram\.com|google\.com\/maps|maps\.google\.com/.test(l.url) && [403, 429, 0].includes(l.status ?? 0));
   const realBroken = broken.filter((l) => !botWalls.includes(l));
 
-  // 2) Revisión de cada página: tel:, mailto:, wa.me, anclas internas y botones.
+  // 2) Revisión de cada página: tel:, mailto:, sin WhatsApp, anclas internas y botones.
   const browser = await chromium.launch();
   const page = await browser.newPage();
   const perPage = [];
@@ -48,7 +48,8 @@ try {
     const wa = info.hrefs.filter((h) => h.includes('wa.me'));
     tel.filter((h) => h !== 'tel:+34915013983').forEach((h) => problems.push(`${p.path}: tel incorrecto ${h}`));
     mail.filter((h) => !/^mailto:parrilla\.carnivoro@gmail\.com(\?subject=[^ ]+)?$/.test(h)).forEach((h) => problems.push(`${p.path}: mailto incorrecto ${h}`));
-    wa.filter((h) => !/^https:\/\/wa\.me\/34915013983(\?text=[^ ]+)?$/.test(h)).forEach((h) => problems.push(`${p.path}: wa.me incorrecto ${h}`));
+    wa.forEach((h) => problems.push(`${p.path}: enlace de WhatsApp (ya no se usa) ${h}`));
+    if (!tel.length) problems.push(`${p.path}: sin enlace para llamar`);
     info.hrefs
       .filter((h) => h.startsWith('#'))
       .forEach((h) => {

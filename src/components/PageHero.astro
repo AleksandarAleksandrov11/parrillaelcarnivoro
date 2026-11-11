@@ -1,5 +1,5 @@
 ---
-/** Cabecera de páginas interiores: foto con parallax suave, migas de pan, H1 e introducción. */
+/** Cabecera de páginas interiores: foto con parallax suave, H1 e introducción. */
 import Photo from './Photo.astro';
 import SplitText from './SplitText.astro';
 import type { PhotoName } from '../data/photos';
@@ -9,33 +9,21 @@ interface Props {
   kicker: string;
   intro?: string;
   photo: PhotoName;
-  photoAlt?: string;
+  photoAlt: string;
   position?: string;
-  crumbs: { name: string; path: string }[];
   compact?: boolean;
 }
-const { title, kicker, intro, photo, photoAlt = '', position = 'center', crumbs, compact = false } = Astro.props;
+const { title, kicker, intro, photo, photoAlt, position = 'center', compact = false } = Astro.props;
 ---
 
 <header class:list={['page-hero', { compact }]}>
-  <div class="ph-media" aria-hidden={photoAlt ? undefined : 'true'}>
+  <div class="ph-media">
     <div class="ph-parallax" data-parallax="0.18">
       <Photo name={photo} alt={photoAlt} fill sizes="100vw" priority position={position} widths={[640, 960, 1280, 1600, 1920]} quality={40} />
     </div>
   </div>
   <div class="container container--wide ph-inner">
-    <nav aria-label="Migas de pan" class="crumbs" data-reveal="fade">
-      <ol role="list">
-        {
-          crumbs.map((c, i) => (
-            <li>
-              {i < crumbs.length - 1 ? <a href={c.path}>{c.name}</a> : <span aria-current="page">{c.name}</span>}
-            </li>
-          ))
-        }
-      </ol>
-    </nav>
-    <p class="eyebrow" data-reveal="fade" style="--d:100">{kicker}</p>
+    <p class="eyebrow" data-reveal="fade">{kicker}</p>
     <SplitText as="h1" class="ph-title" text={title} delay={150} />
     {intro && <p class="lead ph-intro" data-reveal style="--d:450">{intro}</p>}
     <slot />
@@ -80,33 +68,8 @@ const { title, kicker, intro, photo, photoAlt = '', position = 'center', crumbs,
     padding-top: calc(var(--header-h) + 3rem);
     padding-bottom: var(--space-xl);
   }
-  .crumbs ol {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 0.6rem;
-    font-size: var(--step--1);
-    color: var(--text-on-dark);
-  }
   .ph-inner {
     text-shadow: 0 1px 12px rgb(0 0 0 / 0.55);
-  }
-  .crumbs li + li::before {
-    content: '/';
-    content: '/' / '';
-    margin-right: 0.6rem;
-    opacity: 0.6;
-  }
-  .crumbs a,
-  .crumbs span {
-    color: var(--text-on-dark);
-    text-decoration: none;
-    padding-block: 0.3rem;
-    display: inline-block;
-  }
-  @media (hover: hover) {
-    .crumbs a:hover {
-      text-decoration: underline;
-    }
   }
   .page-hero :global(.ph-title) {
     font-size: var(--step-5);

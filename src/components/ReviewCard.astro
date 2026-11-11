@@ -1,0 +1,74 @@
+---
+/** Tarjeta de una opinión de cliente. */
+import type { Review } from '../data/reviews';
+interface Props {
+  review: Review;
+}
+const { review: r } = Astro.props;
+---
+
+<figure class="review">
+  <span class="quote-mark" aria-hidden="true">“</span>
+  <blockquote>
+    {r.highlight && <p class="review-highlight">{r.highlight}</p>}
+    <p class="review-text">{r.text}</p>
+  </blockquote>
+  <figcaption>
+    <span class="review-author">{r.author || 'Cliente'}</span>
+    <span class="review-date">Reseña de Google</span>
+  </figcaption>
+</figure>
+
+<style>
+  .review {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-content: start;
+    gap: 1rem;
+    height: 100%;
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    background: rgb(249 246 240 / 0.75);
+    border: 1px solid var(--line-on-light);
+    color: var(--text-on-light);
+  }
+  .quote-mark {
+    font-family: var(--ff-display);
+    font-size: 5rem;
+    line-height: 0.6;
+    color: var(--wine);
+    height: 2.2rem;
+  }
+  blockquote {
+    display: grid;
+    align-content: start;
+    gap: 0.9rem;
+  }
+  .review-highlight {
+    font-family: var(--ff-display);
+    font-size: var(--step-2);
+    line-height: 1.2;
+    font-style: italic;
+  }
+  .review-text {
+    font-size: var(--step--1);
+    color: var(--muted-on-light);
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    align-self: end;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line-on-light);
+    font-size: var(--step--1);
+  }
+  .review-author {
+    font-weight: 600;
+    color: var(--brass-ink);
+  }
+  .review-date {
+    color: var(--muted-on-light);
+  }
+</style>

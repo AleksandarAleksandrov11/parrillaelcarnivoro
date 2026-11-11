@@ -31,8 +31,6 @@ restaurante. Titular: Ivosi 2022, S.L.
   pizarra de cortes, carta, chuletón, entraña, bacalao, ensalada, chuletillas, arroz con leche, etc.
 - Fotos del equipo (WhatsApp, mayo y diciembre de 2023): terraza, parrilla, T-Bone, paletilla,
   contramuslo, hamburguesas, gambones, provolone, parrillada de verduras, postres…
-- Vídeo real de las brasas (`VID-20231219-WA0056.mp4`, diciembre de 2023), usado como clip
-  ambiental en «Nuestra historia».
 
 Las fotos de WhatsApp se han retocado de forma sutil (niveles, saturación y enfoque) y se
 han eliminado sus metadatos (incluida la geolocalización). Se han descartado las fotos con

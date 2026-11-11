@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Prepara los vídeos de la web a partir de source-assets/.
 #  - Hero: vídeo de Pexels (Denys Gromov, licencia Pexels) de carne en la parrilla.
-#  - Clip de brasas: vídeo real del restaurante (WhatsApp, diciembre 2023).
 # Salida: public/video/*.mp4 (H.264) y *.webm (AV1), sin audio y en bucle sin corte,
 # más los pósters en src/assets/photos/ (los procesa astro:assets a AVIF/WebP).
 #
@@ -43,7 +42,6 @@ poster() {
 }
 
 HERO="$SRC/2023/03/pexels-denys-gromov-6577409.mp4"
-FIRE="$SRC/2024/01/VID-20231219-WA0056.mp4"
 
 echo "→ Hero 1080p / 720p / vertical"
 make_loop "$HERO" 0 9.9 "scale=1920:1080:flags=lanczos" hero-1080
@@ -57,10 +55,5 @@ encode "$TMP/hero-portrait.master.mp4" hero-portrait 27 40
 
 poster "$TMP/hero-1080.master.mp4" "$POSTERS/hero-parrilla-carbon-poster.jpg"
 poster "$TMP/hero-portrait.master.mp4" "$POSTERS/hero-parrilla-carbon-poster-vertical.jpg"
-
-echo "→ Clip real de las brasas"
-make_loop "$FIRE" 0.2 3.6 "scale=480:640" brasas-parrilla
-encode "$TMP/brasas-parrilla.master.mp4" brasas-parrilla 28 42
-poster "$TMP/brasas-parrilla.master.mp4" "$POSTERS/brasas-parrilla-el-carnivoro-poster.jpg"
 
 ls -la "$OUT"

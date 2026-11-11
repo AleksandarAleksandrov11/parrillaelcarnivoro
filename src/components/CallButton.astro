@@ -1,0 +1,134 @@
+---
+/**
+ * Llamada para reservar, siempre a mano.
+ * - Escritorio: botón flotante con el número, abajo a la derecha.
+ * - Móvil y tablet: barra fija en la parte inferior; al pulsarla se abre la llamada.
+ */
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+---
+
+<aside class="call-wrap" aria-label="Reservar por teléfono">
+  <a class="call" href={business.phone.tel} data-fab data-track="phone" data-track-location="boton-fijo">
+    <span class="call-icon" aria-hidden="true"><Icon name="phone" size={20} /></span>
+    <span class="call-text">
+      <span class="call-label">Llama y reserva</span>
+      <span class="call-number">{business.phone.display}</span>
+    </span>
+  </a>
+</aside>
+
+<style>
+  .call {
+    position: fixed;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--cream);
+    background: var(--wine);
+    transition:
+      transform 0.5s var(--ease-out),
+      opacity 0.4s var(--ease-out),
+      visibility 0s linear 0s,
+      background-color 0.3s var(--ease-out);
+  }
+  .call-icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    border-radius: 50%;
+    background: rgb(249 246 240 / 0.14);
+  }
+  .call-text {
+    display: grid;
+    line-height: 1.15;
+  }
+  .call-label {
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(249 246 240 / 0.82);
+  }
+  .call-number {
+    font-size: var(--step-1);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* Móvil y tablet: barra fija abajo, a todo el ancho. */
+  @media (max-width: 999px) {
+    .call {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      justify-content: center;
+      gap: 0.9rem;
+      min-height: 64px;
+      padding: 0.6rem max(1rem, env(safe-area-inset-right)) calc(0.6rem + env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+      box-shadow: 0 -10px 30px rgb(0 0 0 / 0.25);
+      border-top: 1px solid rgb(201 168 106 / 0.35);
+    }
+    .call-icon {
+      width: 40px;
+      height: 40px;
+    }
+    .call-text {
+      grid-auto-flow: column;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+    /* La página deja sitio a la barra para que no tape el final del contenido. */
+    :global(body) {
+      padding-bottom: calc(64px + env(safe-area-inset-bottom));
+    }
+  }
+  @media (max-width: 359px) {
+    .call-text {
+      grid-auto-flow: row;
+      gap: 0;
+    }
+  }
+
+  /* Escritorio: botón flotante con el número. */
+  @media (min-width: 1000px) {
+    .call {
+      right: 1.75rem;
+      bottom: 1.75rem;
+      gap: 0.85rem;
+      padding: 0.6rem 1.6rem 0.6rem 0.6rem;
+      border-radius: 999px;
+      box-shadow:
+        0 14px 40px rgb(0 0 0 / 0.35),
+        0 0 0 1px rgb(201 168 106 / 0.35) inset;
+    }
+    .call-icon {
+      width: 46px;
+      height: 46px;
+    }
+    .call.is-hidden {
+      transform: translate3d(0, 160%, 0);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        transform 0.5s var(--ease-out),
+        opacity 0.4s var(--ease-out),
+        visibility 0s linear 0.5s;
+    }
+  }
+  @media (hover: hover) {
+    .call:hover {
+      background: var(--wine-deep);
+    }
+  }
+  /* Mientras el banner de cookies está visible, el botón se aparta para no taparlo. */
+  :global(html.js:not([data-consent])) .call {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate3d(0, 160%, 0);
+  }
+</style>

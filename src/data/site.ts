@@ -13,12 +13,11 @@ export const business = {
   cuisine: ['Carnes a la parrilla de carbón', 'Parrilla', 'Asador', 'Española', 'Mediterránea'],
   priceRange: '€€',
   email: 'parrilla.carnivoro@gmail.com',
-  /** Único teléfono de la web, para llamadas y WhatsApp. */
+  /** Único teléfono de la web: las reservas se hacen llamando. */
   phone: {
     display: '91 501 39 83',
     e164: '+34915013983',
     tel: 'tel:+34915013983',
-    whatsapp: '34915013983',
   },
   instagram: {
     handle: '@elcarnivoro.villalba',
@@ -43,6 +42,8 @@ export const business = {
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12110.984191824411!2d-4.016686864021739!3d40.63548214966094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4175b2adf35209%3A0x338034b62cee88a!2sRestaurante%20Parrilla%20El%20Carn%C3%ADvoro!5e0!3m2!1ses!2ses!4v1678103504523!5m2!1ses!2ses',
     /** Ficha del restaurante en Google Maps (CID obtenido del embed de la web anterior). */
     place: 'https://maps.google.com/?cid=231939003124738186',
+    /** Todas las reseñas en Google (enlace facilitado por el cliente). */
+    reviews: 'https://share.google/htDa63JVXw4YvVM4k',
     directions:
       'https://www.google.com/maps/dir/?api=1&destination=Restaurante+Parrilla+El+Carn%C3%ADvoro%2C+Pasaje+Piscina+Delfe+3%2C+28400+Collado+Villalba',
   },
@@ -95,7 +96,7 @@ export const hoursSummary = {
 export const nav = [
   { href: '/', label: 'Inicio' },
   { href: '/carta/', label: 'Carta' },
-  { href: '/nuestra-historia/', label: 'Nuestra historia' },
+  { href: '/galeria/', label: 'Galería' },
   { href: '/contacto/', label: 'Contacto' },
 ] as const;
 
@@ -105,10 +106,5 @@ export const legalNav = [
   { href: '/politica-de-cookies/', label: 'Política de cookies' },
 ] as const;
 
-/** Enlace de WhatsApp con mensaje opcional (URL-encoded). */
-export function whatsappUrl(text?: string): string {
-  const base = `https://wa.me/${business.phone.whatsapp}`;
-  return text ? `${base}?text=${encodeURIComponent(text)}` : base;
-}
-
-export const defaultWhatsappText = 'Hola, me gustaría reservar mesa en El Carnívoro.';
+/** Quién ha hecho la web (crédito en el pie). */
+export const credits = { name: 'AAS Marketing', url: 'https://aasmarketing.com/' } as const;

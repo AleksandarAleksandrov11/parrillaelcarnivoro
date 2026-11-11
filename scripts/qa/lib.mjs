@@ -12,7 +12,7 @@ export const BASE = `http://localhost:${PORT}`;
 export const PAGES = [
   { path: '/', name: 'inicio' },
   { path: '/carta/', name: 'carta' },
-  { path: '/nuestra-historia/', name: 'nuestra-historia' },
+  { path: '/galeria/', name: 'galeria' },
   { path: '/contacto/', name: 'contacto' },
   { path: '/aviso-legal/', name: 'aviso-legal' },
   { path: '/politica-de-privacidad/', name: 'politica-de-privacidad' },

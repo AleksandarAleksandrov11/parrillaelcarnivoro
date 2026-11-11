@@ -79,7 +79,7 @@ export function track(name: string, params: Record<string, unknown> = {}) {
   gtag('event', name, params);
 }
 
-/** Eventos de clic: WhatsApp, teléfono y «Cómo llegar». */
+/** Eventos de clic: teléfono y «Cómo llegar». */
 export function initClickTracking() {
   document.addEventListener(
     'click',
@@ -88,8 +88,7 @@ export function initClickTracking() {
       if (!a) return;
       const href = a.getAttribute('href') || '';
       const where = a.dataset.trackLocation || a.closest('[data-track-zone]')?.getAttribute('data-track-zone') || location.pathname;
-      if (href.startsWith('https://wa.me/')) track('whatsapp_click', { link_location: where });
-      else if (href.startsWith('tel:')) track('phone_click', { link_location: where });
+      if (href.startsWith('tel:')) track('phone_click', { link_location: where });
       else if (a.dataset.track === 'directions') track('directions_click', { link_location: where });
     },
     { capture: true },

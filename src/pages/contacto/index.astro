@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
-import ReservationForm from '../../components/ReservationForm.astro';
 import HoursTable from '../../components/HoursTable.astro';
 import MapFacade from '../../components/MapFacade.astro';
 import SplitText from '../../components/SplitText.astro';
+import Photo from '../../components/Photo.astro';
 import Icon from '../../components/Icon.astro';
-import { business, whatsappUrl, defaultWhatsappText } from '../../data/site';
+import { business, hoursSummary } from '../../data/site';
 import { breadcrumbSchema } from '../../lib/schema';
 
 const crumbs = [
@@ -17,51 +17,62 @@ const crumbs = [
 
 <BaseLayout
   title="Reservas y contacto | El Carnívoro, terraza en Collado Villalba"
-  description="Reserva en El Carnívoro por WhatsApp o al 91 501 39 83. C/ Pasaje Piscina Delfe, 3, Collado Villalba. Abierto lunes y de jueves a domingo, de 10:00 a 01:00."
+  description="Reserva mesa en El Carnívoro llamando al 91 501 39 83. C/ Pasaje Piscina Delfe, 3, Collado Villalba. Abierto lunes y de jueves a domingo, de 10:00 a 01:00."
   path="/contacto/"
   ogImage={{ path: '/og/contacto.jpg', alt: 'Fachada y terraza exterior de Restaurante Parrilla El Carnívoro en Collado Villalba' }}
   schema={[breadcrumbSchema(crumbs)]}
 >
   <PageHero
-    title="Contacto _y reservas_"
-    kicker="Ven a visitarnos"
-    intro="Una parada obligatoria si quieres comer la auténtica carne de la sierra de Guadarrama. Estaremos encantados de recibirte y de recomendarte nuestros mejores platos."
+    title="Llámanos _y reserva_"
+    kicker="Reservas y contacto"
+    intro="Las reservas se hacen por teléfono. Te guardamos mesa en el salón o en la terraza y, si quieres un corte especial, te lo preparamos."
     photo="fachada-terraza-exterior-el-carnivoro"
-    crumbs={crumbs}
+    photoAlt="Fachada y terraza exterior de El Carnívoro en Collado Villalba"
     compact
-  />
+  >
+    <a class="hero-call" href={business.phone.tel} data-track="phone" data-track-location="cabecera-contacto" data-reveal style="--d:550">
+      <span class="hc-icon" aria-hidden="true"><Icon name="phone" size={24} /></span>
+      <span class="hc-number">{business.phone.display}</span>
+    </a>
+  </PageHero>
 
   <section class="section bg-paper grain contact" aria-labelledby="reserva-title">
     <div class="container container--wide contact-grid">
-      <div class="contact-form" id="reserva">
-        <span class="eyebrow" data-reveal="fade">Reserva por WhatsApp</span>
-        <SplitText as="h2" id="reserva-title" class="display" text="Elige día, hora _y mesa_" />
-        <p class="lead form-intro" data-reveal style="--d:120">
-          Rellena el formulario y te abriremos WhatsApp con el mensaje listo para enviarlo. Te responderemos para confirmar la reserva.
-        </p>
-        <div data-reveal style="--d:200">
-          <ReservationForm />
+      <div class="call-card" id="reserva" data-reveal>
+        <div class="cc-media">
+          <Photo name="salon-restaurante-el-carnivoro-collado-villalba" alt="Salón de El Carnívoro con mesas de madera y luz cálida" fill sizes="(min-width: 1000px) 55vw, 100vw" />
+        </div>
+        <div class="cc-body">
+          <span class="eyebrow">Reservas</span>
+          <SplitText as="h2" id="reserva-title" class="display cc-title" text="Una llamada _y listo_" />
+          <p class="cc-text">Dinos el día, la hora y cuántos vais a ser. Te confirmamos la mesa en la misma llamada.</p>
+          <a class="cc-phone" href={business.phone.tel} data-track="phone" data-track-location="tarjeta-reserva">
+            <span class="cc-phone-icon" aria-hidden="true"><Icon name="phone" size={22} /></span>
+            <span>
+              <span class="cc-phone-label">Llamar ahora</span>
+              <span class="cc-phone-number">{business.phone.display}</span>
+            </span>
+          </a>
+          <ul role="list" class="cc-tips">
+            <li><Icon name="clock" size={18} /><span>Te atendemos {hoursSummary.open.toLowerCase()}, de 10:00 a 01:00. {hoursSummary.closed}.</span></li>
+            <li><Icon name="calendar" size={18} /><span>Para grupos y cortes con reserva previa (chuletón madurado, tomahawk, steak ribeye o paletilla), avísanos con antelación.</span></li>
+          </ul>
         </div>
       </div>
 
       <aside class="contact-aside" aria-labelledby="datos-title">
-        <h2 id="datos-title" class="visually-hidden">Datos de contacto</h2>
-        <div class="card" data-reveal style="--d:150">
-          <p class="card-kicker">Llámanos</p>
-          <a class="big-phone" href={business.phone.tel} data-track="phone">{business.phone.display}</a>
-          <a class="btn btn--primary btn--block" href={whatsappUrl(defaultWhatsappText)} target="_blank" rel="noopener" data-track="whatsapp">
-            <Icon name="whatsapp" />
-            Escríbenos por WhatsApp
-          </a>
-        </div>
-
-        <dl class="details" data-reveal style="--d:200">
+        <h2 id="datos-title" class="aside-title" data-reveal>Dónde estamos</h2>
+        <dl class="details" data-reveal style="--d:150">
           <div>
             <dt><Icon name="pin" size={18} /> Dirección</dt>
             <dd>
               <address>{business.address.street}<br />{business.address.postalCode} {business.address.locality} ({business.address.region})</address>
-              <a class="link" href={business.maps.directions} target="_blank" rel="noopener" data-track="directions">Cómo llegar <Icon name="arrow" /></a>
+              <a class="link" href={business.maps.directions} target="_blank" rel="noopener" data-track="directions">Indicaciones para llegar <Icon name="arrow" /></a>
             </dd>
+          </div>
+          <div>
+            <dt><Icon name="clock" size={18} /> Horario</dt>
+            <dd class="on-light"><HoursTable class="on-light" /></dd>
           </div>
           <div>
             <dt><Icon name="mail" size={18} /> Email</dt>
@@ -70,10 +81,6 @@ const crumbs = [
           <div>
             <dt><Icon name="instagram" size={18} /> Instagram</dt>
             <dd><a href={business.instagram.url} target="_blank" rel="noopener">{business.instagram.handle}</a></dd>
-          </div>
-          <div>
-            <dt><Icon name="clock" size={18} /> Horario</dt>
-            <dd class="on-light"><HoursTable class="on-light" /></dd>
           </div>
         </dl>
       </aside>
@@ -95,50 +102,153 @@ const crumbs = [
 </BaseLayout>
 
 <style>
+  .hero-call {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    justify-self: start;
+    margin-top: 0.75rem;
+    padding: 0.6rem 2rem 0.6rem 0.6rem;
+    border-radius: 999px;
+    background: var(--wine);
+    color: var(--cream);
+    text-decoration: none;
+    text-shadow: none;
+    box-shadow: 0 18px 50px rgb(0 0 0 / 0.4);
+    transition: background-color 0.3s var(--ease-out);
+  }
+  .hc-icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: rgb(249 246 240 / 0.15);
+  }
+  .hc-number {
+    font-family: var(--ff-display);
+    font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem);
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums;
+  }
+  @media (hover: hover) {
+    .hero-call:hover {
+      background: var(--wine-deep);
+    }
+  }
+
   .contact-grid {
     display: grid;
     gap: var(--space-xl);
   }
-  .contact-form {
+  .call-card {
+    position: relative;
+    isolation: isolate;
     display: grid;
-    gap: 1.2rem;
-    align-content: start;
+    overflow: hidden;
+    color: var(--text-on-dark);
+    background: var(--ink);
     scroll-margin-top: calc(var(--header-h) + 1rem);
   }
-  .form-intro {
-    color: var(--muted-on-light);
+  .cc-media {
+    position: relative;
+    min-height: 220px;
+  }
+  .cc-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, var(--ink));
+  }
+  .cc-body {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+    padding: clamp(1.75rem, 4vw, 3.25rem);
+  }
+  .call-card :global(.cc-title) {
+    font-size: var(--step-4);
+  }
+  .call-card :global(.cc-title em) {
+    font-style: italic;
+    color: var(--brass);
+  }
+  .cc-text {
+    max-width: 44ch;
+    font-size: var(--step-1);
+    color: rgb(243 236 223 / 0.88);
+  }
+  .cc-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    justify-self: start;
+    padding: 0.65rem 2rem 0.65rem 0.65rem;
+    border-radius: 999px;
+    background: var(--cream);
+    color: var(--wine);
+    text-decoration: none;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .cc-phone > span:last-child {
+    display: grid;
+    line-height: 1.1;
+  }
+  .cc-phone-icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--wine);
+    color: var(--cream);
+  }
+  .cc-phone-label {
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brass-ink);
+  }
+  .cc-phone-number {
+    font-family: var(--ff-display);
+    font-size: clamp(1.9rem, 1.4rem + 1.8vw, 2.8rem);
+    font-weight: 600;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums;
+  }
+  @media (hover: hover) {
+    .cc-phone:hover {
+      transform: translate3d(0, -3px, 0);
+    }
+  }
+  .cc-tips {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line-on-dark);
+    font-size: var(--step--1);
+    color: var(--muted-on-dark);
+  }
+  .cc-tips li {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .cc-tips :global(svg) {
+    flex: none;
+    margin-top: 0.2rem;
+    color: var(--brass);
   }
   .contact-aside {
     display: grid;
-    gap: var(--space-l);
+    gap: var(--space-m);
     align-content: start;
   }
-  .card {
-    display: grid;
-    gap: 1rem;
-    padding: clamp(1.5rem, 3vw, 2.25rem);
-    background: var(--ink);
-    color: var(--text-on-dark);
-  }
-  .card-kicker {
-    font-size: var(--step--2);
-    font-weight: 600;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--brass);
-  }
-  .big-phone {
-    font-family: var(--ff-display);
-    font-size: clamp(2.1rem, 1.3rem + 2.4vw, 3.4rem);
-    white-space: nowrap;
-    line-height: 1;
-    font-variant-numeric: lining-nums;
-    text-decoration: none;
-  }
-  @media (hover: hover) {
-    .big-phone:hover {
-      color: var(--brass);
-    }
+  .aside-title {
+    font-size: var(--step-3);
   }
   .details {
     display: grid;
@@ -150,7 +260,6 @@ const crumbs = [
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--line-on-light);
   }
-  /* La tabla de horario ya cierra con su propia línea. */
   .details > div:last-child {
     border-bottom: 0;
     padding-bottom: 0;
@@ -182,12 +291,19 @@ const crumbs = [
   }
   @media (min-width: 1000px) {
     .contact-grid {
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
       gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
     }
-    .contact-aside {
-      position: sticky;
-      top: calc(var(--header-h) + 2rem);
+    .call-card {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      min-height: 560px;
+    }
+    .cc-media::after {
+      background: linear-gradient(90deg, transparent 50%, var(--ink));
+    }
+    .cc-body {
+      align-content: center;
     }
   }
   .map-head {

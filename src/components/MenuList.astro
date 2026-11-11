@@ -5,12 +5,14 @@ import PriceText from './PriceText.astro';
 
 interface Props {
   section: CartaSection;
+  /** "large": secciones cortas, con los platos en grande (escritorio). */
+  size?: 'normal' | 'large';
 }
-const { section } = Astro.props;
+const { section, size = 'normal' } = Astro.props;
 const cols = section.priceColumns;
 ---
 
-<div class:list={['menu-list', { 'has-cols': cols }]}>
+<div class:list={['menu-list', { 'has-cols': cols, large: size === 'large' }]}>
   {
     section.groups.map((g) => (
       <div class="group">
@@ -158,6 +160,20 @@ const cols = section.priceColumns;
   .item-price.empty {
     color: var(--muted-on-light);
     font-weight: 400;
+  }
+  @media (min-width: 1000px) {
+    .large .item {
+      padding-block: 1.2rem;
+    }
+    .large .item-name {
+      font-size: var(--step-2);
+    }
+    .large .item-price {
+      font-size: var(--step-0);
+    }
+    .large .item-meta {
+      font-size: var(--step-0);
+    }
   }
   @media (max-width: 380px) {
     .has-cols .col-head,

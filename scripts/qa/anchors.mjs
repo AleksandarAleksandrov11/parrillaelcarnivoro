@@ -1,9 +1,9 @@
 // QA · Anclas: los destinos de las redirecciones antiguas (/carta/#desayunos, #grupos,
-// #menu-del-dia y /nuestra-historia/#galeria) deben quedar visibles bajo la cabecera al llegar.
+// #menu-del-dia y /galeria/#opiniones) deben quedar visibles bajo la cabecera al llegar.
 import { chromium, devices } from 'playwright';
 import { BASE, startServer, writeReport } from './lib.mjs';
 
-const TARGETS = ['/carta/#desayunos', '/carta/#grupos', '/carta/#menu-del-dia', '/carta/#menu-cenas', '/carta/#vinos', '/nuestra-historia/#galeria', '/contacto/#reserva', '/#visitanos'];
+const TARGETS = ['/carta/#desayunos', '/carta/#grupos', '/carta/#menu-del-dia', '/carta/#menu-cenas', '/carta/#vinos', '/galeria/#opiniones', '/contacto/#reserva', '/#visitanos'];
 const stop = await startServer();
 const browser = await chromium.launch();
 const rows = [];

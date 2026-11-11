@@ -6,13 +6,13 @@ import { business, legal } from '../../data/site';
 <LegalLayout
   title="Política de privacidad"
   metaTitle="Política de privacidad | Restaurante Parrilla El Carnívoro"
-  description="Cómo trata Ivosi 2022, S.L. tus datos en Parrilla El Carnívoro: reservas por WhatsApp, consultas, analítica y mapas con consentimiento, y tus derechos."
+  description="Cómo trata Ivosi 2022, S.L. tus datos en Parrilla El Carnívoro: reservas por teléfono, consultas, analítica y mapas con consentimiento, y tus derechos."
   path="/politica-de-privacidad/"
   updated="11 de noviembre de 2026"
 >
   <p class="lead">
     En {business.name} nos tomamos en serio tu privacidad. En esta política te explicamos, con claridad, qué datos personales tratamos cuando visitas
-    www.parrillaelcarnivoro.es o cuando contactas con nosotros por correo electrónico, teléfono o WhatsApp, para qué los usamos y qué derechos tienes.
+    www.parrillaelcarnivoro.es o cuando contactas con nosotros por teléfono o correo electrónico, para qué los usamos y qué derechos tienes.
   </p>
   <p>
     Esta información se facilita conforme al Reglamento (UE) 2016/679, General de Protección de Datos (RGPD), y a la Ley Orgánica 3/2018, de Protección de
@@ -40,7 +40,7 @@ import { business, legal } from '../../data/site';
         <tr>
           <th scope="row" data-label="Epígrafe">Finalidad</th>
           <td data-label="Información básica">
-            Atender tus consultas por correo electrónico, WhatsApp o teléfono; gestionar tus reservas; medir el uso de la web y mostrar el mapa de Google, solo
+            Atender tus consultas por teléfono o correo electrónico; gestionar tus reservas; medir el uso de la web y mostrar el mapa de Google, solo
             si lo aceptas; y mantener la web segura y en funcionamiento.
           </td>
         </tr>
@@ -56,7 +56,7 @@ import { business, legal } from '../../data/site';
           <th scope="row" data-label="Epígrafe">Destinatarios</th>
           <td data-label="Información básica">
             No cedemos tus datos a terceros, salvo obligación legal. Nos prestan servicios Vercel (alojamiento web), Google (correo Gmail, Google Analytics y
-            Google Maps) y Meta (WhatsApp, si eliges ese canal). Puede haber transferencias internacionales a EE. UU. con garantías adecuadas.
+            Google Maps). Puede haber transferencias internacionales a EE. UU. con garantías adecuadas.
           </td>
         </tr>
         <tr>
@@ -74,13 +74,6 @@ import { business, legal } from '../../data/site';
       </tbody>
     </table>
   </div>
-  <p>
-    <strong>Importante: el formulario de reserva no nos envía tus datos.</strong> Cuando rellenas el formulario de reserva de esta web, es tu propio navegador
-    el que compone el mensaje, en tu dispositivo, y abre WhatsApp con el texto ya preparado. La web no guarda ese contenido ni tiene ningún servidor que lo
-    reciba: solo recibimos tus datos si tú decides enviar el mensaje por WhatsApp. Te lo explicamos con más detalle en el
-    <a href="#formulario-de-reserva">apartado 2</a>.
-  </p>
-
   <h2 id="responsable">1. Responsable del tratamiento</h2>
   <p>El responsable del tratamiento de tus datos personales es:</p>
   <dl>
@@ -94,7 +87,7 @@ import { business, legal } from '../../data/site';
     <dd>{legal.address}</dd>
     <dt>Correo electrónico</dt>
     <dd><a href={`mailto:${legal.email}`}>{legal.email}</a></dd>
-    <dt>Teléfono y WhatsApp</dt>
+    <dt>Teléfono</dt>
     <dd><a href={business.phone.tel}>{business.phone.display}</a></dd>
     <dt>Sitio web</dt>
     <dd><a href="/">www.parrillaelcarnivoro.es</a></dd>
@@ -117,35 +110,17 @@ import { business, legal } from '../../data/site';
     él (por ejemplo, un teléfono de contacto o los detalles de una celebración).
   </p>
 
-  <h3>Cuando nos llamas o nos escribes por WhatsApp</h3>
+  <h3>Cuando nos llamas para reservar o consultar algo</h3>
   <p>
-    Tratamos tu número de teléfono, tu nombre, el nombre y la imagen de perfil de WhatsApp que tengas visibles según tu configuración, el contenido de los
-    mensajes y los datos de la reserva que nos indiques: fecha, hora, número de personas, zona preferida (salón o terraza) y los comentarios que quieras
-    añadir, como una celebración o una alergia.
-  </p>
-
-  <h3 id="formulario-de-reserva">El formulario de reserva no envía tus datos a ningún servidor</h3>
-  <p>El formulario de reserva de esta web funciona así:</p>
-  <ol>
-    <li>Rellenas tu nombre, el número de personas, la fecha, la hora, la zona (salón o terraza) y, si quieres, unos comentarios (alergias, celebración…).</li>
-    <li>Al pulsar el botón de reserva, tu navegador compone el mensaje de forma local, en tu propio dispositivo, sin enviarlo a ningún sitio.</li>
-    <li>
-      Se abre WhatsApp (mediante un enlace wa.me) con el texto ya escrito y dirigido a nuestro número, el {business.phone.display}. Para mostrártelo, el texto
-      preparado viaja dentro de ese enlace hasta WhatsApp, servicio de Meta, igual que ocurre con cualquier enlace de WhatsApp.
-    </li>
-    <li>Tú decides si envías el mensaje, si lo modificas antes o si lo descartas. Solo si lo envías recibimos tus datos, a través de WhatsApp.</li>
-  </ol>
-  <p>
-    La web no tiene base de datos ni ningún servidor que reciba o almacene lo que escribes en el formulario. Si has aceptado las cookies de analítica, lo
-    único que se comunica a Google Analytics sobre el formulario son dos eventos («generate_lead» y «reservation_whatsapp») que indican que se ha pulsado el
-    botón de reserva por WhatsApp. No se envía ningún dato del formulario: ni tu nombre, ni el número de personas, la fecha, la hora, la zona o tus
-    comentarios.
+    Las reservas se hacen por teléfono. Tratamos tu nombre, tu número de teléfono y los datos de la reserva que nos indiques: fecha, hora, número de
+    personas, zona preferida (salón o terraza) y lo que quieras comentarnos, como una celebración o una alergia. La web no tiene formularios: los botones
+    de llamada solo abren la aplicación de teléfono de tu dispositivo con nuestro número.
   </p>
 
   <h3>Alergias, intolerancias y otros datos de salud</h3>
   <p>
-    Si nos comunicas una alergia, una intolerancia u otra necesidad alimentaria (en los comentarios del mensaje de reserva por WhatsApp, por teléfono, por
-    correo o en el propio restaurante), ese dato se considera un dato de salud, que el RGPD protege de forma especial. Solo lo tratamos si nos lo indicas
+    Si nos comunicas una alergia, una intolerancia u otra necesidad alimentaria (al reservar por teléfono, por correo o en el propio
+    restaurante), ese dato se considera un dato de salud, que el RGPD protege de forma especial. Solo lo tratamos si nos lo indicas
     expresamente para que lo tengamos en cuenta: al hacerlo, nos das tu consentimiento explícito (art. 9.2.a RGPD) para usarlo con una única finalidad, adaptar
     tu servicio y evitar riesgos en la cocina y en la sala. No lo utilizamos para nada más. Comunicárnoslo es voluntario y puedes retirar tu consentimiento
     en cualquier momento, pero si no nos lo indicas no podremos tenerlo en cuenta al preparar tu comida. La información sobre alérgenos de nuestros platos
@@ -164,7 +139,7 @@ import { business, legal } from '../../data/site';
       consentimiento de Google (Consent Mode v2) en su modalidad básica: sin tu consentimiento, el código de Google Analytics ni siquiera se descarga y no se
       envía nada a Google. Con tu consentimiento se instalan las cookies <code>_ga</code> (2 años, distingue a los usuarios) y <code>_ga_&lt;ID&gt;</code> (2
       años, mantiene el estado de la sesión), y se tratan un identificador seudónimo, las páginas que visitas, el tipo de dispositivo y navegador, la
-      ubicación aproximada, la procedencia de la visita y algunos eventos de uso (por ejemplo, que pulses los botones de WhatsApp, de llamada o «Cómo llegar»),
+      ubicación aproximada, la procedencia de la visita y algunos eventos de uso (por ejemplo, que pulses los botones de llamada o «Cómo llegar»),
       para obtener estadísticas agregadas. Google recibe tu dirección IP al establecer la conexión y la usa para estimar la ubicación aproximada; según
       informa Google, Google Analytics 4 no registra ni almacena las direcciones IP. Si después retiras el consentimiento, esas cookies se borran y se deja de
       enviar información.
@@ -196,7 +171,7 @@ import { business, legal } from '../../data/site';
     </li>
     <li>No usamos cookies publicitarias, no elaboramos perfiles, no tomamos decisiones automatizadas sobre ti y no vendemos tus datos.</li>
   </ul>
-  {/* TODO: confirmar con el cliente: que no envía comunicaciones comerciales (listas de difusión o estados de WhatsApp dirigidos a clientes, promociones por correo) con los datos de quienes reservan o consultan; si lo hace, añadir esa finalidad con consentimiento previo y expreso (art. 21 LSSI‑CE). */}
+  {/* TODO: confirmar con el cliente: que no envía comunicaciones comerciales (listas de difusión, mensajes o promociones por correo dirigidos a clientes) con los datos de quienes reservan o consultan; si lo hace, añadir esa finalidad con consentimiento previo y expreso (art. 21 LSSI‑CE). */}
 
   <h2 id="finalidades">3. Para qué usamos tus datos y con qué base jurídica</h2>
   <div class="table-wrap" tabindex="0" role="region" aria-label="Finalidades del tratamiento, datos utilizados y base jurídica">
@@ -220,10 +195,10 @@ import { business, legal } from '../../data/site';
         </tr>
         <tr>
           <td data-label="Finalidad">
-            Gestionar tus reservas y atender tus consultas por WhatsApp o teléfono: confirmar, modificar o cancelar la reserva y avisarte de cualquier
+            Gestionar tus reservas y atender tus consultas por teléfono: confirmar, modificar o cancelar la reserva y avisarte de cualquier
             incidencia.
           </td>
-          <td data-label="Datos">Nombre, teléfono, perfil de WhatsApp, datos de la reserva y comentarios.</td>
+          <td data-label="Datos">Nombre, teléfono, datos de la reserva y comentarios.</td>
           <td data-label="Base jurídica">
             La aplicación de medidas precontractuales a petición tuya para las reservas (art. 6.1.b RGPD) y tu consentimiento para el resto de consultas (art.
             6.1.a RGPD).
@@ -282,14 +257,14 @@ import { business, legal } from '../../data/site';
       {/* TODO: confirmar con el cliente: plazo concreto de borrado de los correos ya atendidos (p. ej., 12 meses desde la última comunicación). */}
     </li>
     <li>
-      <strong>Reservas y consultas por WhatsApp o teléfono:</strong> hasta la fecha de la reserva y el tiempo necesario para atender posibles incidencias o
+      <strong>Reservas y consultas por teléfono:</strong> hasta la fecha de la reserva y el tiempo necesario para atender posibles incidencias o
       reclamaciones relacionadas con ella.
-      {/* TODO: confirmar con el cliente: plazo concreto de borrado de conversaciones de WhatsApp y notas de reserva tras el servicio (p. ej., 3 o 12 meses). */}
+      {/* TODO: confirmar con el cliente: plazo concreto de borrado de las notas de reserva tras el servicio (p. ej., 3 o 12 meses). */}
     </li>
     <li>
       <strong>Alergias e intolerancias:</strong> solo hasta prestar el servicio de la reserva en la que nos las comunicas. No las guardamos para futuras
       visitas.
-      {/* TODO: confirmar con el cliente: que estos datos no se conservan después del servicio (ni en notas, libreta de reservas ni chats). */}
+      {/* TODO: confirmar con el cliente: que estos datos no se conservan después del servicio (ni en notas ni en la libreta de reservas). */}
     </li>
     <li>
       <strong>Facturas:</strong> si nos pides una factura a tu nombre (por ejemplo, de una comida de grupo), sus datos se conservan durante los plazos que
@@ -378,38 +353,24 @@ import { business, legal } from '../../data/site';
             UE-EE. UU. y/o cláusulas contractuales tipo.
           </td>
         </tr>
-        <tr>
-          <td data-label="Proveedor">Meta Platforms Ireland Limited</td>
-          <td data-label="Servicio">WhatsApp, cuando eliges este canal para escribirnos o reservar.</td>
-          <td data-label="Datos y papel">
-            Tu número, tu perfil y los mensajes, cifrados de extremo a extremo. WhatsApp es el servicio de mensajería que tú eliges y trata los datos conforme a
-            sus propias condiciones y política de privacidad.
-          </td>
-          <td data-label="Ubicación y garantías">
-            Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Meta Platforms, Inc.): Marco de Privacidad
-            de Datos UE-EE. UU. y/o cláusulas contractuales tipo.
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>
   {/* TODO: confirmar con el cliente: la dirección @gmail.com es una cuenta de Gmail de consumo, que no incluye contrato de encargado del tratamiento (art. 28 RGPD); valorar migrar a Google Workspace u otro proveedor con contrato de encargo (y dominio propio). */}
-  {/* TODO: confirmar con el cliente: si usa la aplicación WhatsApp Business o una cuenta personal de WhatsApp para atender reservas. */}
   <p>Puedes consultar cómo tratan los datos estos proveedores en sus políticas de privacidad:</p>
   <ul>
     <li><a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Política de privacidad de Vercel</a></li>
     <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de privacidad de Google</a></li>
     <li>
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener"
-        >Cómo utiliza Google la información de los sitios web que usan sus servicios</a
+        >Datos de sitios que usan servicios de Google</a
       >
     </li>
-    <li><a href="https://www.whatsapp.com/legal/privacy-policy-eea" target="_blank" rel="noopener">Política de privacidad de WhatsApp (Espacio Económico Europeo)</a></li>
   </ul>
 
   <h3>Transferencias internacionales de datos</h3>
   <p>
-    Algunos de estos proveedores tienen su sede en Estados Unidos o pueden acceder a los datos desde allí (Vercel Inc., Google LLC y Meta Platforms, Inc.).
+    Algunos de estos proveedores tienen su sede en Estados Unidos o pueden acceder a los datos desde allí (Vercel Inc. y Google LLC).
     Estas transferencias se realizan con las garantías que exige el RGPD:
   </p>
   <ul>
@@ -463,7 +424,7 @@ import { business, legal } from '../../data/site';
   </p>
   <p>
     Para retirar tu consentimiento a las cookies de analítica o de Google Maps no necesitas escribirnos: pulsa «Configurar cookies» en el pie de cualquier
-    página. Si nos escribiste por WhatsApp, también puedes pedirnos que eliminemos la conversación de nuestro dispositivo.
+    página.
   </p>
 
   <h3>Reclamación ante la autoridad de control</h3>
@@ -489,7 +450,6 @@ import { business, legal } from '../../data/site';
   <ul>
     <li>la web se sirve siempre mediante conexión cifrada (HTTPS);</li>
     <li>la web no almacena datos personales: no tiene base de datos ni formularios que envíen información a un servidor;</li>
-    <li>los mensajes de WhatsApp están cifrados de extremo a extremo;</li>
     <li>solo accede a tus datos el personal del restaurante que los necesita para atender tu consulta o tu reserva, con deber de confidencialidad.</li>
   </ul>
   <p>

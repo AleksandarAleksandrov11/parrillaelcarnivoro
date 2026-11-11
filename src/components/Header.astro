@@ -2,7 +2,7 @@
 import { Picture } from 'astro:assets';
 import logo from '../assets/brand/logo-el-carnivoro-blanco.png';
 import Icon from './Icon.astro';
-import { business, hoursSummary, nav, whatsappUrl, defaultWhatsappText } from '../data/site';
+import { business, hoursSummary, nav } from '../data/site';
 
 interface Props {
   /** Transparente sobre un hero oscuro hasta hacer scroll. */
@@ -15,10 +15,10 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
 
 <header class:list={['site-header', { 'is-overlay': overlay }]} data-header>
   <div class="bar container container--wide">
-    <a class="brand" href="/" aria-label={`${business.name}, ir al inicio`}>
+    <a class="brand" href="/">
       <Picture
         src={logo}
-        alt=""
+        alt={business.shortName}
         widths={[88, 176, 264]}
         sizes="88px"
         formats={['avif', 'webp']}
@@ -48,7 +48,11 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
         <Icon name="phone" size={18} />
         <span>{business.phone.display}</span>
       </a>
-      <a class="btn btn--primary btn--sm" href="/contacto/#reserva">Reservar</a>
+      <a class="btn btn--primary btn--sm" href={business.phone.tel} data-track="phone" data-track-location="cabecera">
+        <Icon name="phone" size={16} />
+        Reservar
+        <span class="visually-hidden">llamando al {business.phone.display}</span>
+      </a>
       <button class="menu-toggle" type="button" aria-haspopup="dialog" aria-controls="menu-movil" aria-expanded="false" data-menu-open>
         <span class="visually-hidden">Abrir menú</span>
         <span class="burger" aria-hidden="true"><span></span><span></span></span>
@@ -72,9 +76,6 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
           nav.map((item, i) => (
             <li style={`--i:${i}`}>
               <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-                <span class="mm-num" aria-hidden="true">
-                  0{i + 1}
-                </span>
                 <span class="mm-label">{item.label}</span>
               </a>
             </li>
@@ -84,13 +85,10 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
     </nav>
     <div class="mm-foot" style="--i:5">
       <div class="mm-ctas">
-        <a class="btn btn--primary" href={whatsappUrl(defaultWhatsappText)} target="_blank" rel="noopener" data-track="whatsapp">
-          <Icon name="whatsapp" />
-          Reservar por WhatsApp
-        </a>
-        <a class="btn btn--ghost" href={business.phone.tel} data-track="phone">
+        <p class="mm-call-label">Reservas por teléfono</p>
+        <a class="btn btn--primary mm-call" href={business.phone.tel} data-track="phone" data-track-location="menu-movil">
           <Icon name="phone" />
-          {business.phone.display}
+          Llamar al {business.phone.display}
         </a>
       </div>
       <p class="mm-meta">
@@ -349,12 +347,6 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
     padding-block: 0.35rem;
     text-decoration: none;
   }
-  .mm-num {
-    font-size: var(--step--2);
-    letter-spacing: 0.2em;
-    color: var(--brass);
-    min-width: 2ch;
-  }
   .mm-label {
     font-family: var(--ff-display);
     font-size: clamp(2.4rem, 10vw, 4.2rem);
@@ -382,10 +374,16 @@ const isCurrent = (href: string) => (href === '/' ? current === '/' : current.st
     font-size: var(--step--1);
     color: var(--muted-on-dark);
   }
-  @media (min-width: 560px) {
-    .mm-ctas {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .mm-call-label {
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  .mm-call {
+    font-size: var(--step-0);
+    min-height: 56px;
   }
   @media (prefers-reduced-motion: reduce) {
     .mm-links li,

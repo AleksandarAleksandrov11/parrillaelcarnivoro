@@ -8,8 +8,9 @@ const CASES = [
   ['/menu-grupos/', '/carta/#grupos'],
   ['/parrillaelcarnivoro/carta', '/carta/#menu-del-dia'],
   ['/parrillaelcarnivoro/carta/', '/carta/#menu-del-dia'],
-  ['/galeria', '/nuestra-historia/#galeria'],
-  ['/galeria/', '/nuestra-historia/#galeria'],
+  ['/galeria', '/galeria/'],
+  ['/nuestra-historia', '/galeria/'],
+  ['/nuestra-historia/', '/galeria/'],
   ['/aviso-legal', '/aviso-legal/'],
   ['/politica-de-privacidad', '/politica-de-privacidad/'],
   ['/politica-de-cookies', '/politica-de-cookies/'],
@@ -28,7 +29,7 @@ const HOST_CASES = [
   ['/', 'https://www.parrillaelcarnivoro.es/'],
   ['/carta/', 'https://www.parrillaelcarnivoro.es/carta/'],
 ];
-const OK_200 = ['/', '/carta/', '/nuestra-historia/', '/contacto/', '/aviso-legal/', '/politica-de-privacidad/', '/politica-de-cookies/', '/sitemap.xml', '/robots.txt', '/manifest.webmanifest', '/?p=1&origen=wp'];
+const OK_200 = ['/', '/carta/', '/galeria/', '/contacto/', '/aviso-legal/', '/politica-de-privacidad/', '/politica-de-cookies/', '/sitemap.xml', '/robots.txt', '/manifest.webmanifest', '/?p=1&origen=wp'];
 
 const stop = await startServer();
 const rows = [];

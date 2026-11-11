@@ -37,16 +37,12 @@ try {
       await page.keyboard.press('Escape');
       await page.waitForTimeout(500);
     }
-    await page.goto(BASE + '/nuestra-historia/', { waitUntil: 'load' });
-    await page.locator('#galeria [data-lightbox-open]').first().click();
+    await page.goto(BASE + '/galeria/', { waitUntil: 'load' });
+    await page.locator('#fotos [data-lightbox-open]').first().click();
     await page.waitForTimeout(800);
-    await run(page, `/nuestra-historia/ @${vp.w} (visor abierto)`);
+    await run(page, `/galeria/ @${vp.w} (visor abierto)`);
     await page.keyboard.press('Escape');
     await page.goto(BASE + '/contacto/', { waitUntil: 'load' });
-    await page.click('[data-date-trigger]');
-    await page.waitForTimeout(300);
-    await run(page, `/contacto/ @${vp.w} (calendario abierto)`);
-    await page.keyboard.press('Escape');
     await page.click('[data-cookie-settings]');
     await page.waitForTimeout(300);
     await run(page, `/contacto/ @${vp.w} (panel de cookies)`);

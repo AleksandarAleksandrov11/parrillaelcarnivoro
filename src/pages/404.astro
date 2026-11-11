@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
-import { business, whatsappUrl, defaultWhatsappText } from '../data/site';
+import { business } from '../data/site';
 
 const links = [
   { href: '/', label: 'Inicio', text: 'Vuelve a la portada' },
   { href: '/carta/', label: 'Carta y menús', text: 'Carnes, menús y vinos' },
-  { href: '/nuestra-historia/', label: 'Nuestra historia', text: 'El local y la galería' },
+  { href: '/galeria/', label: 'Galería', text: 'Fotos y opiniones' },
   { href: '/contacto/', label: 'Contacto', text: 'Reservas y cómo llegar' },
 ];
 ---
@@ -39,7 +39,7 @@ const links = [
         }
       </ul>
       <p class="nf-contact">
-        ¿Prefieres hablar con nosotros? Llámanos al <a href={business.phone.tel} data-track="phone">{business.phone.display}</a> o escríbenos por <a href={whatsappUrl(defaultWhatsappText)} target="_blank" rel="noopener" data-track="whatsapp">WhatsApp</a>.
+        ¿Prefieres hablar con nosotros? Llámanos al <a href={business.phone.tel} data-track="phone">{business.phone.display}</a>.
       </p>
     </div>
   </section>

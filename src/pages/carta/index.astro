@@ -7,6 +7,8 @@ import SetMenu from '../../components/SetMenu.astro';
 import Icon from '../../components/Icon.astro';
 import ReserveCta from '../../components/ReserveCta.astro';
 import { carta, cartaNav, cartaNotes } from '../../data/carta';
+import { gallery } from '../../data/gallery';
+import type { PhotoName } from '../../data/photos';
 import { breadcrumbSchema, menuSchema } from '../../lib/schema';
 import { euros } from '../../lib/format';
 
@@ -17,6 +19,25 @@ const crumbs = [
 
 // Fondos alternos: carta en papel/crema, menús en carbón.
 const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal' : 'bg-smoke') : i % 2 ? 'bg-cream' : 'bg-paper');
+
+/**
+ * Composición de cada sección en escritorio (en móvil todas se apilan igual):
+ *  - compact: pocas líneas → sección más baja, foto pequeña al lado y platos en grande.
+ *  - daily:   menú del día centrado, foto y precio lado a lado.
+ *  - standard: columna de fotos que acompaña el scroll junto a la lista; `extra` añade fotos.
+ */
+type Layout = { variant: 'compact' | 'daily' | 'standard'; extra?: PhotoName[] };
+const layouts: Record<string, Layout> = {
+  ensaladas: { variant: 'compact' },
+  pescados: { variant: 'compact' },
+  postres: { variant: 'compact' },
+  'menu-del-dia': { variant: 'daily' },
+  carnes: { variant: 'standard', extra: ['entrana-parrilla-el-carnivoro', 't-bone-brasa-el-carnivoro'] },
+  grupos: { variant: 'standard', extra: ['paletilla-cordero-asada-el-carnivoro', 'bacalao-ajoarriero-el-carnivoro'] },
+  desayunos: { variant: 'standard', extra: ['terraza-cubierta-mesas-el-carnivoro', 'fachada-terraza-exterior-el-carnivoro'] },
+};
+const layoutFor = (id: string): Layout => layouts[id] ?? { variant: 'standard' };
+const altFor = (name: PhotoName) => gallery.find((g) => g.photo === name)?.alt ?? '';
 ---
 
 <BaseLayout
@@ -31,8 +52,8 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
     kicker="Carnes a la brasa de carbón"
     intro="Abre boca con nuestros entrantes, elige entre las carnes a la parrilla de carbón, marida con nuestra selección de vinos y endúlzate con nuestros postres."
     photo="chuleton-parrilla-carbon-el-carnivoro"
+    photoAlt="Chuletón a la parrilla de carbón trinchado sobre pizarra"
     position="center 60%"
-    crumbs={crumbs}
     compact
   />
 
@@ -53,81 +74,129 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
   </nav>
 
   {
-    carta.map((s, i) => (
-      <section id={s.id} class:list={['section', 'carta-sec', bgFor(i, s.kind), 'grain', `kind-${s.kind}`]} aria-labelledby={`${s.id}-title`} data-carta-section>
-        <div class="container container--wide cs-grid">
-          <div class="cs-aside">
-            <div class="cs-sticky">
-              <span class="eyebrow" data-reveal="fade">
-                {s.kicker}
-              </span>
-              <h2 id={`${s.id}-title`} class="display cs-title" data-reveal>
-                {s.title}
-              </h2>
-              {s.intro && (
-                <p class="cs-intro" data-reveal style="--d:120">
-                  {s.intro}
-                </p>
-              )}
-              {s.kind === 'menu' && s.availability && (
-                <p class="cs-avail" data-reveal style="--d:180">
-                  <Icon name="clock" size={18} />
-                  {s.availability}
-                </p>
-              )}
-              <Photo
-                name={s.photo}
-                alt={s.photoAlt}
-                sizes="(min-width: 1000px) 34vw, 100vw"
-                ratio="5 / 4"
-                reveal="mask"
-                curtain={s.kind === 'menu' ? '#2b2621' : '#e9dfcc'}
-                class="cs-photo"
-                widths={[480, 720, 960, 1280]}
-                lowPriority
-              />
-            </div>
-          </div>
-
-          <div class="cs-body">
-            {s.kind === 'carta' ? (
-              <div class="on-light" data-reveal style="--d:100" data-fab-avoid>
-                <MenuList section={s} />
-              </div>
-            ) : (
-              <div class="cs-menus" data-reveal style="--d:100" data-fab-avoid>
-                {s.menus.map((m) =>
-                  m.courses.length ? (
-                    <SetMenu menu={m} showName={s.menus.length > 1} />
-                  ) : (
-                    <div class="daily">
-                      <p class="daily-price">
-                        <span class="daily-amount">{euros(m.price.amount)}</span>
-                        <span class="daily-per">por persona</span>
-                      </p>
-                      <p class="daily-text">El menú cambia cada día. Consulta el de hoy en nuestro Instagram o pregúntanos por teléfono.</p>
-                      {s.link && (
-                        <a class="btn btn--ghost daily-link" href={s.link.href} target="_blank" rel="noopener">
-                          <Icon name="instagram" />
-                          {s.link.label}
-                        </a>
-                      )}
-                    </div>
-                  ),
-                )}
-              </div>
-            )}
-            {s.notes && (
-              <ul role="list" class="cs-notes">
-                {s.notes.map((n) => (
-                  <li>{n}</li>
-                ))}
-              </ul>
-            )}
-          </div>
+    carta.map((s, i) => {
+      const L = layoutFor(s.id);
+      const curtain = s.kind === 'menu' ? '#2b2621' : '#e9dfcc';
+      const head = (
+        <div class="cs-head">
+          <span class="eyebrow" data-reveal="fade">
+            {s.kicker}
+          </span>
+          <h2 id={`${s.id}-title`} class="display cs-title" data-reveal>
+            {s.title}
+          </h2>
+          {s.intro && (
+            <p class="cs-intro" data-reveal style="--d:120">
+              {s.intro}
+            </p>
+          )}
+          {s.kind === 'menu' && s.availability && (
+            <p class="cs-avail" data-reveal style="--d:180">
+              <Icon name="clock" size={18} />
+              {s.availability}
+            </p>
+          )}
         </div>
-      </section>
-    ))
+      );
+      const notes = s.notes && (
+        <ul role="list" class="cs-notes">
+          {s.notes.map((n) => (
+            <li>{n}</li>
+          ))}
+        </ul>
+      );
+      return (
+        <section
+          id={s.id}
+          class:list={['section', 'carta-sec', bgFor(i, s.kind), 'grain', `kind-${s.kind}`, `v-${L.variant}`]}
+          aria-labelledby={`${s.id}-title`}
+          data-carta-section
+        >
+          {L.variant === 'compact' && s.kind === 'carta' && (
+            <div class="container cs-compact">
+              {head}
+              <div class="cs-figure">
+                <Photo name={s.photo} alt={s.photoAlt} sizes="(min-width: 1000px) 360px, 100vw" ratio="4 / 5" reveal="mask" curtain={curtain} class="cs-photo" widths={[480, 720, 960]} lowPriority />
+              </div>
+              <div class="cs-body on-light" data-reveal style="--d:100" data-fab-avoid>
+                <MenuList section={s} size="large" />
+                {notes}
+              </div>
+            </div>
+          )}
+
+          {L.variant === 'daily' && s.kind === 'menu' && (
+            <div class="container cs-daily">
+              {head}
+              <div class="cs-daily-row">
+                <div class="cs-figure">
+                  <Photo name={s.photo} alt={s.photoAlt} sizes="(min-width: 1000px) 540px, 100vw" ratio="4 / 3" reveal="mask" curtain={curtain} class="cs-photo" widths={[480, 720, 960, 1280]} lowPriority />
+                </div>
+                {s.menus.map((m) => (
+                  <div class="daily" data-reveal style="--d:100">
+                    <p class="daily-price">
+                      <span class="daily-amount">{euros(m.price.amount)}</span>
+                      <span class="daily-per">por persona</span>
+                    </p>
+                    <p class="daily-text">El menú cambia cada día. Consulta el de hoy en nuestro Instagram o pregúntanos al llamar.</p>
+                    {s.link && (
+                      <a class="btn btn--ghost daily-link" href={s.link.href} target="_blank" rel="noopener">
+                        <Icon name="instagram" />
+                        {s.link.label}
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {notes}
+            </div>
+          )}
+
+          {L.variant === 'standard' && (
+            <div class="container container--wide cs-grid">
+              <div class="cs-aside">
+                {head}
+                <div class="cs-photos">
+                  <Photo
+                    name={s.photo}
+                    alt={s.photoAlt}
+                    sizes="(min-width: 1000px) 34vw, 100vw"
+                    ratio={L.extra ? '3 / 2' : '5 / 4'}
+                    reveal="mask"
+                    curtain={curtain}
+                    class="cs-photo"
+                    widths={[480, 720, 960, 1280]}
+                    lowPriority
+                  />
+                  {L.extra && (
+                    <div class="cs-extra">
+                      {L.extra.map((x, k) => (
+                        <Photo name={x} alt={altFor(x)} sizes="17vw" ratio="1 / 1" reveal="mask" curtain={curtain} delay={150 + k * 120} widths={[360, 540, 720]} lowPriority />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div class="cs-body">
+                {s.kind === 'carta' ? (
+                  <div class="on-light" data-reveal style="--d:100" data-fab-avoid>
+                    <MenuList section={s} />
+                  </div>
+                ) : (
+                  <div class="cs-menus" data-reveal style="--d:100" data-fab-avoid>
+                    {s.menus.map((m) => (
+                      <SetMenu menu={m} showName={s.menus.length > 1} />
+                    ))}
+                  </div>
+                )}
+                {notes}
+              </div>
+            </div>
+          )}
+        </section>
+      );
+    })
   }
 
   <section class="section section--tight bg-ink grain allergens" aria-labelledby="alergenos-title">
@@ -138,7 +207,7 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
     </div>
   </section>
 
-  <ReserveCta title="¿Te apetece _una buena carne?_" text="Reserva tu mesa por WhatsApp o por teléfono y, si quieres un corte especial, avísanos con antelación." />
+  <ReserveCta title="¿Te apetece _una buena carne?_" text="Llámanos para reservar tu mesa y, si quieres un corte especial, avísanos con antelación." />
 </BaseLayout>
 
 <script>
@@ -246,13 +315,11 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
     scroll-margin-top: 56px;
   }
 
-  .cs-grid {
-    display: grid;
-    gap: var(--space-l);
-  }
-  .cs-sticky {
+  /* Cabecera de cada sección */
+  .cs-head {
     display: grid;
     gap: 1.1rem;
+    align-content: start;
   }
   .cs-title {
     font-size: var(--step-4);
@@ -278,13 +345,6 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
     flex: none;
     color: var(--brass);
   }
-  .cs-sticky :global(.cs-photo) {
-    margin-top: 0.75rem;
-  }
-  .cs-menus {
-    display: grid;
-    gap: var(--space-m);
-  }
   .cs-notes {
     margin-top: var(--space-m);
     display: grid;
@@ -297,25 +357,126 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
   .kind-menu .cs-notes {
     color: var(--muted-on-dark);
   }
+
+  /* Estándar: fotos que acompañan a la lista */
+  .cs-grid {
+    display: grid;
+    gap: var(--space-l);
+  }
+  .cs-aside {
+    display: grid;
+    gap: 1.75rem;
+    align-content: start;
+  }
+  .cs-photos {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .cs-extra {
+    display: none;
+  }
+  .cs-menus {
+    display: grid;
+    gap: var(--space-m);
+  }
+  @media (min-width: 1000px) {
+    .cs-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(3rem, 6vw, 7rem);
+      /* La columna de fotos ocupa todo el alto de la sección: así puede acompañar al scroll. */
+      align-items: stretch;
+    }
+    .cs-extra {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+    .cs-body {
+      padding-top: 0.5rem;
+    }
+  }
+  /* Solo se fija si las fotos caben en pantalla bajo la cabecera y la barra de la carta. */
+  @media (min-width: 1000px) and (min-height: 760px) {
+    .cs-photos {
+      position: sticky;
+      top: calc(var(--header-h) + 84px);
+    }
+  }
+
+  /* Compacta: pocas líneas, foto pequeña al lado y platos en grande */
+  .v-compact {
+    padding-block: var(--space-xl);
+  }
+  .cs-compact {
+    display: grid;
+    gap: var(--space-l);
+  }
+  @media (min-width: 1000px) {
+    .cs-compact {
+      width: min(100% - 2 * var(--gutter), 1120px);
+      grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+      grid-template-areas:
+        'figure head'
+        'figure body';
+      grid-template-rows: auto auto;
+      column-gap: clamp(3rem, 6vw, 5.5rem);
+      row-gap: 1.75rem;
+      align-content: center;
+    }
+    .cs-compact .cs-head {
+      grid-area: head;
+      align-self: end;
+    }
+    .cs-compact .cs-figure {
+      grid-area: figure;
+      align-self: center;
+    }
+    .cs-compact .cs-body {
+      grid-area: body;
+      align-self: start;
+    }
+  }
+
+  /* Menú del día: centrado */
+  .cs-daily {
+    display: grid;
+    gap: var(--space-l);
+  }
+  .cs-daily .cs-head {
+    justify-items: center;
+    text-align: center;
+  }
+  .cs-daily .cs-notes {
+    margin-top: 0;
+    justify-items: center;
+    text-align: center;
+  }
+  .cs-daily-row {
+    display: grid;
+    gap: var(--space-m);
+  }
   .daily {
     display: grid;
     justify-items: center;
-    gap: 1.25rem;
+    align-content: center;
+    gap: 1.4rem;
     padding: clamp(2rem, 5vw, 3.5rem) 1.5rem;
     text-align: center;
     border: 1px solid rgb(201 168 106 / 0.32);
+    background: linear-gradient(180deg, rgb(28 25 22 / 0.55), rgb(11 10 9 / 0.65));
   }
   .daily-price {
     display: grid;
     place-items: center;
-    min-width: 180px;
-    padding: 1rem 2rem;
+    min-width: 200px;
+    padding: 1.1rem 2.2rem;
     border-radius: 50%;
     background: var(--wine);
     color: var(--cream);
+    box-shadow: 0 14px 40px rgb(155 0 14 / 0.35);
   }
   .daily-amount {
-    font-size: var(--step-3);
+    font-size: var(--step-4);
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     line-height: 1.1;
@@ -326,24 +487,23 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
     text-transform: uppercase;
   }
   .daily-text {
-    max-width: 44ch;
+    max-width: 40ch;
     color: var(--muted-on-dark);
   }
   .daily-link {
     white-space: nowrap;
   }
   @media (min-width: 1000px) {
-    .cs-grid {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      gap: clamp(3rem, 6vw, 7rem);
-      align-items: start;
+    .cs-daily {
+      width: min(100% - 2 * var(--gutter), 1120px);
     }
-    .cs-sticky {
-      position: sticky;
-      top: calc(var(--header-h) + 90px);
+    .cs-daily-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
     }
-    .cs-body {
-      padding-top: 0.5rem;
+    .cs-daily .cs-figure,
+    .cs-daily .cs-figure :global(.cs-photo) {
+      height: 100%;
     }
   }
   .allergens {

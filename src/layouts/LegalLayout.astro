@@ -30,12 +30,6 @@ const crumbs = [
 >
   <header class="legal-hero bg-coal grain">
     <div class="container container--narrow lh-inner">
-      <nav aria-label="Migas de pan" class="crumbs">
-        <ol role="list">
-          <li><a href="/">Inicio</a></li>
-          <li><span aria-current="page">{title}</span></li>
-        </ol>
-      </nav>
       <p class="eyebrow">Información legal</p>
       <h1 class="display lh-title">{title}</h1>
       <p class="muted lh-updated">Última actualización: <span class="nw">{updated}</span></p>
@@ -82,26 +76,6 @@ const crumbs = [
   }
   .nw {
     white-space: nowrap;
-  }
-  .crumbs ol {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 0.6rem;
-    font-size: var(--step--1);
-    color: var(--muted-on-dark);
-  }
-  .crumbs li + li::before {
-    content: '/';
-    content: '/' / '';
-    margin-right: 0.6rem;
-    opacity: 0.6;
-  }
-  .crumbs a,
-  .crumbs span {
-    display: inline-block;
-    padding-block: 0.3rem;
-    color: var(--text-on-dark);
-    text-decoration: none;
   }
   .legal-body :global(.prose) {
     max-width: none;

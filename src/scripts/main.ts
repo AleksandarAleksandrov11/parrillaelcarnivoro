@@ -1,6 +1,6 @@
 /**
  * Comportamiento global, ligero y sin dependencias en la carga inicial:
- * cabecera, menú móvil, revelados al hacer scroll, parallax suave, botón de WhatsApp
+ * cabecera, menú móvil, revelados al hacer scroll, parallax suave, botón de llamar
  * y medición de clics. Lenis (scroll suave) se carga en diferido solo en escritorio.
  * Todo respeta prefers-reduced-motion.
  */
@@ -146,55 +146,34 @@ function initParallax() {
   update();
 }
 
-/* Botón flotante de WhatsApp: se oculta al bajar y reaparece al subir -------- */
+/* Botón de llamar --------------------------------------------------------------
+   En móvil es una barra fija (siempre visible). En escritorio es un botón flotante que
+   solo se aparta cuando debajo hay una lista de precios de la carta, para no taparla. */
 function initFab() {
   const fab = document.querySelector<HTMLElement>('[data-fab]');
   if (!fab) return;
-  let last = window.scrollY;
-  let ticking = false;
-  let hiddenByScroll = false;
-  // Zonas que el botón no debe tapar (listas de precios de la carta): si alguna ocupa la franja
-  // inferior de la pantalla, donde está el botón, este se aparta.
+  const desktop = window.matchMedia('(min-width: 1000px)');
   const avoid = Array.from(document.querySelectorAll<HTMLElement>('[data-fab-avoid]'));
+  if (!avoid.length) return;
   const overlapping = new Set<Element>();
-  const apply = () => fab.classList.toggle('is-hidden', hiddenByScroll || overlapping.size > 0);
+  const apply = () => fab.classList.toggle('is-hidden', desktop.matches && overlapping.size > 0);
   let io: IntersectionObserver | null = null;
   const watch = () => {
     io?.disconnect();
     overlapping.clear();
-    if (!avoid.length) return;
     io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => (e.isIntersecting ? overlapping.add(e.target) : overlapping.delete(e.target)));
         apply();
       },
-      { rootMargin: `-${Math.max(0, window.innerHeight - 120)}px 0px 0px 0px` },
+      // Franja inferior de la pantalla, donde está el botón.
+      { rootMargin: `-${Math.max(0, window.innerHeight - 110)}px 0px 0px 0px` },
     );
     avoid.forEach((el) => io!.observe(el));
   };
   watch();
-  window.addEventListener('resize', () => watch(), { passive: true });
-  const update = () => {
-    const y = window.scrollY;
-    const nearBottom = window.innerHeight + y > document.documentElement.scrollHeight - 160;
-    const goingDown = y > last + 4;
-    const goingUp = y < last - 4;
-    if (y < 200 || goingUp || nearBottom) hiddenByScroll = false;
-    else if (goingDown) hiddenByScroll = true;
-    apply();
-    last = y;
-    ticking = false;
-  };
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    },
-    { passive: true },
-  );
+  window.addEventListener('resize', watch, { passive: true });
+  desktop.addEventListener('change', apply);
 }
 
 /* Scroll suave con Lenis: diferido, solo puntero fino y sin movimiento reducido */

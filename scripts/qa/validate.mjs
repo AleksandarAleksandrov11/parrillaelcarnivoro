@@ -97,7 +97,7 @@ if (menuItems < 60) problems.push(`Menu con pocos platos (${menuItems})`);
 // 4) sitemap.xml y robots.txt.
 const sitemap = await readFile(path.join(DIST, 'sitemap.xml'), 'utf8');
 const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-const expectedLocs = ['/', '/carta/', '/nuestra-historia/', '/contacto/'].map((p) => SITE + p);
+const expectedLocs = ['/', '/carta/', '/galeria/', '/contacto/'].map((p) => SITE + p);
 if (JSON.stringify(locs) !== JSON.stringify(expectedLocs)) problems.push(`sitemap: ${locs.join(' ')}`);
 if (/aviso-legal|politica|404/.test(sitemap)) problems.push('sitemap incluye páginas legales o 404');
 const robots = await readFile(path.join(DIST, 'robots.txt'), 'utf8');

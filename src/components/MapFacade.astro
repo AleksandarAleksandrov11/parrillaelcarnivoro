@@ -9,7 +9,7 @@ import { business } from '../data/site';
 ---
 
 <div class="map" data-map data-src={business.maps.embed} data-track-zone="mapa">
-  <Photo name="fachada-calle-restaurante-el-carnivoro" alt="" fill sizes="(min-width: 1000px) 50vw, 100vw" class="map-photo" />
+  <Photo name="fachada-calle-restaurante-el-carnivoro" alt="Fachada de El Carnívoro desde la calle" fill sizes="(min-width: 1000px) 50vw, 100vw" class="map-photo" />
   <div class="map-facade" data-map-facade>
     <Icon name="pin" size={34} />
     <p class="map-title">{business.address.street}<br />{business.address.postalCode} {business.address.locality}</p>
@@ -18,7 +18,7 @@ import { business } from '../data/site';
       <button type="button" class="btn btn--light" data-map-load>Ver mapa interactivo</button>
       <a class="btn btn--ghost" href={business.maps.directions} target="_blank" rel="noopener" data-track="directions">
         <Icon name="route" />
-        Cómo llegar
+        Ruta en Google Maps
       </a>
     </div>
   </div>

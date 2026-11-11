@@ -4,7 +4,7 @@ import { Font } from 'astro:assets';
 import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import WhatsAppFab from '../components/WhatsAppFab.astro';
+import CallButton from '../components/CallButton.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 
 interface Props {
@@ -94,7 +94,7 @@ const gaId = (import.meta.env.PUBLIC_GA_ID ?? '').trim();
       <slot />
     </main>
     <Footer />
-    <WhatsAppFab />
+    <CallButton />
     <script>
       import '../scripts/main';
     </script>

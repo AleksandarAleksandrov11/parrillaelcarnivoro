@@ -513,6 +513,13 @@ ol[role='list'] {
   --btn-hover: var(--ink);
   --btn-hover-fg: var(--cream);
 }
+.btn--dark {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--cream);
+  --btn-border: var(--ink);
+  --btn-hover: var(--wine);
+  --btn-hover-fg: var(--cream);
+}
 .btn--block {
   width: 100%;
 }

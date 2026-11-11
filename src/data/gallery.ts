@@ -1,5 +1,5 @@
 /**
- * Galería de Nuestra historia. Solo fotos reales del restaurante (sesión de 2023 y fotos
+ * Galería de fotos (página /galeria/). Solo fotos reales del restaurante (sesión de 2023 y fotos
  * del equipo de diciembre de 2023). Se han descartado las fotos borrosas, repetidas,
  * con personas reconocibles o con marcas comerciales destacadas.
  */

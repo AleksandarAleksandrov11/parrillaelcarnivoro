@@ -3,7 +3,7 @@ import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { ROOT } from './lib.mjs';
 
-const steps = ['phone', 'redirects', 'anchors', 'links', 'validate', 'consent', 'form', 'a11y', 'responsive', 'lighthouse'];
+const steps = ['phone', 'redirects', 'anchors', 'links', 'validate', 'consent', 'a11y', 'responsive', 'lighthouse'];
 const only = process.argv.slice(2);
 const summary = [];
 for (const s of only.length ? only : steps) {

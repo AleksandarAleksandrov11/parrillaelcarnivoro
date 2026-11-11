@@ -8,7 +8,7 @@ import { SITE_URL } from '../data/site';
 const pages = [
   { path: '/', priority: '1.0', changefreq: 'weekly', images: ['/og/inicio.jpg'] },
   { path: '/carta/', priority: '0.9', changefreq: 'weekly', images: ['/og/carta.jpg'] },
-  { path: '/nuestra-historia/', priority: '0.7', changefreq: 'monthly', images: ['/og/nuestra-historia.jpg'] },
+  { path: '/galeria/', priority: '0.7', changefreq: 'monthly', images: ['/og/galeria.jpg'] },
   { path: '/contacto/', priority: '0.8', changefreq: 'monthly', images: ['/og/contacto.jpg'] },
 ];
 

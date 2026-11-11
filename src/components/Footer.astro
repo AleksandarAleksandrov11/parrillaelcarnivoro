@@ -2,7 +2,7 @@
 import { Picture } from 'astro:assets';
 import logo from '../assets/brand/logo-el-carnivoro-blanco.png';
 import Icon from './Icon.astro';
-import { business, hours, legal, legalNav, nav, whatsappUrl, defaultWhatsappText } from '../data/site';
+import { business, credits, hours, legal, legalNav } from '../data/site';
 
 const year = new Date().getFullYear();
 ---
@@ -14,10 +14,10 @@ const year = new Date().getFullYear();
 
     <div class="grid">
       <div class="col brand-col">
-        <a href="/" class="brand" aria-label={`${business.name}, ir al inicio`}>
+        <div class="brand">
           <Picture
             src={logo}
-            alt=""
+            alt={`Logotipo de ${business.name}`}
             widths={[150, 300, 450]}
             sizes="150px"
             formats={['avif', 'webp']}
@@ -25,7 +25,7 @@ const year = new Date().getFullYear();
             loading="lazy"
             decoding="async"
           />
-        </a>
+        </div>
         <p class="muted">Carnes a la parrilla de carbón en Collado Villalba, a los pies de la sierra de Guadarrama.</p>
       </div>
 
@@ -56,13 +56,11 @@ const year = new Date().getFullYear();
 
       <div class="col">
         <h3 class="col-title">Reservas y contacto</h3>
+        <a class="foot-phone" href={business.phone.tel} data-track="phone" data-track-location="pie">
+          <span class="fp-label">Reserva llamando al</span>
+          <span class="fp-number"><Icon name="phone" size={20} />{business.phone.display}</span>
+        </a>
         <ul role="list" class="contact">
-          <li>
-            <a href={business.phone.tel} data-track="phone"><Icon name="phone" size={18} />{business.phone.display}</a>
-          </li>
-          <li>
-            <a href={whatsappUrl(defaultWhatsappText)} target="_blank" rel="noopener" data-track="whatsapp"><Icon name="whatsapp" size={18} />WhatsApp</a>
-          </li>
           <li>
             <a href={`mailto:${business.email}`}><Icon name="mail" size={18} />{business.email}</a>
           </li>
@@ -74,17 +72,6 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="bottom">
-      <nav aria-label="Pie de página" class="foot-nav">
-        <ul role="list">
-          {
-            nav.map((n) => (
-              <li>
-                <a href={n.href}>{n.label}</a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
       <nav aria-label="Información legal" class="legal-nav">
         <ul role="list">
           {
@@ -99,7 +86,10 @@ const year = new Date().getFullYear();
           </li>
         </ul>
       </nav>
-      <p class="copy">© {year} {legal.company} · {business.name}</p>
+      <p class="copy">
+        <span>© {year} {legal.company} · {business.name}</span>
+        <span class="made-by">Web hecha por <a href={credits.url} target="_blank" rel="noopener">{credits.name}</a></span>
+      </p>
     </div>
   </div>
 </footer>
@@ -245,6 +235,48 @@ const year = new Date().getFullYear();
   .bottom li {
     white-space: nowrap;
   }
+  .copy {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+  }
+  .made-by {
+    white-space: nowrap;
+  }
+  .copy .made-by a {
+    display: inline;
+    padding: 0;
+    color: var(--text-on-dark);
+    text-decoration: underline;
+    text-decoration-color: var(--brass);
+    text-underline-offset: 0.22em;
+  }
+  .foot-phone {
+    display: grid;
+    gap: 0.2rem;
+    text-decoration: none;
+  }
+  .fp-label {
+    color: var(--muted-on-dark);
+  }
+  .fp-number {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--ff-display);
+    font-size: var(--step-3);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  .fp-number :global(svg) {
+    color: var(--brass);
+  }
+  @media (hover: hover) {
+    .foot-phone:hover .fp-number {
+      color: var(--brass);
+    }
+  }
   /* Móvil: enlaces en dos columnas, sin huérfanos. */
   @media (max-width: 639px) {
     .bottom ul {
@@ -256,17 +288,5 @@ const year = new Date().getFullYear();
       max-width: none;
     }
   }
-  /* Escritorio: navegación a la izquierda, legales a la derecha y copyright debajo. */
-  @media (min-width: 1080px) {
-    .bottom {
-      grid-template-columns: auto 1fr;
-      align-items: center;
-    }
-    .legal-nav ul {
-      justify-content: flex-end;
-    }
-    .copy {
-      grid-column: 1 / -1;
-    }
-  }
+
 </style>
