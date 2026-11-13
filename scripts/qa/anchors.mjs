@@ -3,7 +3,7 @@
 import { chromium, devices } from 'playwright';
 import { BASE, startServer, writeReport } from './lib.mjs';
 
-const TARGETS = ['/carta/#ensaladas', '/carta/#carnes', '/carta/#postres', '/carta/#menu-cenas', '/carta/#vinos', '/galeria/#opiniones', '/contacto/#reserva', '/#visitanos'];
+const TARGETS = ['/carta/#ensaladas', '/carta/#carnes', '/carta/#menu-del-dia', '/carta/#menu-cenas', '/carta/#vinos', '/galeria/#opiniones', '/contacto/#reserva', '/#visitanos'];
 const stop = await startServer();
 const browser = await chromium.launch();
 const rows = [];

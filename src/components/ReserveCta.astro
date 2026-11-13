@@ -8,7 +8,7 @@ interface Props {
 }
 const {
   title = 'Reserva _tu mesa_',
-  text = 'Llámanos y te guardamos mesa en el salón o en la terraza. Estaremos encantados de recibirte y de recomendarte nuestros mejores platos.',
+  text = 'Llámanos y te guardamos mesa. Estaremos encantados de recibirte y de recomendarte nuestros mejores platos.',
 } = Astro.props;
 ---
 
@@ -21,7 +21,7 @@ const {
       <span class="cta-phone-icon" aria-hidden="true"><Icon name="phone" size={26} /></span>
       <span class="cta-phone-number"><span class="visually-hidden">Reservar mesa llamando al </span>{business.phone.display}</span>
     </a>
-    <p class="cta-hours" data-reveal="fade" style="--d:400">{hoursSummary.open}, de {hoursSummary.time.replace(' – ', ' a ')}</p>
+    <p class="cta-hours" data-reveal="fade" style="--d:400">{hoursSummary.open}, {hoursSummary.sentence}</p>
   </div>
   <div class="cta-ember" aria-hidden="true"></div>
 </section>

@@ -2,7 +2,7 @@
 import { Picture } from 'astro:assets';
 import logo from '../assets/brand/logo-el-carnivoro-blanco.png';
 import Icon from './Icon.astro';
-import { business, credits, hours, legal, legalNav } from '../data/site';
+import { business, credits, hours, legal, legalNav, slotLabel } from '../data/site';
 
 const year = new Date().getFullYear();
 ---
@@ -45,9 +45,18 @@ const year = new Date().getFullYear();
         <dl class="hours">
           {
             hours.map((d) => (
-              <div class:list={{ closed: !d.open }}>
+              <div class:list={{ closed: !d.slots.length }}>
                 <dt>{d.label}</dt>
-                <dd>{d.open ? `${d.open} – ${d.close}` : 'Cerrado'}</dd>
+                <dd>
+                  {d.slots.length
+                    ? d.slots.map((sl, k) => (
+                        <>
+                          {k > 0 && <span class="visually-hidden"> y </span>}
+                          <span class="slot">{slotLabel(sl)}</span>
+                        </>
+                      ))
+                    : 'Cerrado'}
+                </dd>
               </div>
             ))
           }
@@ -175,6 +184,11 @@ const year = new Date().getFullYear();
   }
   .hours dd {
     font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .hours .slot {
+    display: block;
+    white-space: nowrap;
   }
   .hours .closed dd {
     color: var(--muted-on-dark);

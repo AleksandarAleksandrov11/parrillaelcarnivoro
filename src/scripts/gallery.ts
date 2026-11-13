@@ -6,7 +6,7 @@
  */
 import { lockScroll, unlockScroll } from './scroll-lock';
 
-const LABELS: Record<string, string> = { all: 'todas las categorías', platos: 'Platos', local: 'Local', terraza: 'Terraza', parrilla: 'Parrilla' };
+const LABELS: Record<string, string> = { all: 'todas las categorías', platos: 'Platos', local: 'Local', parrilla: 'Parrilla' };
 
 export function initGalleries() {
   document.querySelectorAll<HTMLElement>('[data-gallery]').forEach(initGallery);

@@ -10,6 +10,7 @@ import { carta, cartaNav, cartaNotes } from '../../data/carta';
 import { gallery } from '../../data/gallery';
 import type { PhotoName } from '../../data/photos';
 import { breadcrumbSchema, menuSchema } from '../../lib/schema';
+import { euros } from '../../lib/format';
 
 const crumbs = [
   { name: 'Inicio', path: '/' },
@@ -30,7 +31,8 @@ const layouts: Record<string, Layout> = {
   pescados: { variant: 'compact' },
   postres: { variant: 'compact' },
   carnes: { variant: 'standard', extra: ['entrana-parrilla-el-carnivoro', 't-bone-brasa-el-carnivoro'] },
-  'menu-cenas': { variant: 'standard', extra: ['contramuslo-pollo-parrilla-el-carnivoro', 'pescado-brasa-ensalada-el-carnivoro'] },
+  'menu-del-dia': { variant: 'compact' },
+  'menu-cenas': { variant: 'standard', extra: ['contramuslo-pollo-parrilla-el-carnivoro', 'postre-casero-el-carnivoro'] },
 };
 const layoutFor = (id: string): Layout => layouts[id] ?? { variant: 'standard' };
 const altFor = (name: PhotoName) => gallery.find((g) => g.photo === name)?.alt ?? '';
@@ -38,7 +40,7 @@ const altFor = (name: PhotoName) => gallery.find((g) => g.photo === name)?.alt ?
 
 <BaseLayout
   title="Carta y menús | El Carnívoro, parrilla en Collado Villalba"
-  description="Chuletón, T-Bone, entraña y carnes a la brasa de carbón, entrantes, pescados, postres caseros, vinos y menú de cenas y fines de semana en Collado Villalba."
+  description="Chuletón, T-Bone, entraña y carnes a la brasa de carbón, entrantes, pescados, postres caseros, vinos, menú del día y menú de cenas y fines de semana en Collado Villalba."
   path="/carta/"
   ogImage={{ path: '/og/carta.jpg', alt: 'Chuletón a la parrilla de carbón de la carta de El Carnívoro' }}
   schema={[breadcrumbSchema(crumbs), menuSchema()]}
@@ -116,6 +118,27 @@ const altFor = (name: PhotoName) => gallery.find((g) => g.photo === name)?.alt ?
               </div>
               <div class="cs-body on-light" data-reveal style="--d:100" data-fab-avoid>
                 <MenuList section={s} size="large" />
+                {notes}
+              </div>
+            </div>
+          )}
+
+          {L.variant === 'compact' && s.kind === 'menu' && (
+            <div class="container cs-compact">
+              {head}
+              <div class="cs-figure">
+                <Photo name={s.photo} alt={s.photoAlt} sizes="(min-width: 1000px) 360px, 100vw" ratio="4 / 5" reveal="mask" curtain={curtain} class="cs-photo" widths={[480, 720, 960]} lowPriority />
+              </div>
+              <div class="cs-body" data-reveal style="--d:100">
+                {s.menus.map((m) => (
+                  <div class="daily">
+                    <p class="daily-price">
+                      <span class="daily-amount">{euros(m.price.amount)}</span>
+                      <span class="daily-per">por persona</span>
+                    </p>
+                    <p class="daily-text">{s.kicker}</p>
+                  </div>
+                ))}
                 {notes}
               </div>
             </div>
@@ -406,6 +429,41 @@ const altFor = (name: PhotoName) => gallery.find((g) => g.photo === name)?.alt ?
     }
   }
 
+  /* Menú del día */
+  .daily {
+    display: grid;
+    justify-items: center;
+    gap: 1.1rem;
+    padding: clamp(2rem, 4vw, 3rem) 1.5rem;
+    text-align: center;
+    border: 1px solid rgb(201 168 106 / 0.32);
+    background: linear-gradient(180deg, rgb(28 25 22 / 0.55), rgb(11 10 9 / 0.65));
+  }
+  .daily-price {
+    display: grid;
+    place-items: center;
+    min-width: 200px;
+    padding: 1.1rem 2.2rem;
+    border-radius: 50%;
+    background: var(--wine);
+    color: var(--cream);
+    box-shadow: 0 14px 40px rgb(155 0 14 / 0.35);
+  }
+  .daily-amount {
+    font-size: var(--step-4);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .daily-per {
+    font-size: var(--step--2);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .daily-text {
+    font-family: var(--ff-display);
+    font-size: var(--step-2);
+  }
   .allergens {
     text-align: center;
   }

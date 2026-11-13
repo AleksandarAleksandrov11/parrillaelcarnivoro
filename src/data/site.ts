@@ -60,6 +60,12 @@ export const legal = {
 
 export type DayKey = 'lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes' | 'sabado' | 'domingo';
 
+export interface TimeSlot {
+  open: string;
+  /** Cierre; «01:00» es la 01:00 del día siguiente. */
+  close: string;
+}
+
 export interface DayHours {
   key: DayKey;
   label: string;
@@ -67,28 +73,40 @@ export interface DayHours {
   schema: string;
   /** 0 = domingo … 6 = sábado (Date.getDay) */
   jsDay: number;
-  open: string | null;
-  close: string | null;
+  /** Turnos del día (vacío = cerrado). */
+  slots: TimeSlot[];
 }
 
-/** Horario: lunes, jueves, viernes, sábado y domingo de 10:00 a 01:00. Martes y miércoles cerrado. */
-export const hours: DayHours[] = [
-  { key: 'lunes', label: 'Lunes', schema: 'Monday', jsDay: 1, open: '10:00', close: '01:00' },
-  { key: 'martes', label: 'Martes', schema: 'Tuesday', jsDay: 2, open: null, close: null },
-  { key: 'miercoles', label: 'Miércoles', schema: 'Wednesday', jsDay: 3, open: null, close: null },
-  { key: 'jueves', label: 'Jueves', schema: 'Thursday', jsDay: 4, open: '10:00', close: '01:00' },
-  { key: 'viernes', label: 'Viernes', schema: 'Friday', jsDay: 5, open: '10:00', close: '01:00' },
-  { key: 'sabado', label: 'Sábado', schema: 'Saturday', jsDay: 6, open: '10:00', close: '01:00' },
-  { key: 'domingo', label: 'Domingo', schema: 'Sunday', jsDay: 0, open: '10:00', close: '01:00' },
+/** Turnos de apertura: comidas de 12:00 a 17:00 y cenas de 20:00 a 01:00. */
+export const SLOTS: TimeSlot[] = [
+  { open: '12:00', close: '17:00' },
+  { open: '20:00', close: '01:00' },
 ];
 
-/** Días cerrados en formato Date.getDay() (para el calendario de reservas). */
-export const closedWeekdays = hours.filter((d) => !d.open).map((d) => d.jsDay);
+/** Horario: lunes, jueves, viernes, sábado y domingo. Martes y miércoles cerrado. */
+export const hours: DayHours[] = [
+  { key: 'lunes', label: 'Lunes', schema: 'Monday', jsDay: 1, slots: SLOTS },
+  { key: 'martes', label: 'Martes', schema: 'Tuesday', jsDay: 2, slots: [] },
+  { key: 'miercoles', label: 'Miércoles', schema: 'Wednesday', jsDay: 3, slots: [] },
+  { key: 'jueves', label: 'Jueves', schema: 'Thursday', jsDay: 4, slots: SLOTS },
+  { key: 'viernes', label: 'Viernes', schema: 'Friday', jsDay: 5, slots: SLOTS },
+  { key: 'sabado', label: 'Sábado', schema: 'Saturday', jsDay: 6, slots: SLOTS },
+  { key: 'domingo', label: 'Domingo', schema: 'Sunday', jsDay: 0, slots: SLOTS },
+];
+
+/** Días cerrados en formato Date.getDay(). */
+export const closedWeekdays = hours.filter((d) => !d.slots.length).map((d) => d.jsDay);
+
+/** «12:00 – 17:00» */
+export const slotLabel = (s: TimeSlot) => `${s.open} – ${s.close}`;
 
 export const hoursSummary = {
   open: 'Lunes, jueves, viernes, sábado y domingo',
   openShort: 'Lun · Jue – Dom',
-  time: '10:00 – 01:00',
+  /** Texto corto de los turnos: «12:00 – 17:00 y 20:00 – 01:00». */
+  time: SLOTS.map(slotLabel).join(' y '),
+  /** En frase: «de 12:00 a 17:00 y de 20:00 a 01:00». */
+  sentence: SLOTS.map((s) => `de ${s.open} a ${s.close}`).join(' y '),
   closed: 'Martes y miércoles cerrado',
 };
 

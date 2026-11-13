@@ -21,7 +21,7 @@ const cards = [
   { file: 'inicio', photo: 'hero-parrilla-carbon-poster', kicker: 'Restaurante parrilla · Collado Villalba', title: 'Pasión <em>por la carne</em>', sub: 'Carnes a la brasa de carbón en la sierra de Madrid', pos: 'center' },
   { file: 'carta', photo: 'chuleton-parrilla-carbon-el-carnivoro', kicker: 'Carta y menús', title: 'Carnes <em>a la brasa</em>', sub: 'Chuletón, T-Bone, entraña y menú de cenas y fines de semana', pos: 'center 60%' },
   { file: 'galeria', photo: 'salon-restaurante-el-carnivoro-collado-villalba', kicker: 'Galería', title: 'Fuego, mesa <em>y sierra</em>', sub: 'Fotos y opiniones de El Carnívoro, Collado Villalba', pos: 'center' },
-  { file: 'contacto', photo: 'fachada-terraza-exterior-el-carnivoro', kicker: 'Contacto y reservas', title: 'Reserva <em>tu mesa</em>', sub: 'Reservas por teléfono: 91 501 39 83', pos: 'center' },
+  { file: 'contacto', photo: 'fachada-calle-restaurante-el-carnivoro', kicker: 'Contacto y reservas', title: 'Reserva <em>tu mesa</em>', sub: 'Reservas por teléfono: 91 501 39 83', pos: 'center' },
 ];
 
 const html = (c, photo) => `<!doctype html><html><head><meta charset="utf-8"><style>

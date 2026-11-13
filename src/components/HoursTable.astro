@@ -1,6 +1,6 @@
 ---
 /** Horario semanal con el día de hoy resaltado y estado «abierto/cerrado ahora» (hora de Madrid). */
-import { hours } from '../data/site';
+import { hours, slotLabel } from '../data/site';
 interface Props {
   class?: string;
 }
@@ -14,9 +14,18 @@ const { class: className } = Astro.props;
     <tbody>
       {
         hours.map((d) => (
-          <tr data-day={d.jsDay} class:list={{ closed: !d.open }}>
+          <tr data-day={d.jsDay} class:list={{ closed: !d.slots.length }}>
             <th scope="row">{d.label}</th>
-            <td>{d.open ? `${d.open} – ${d.close}` : 'Cerrado'}</td>
+            <td>
+              {d.slots.length
+                ? d.slots.map((sl, k) => (
+                    <>
+                      {k > 0 && <span class="visually-hidden"> y </span>}
+                      <span class="slot">{slotLabel(sl)}</span>
+                    </>
+                  ))
+                : 'Cerrado'}
+            </td>
           </tr>
         ))
       }
@@ -25,10 +34,16 @@ const { class: className } = Astro.props;
 </div>
 
 <script>
-  import { closedWeekdays } from '../data/site';
+  import { closedWeekdays, SLOTS } from '../data/site';
   const DAYS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-  const OPEN = 10 * 60;
-  const CLOSE = 60; // 01:00 del día siguiente
+  const toMin = (t: string) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+  // Turnos en minutos desde las 00:00 del día de apertura (un cierre a las 01:00 cuenta como 25:00).
+  const slots = SLOTS.map((s) => {
+    const open = toMin(s.open);
+    let close = toMin(s.close);
+    if (close <= open) close += 24 * 60;
+    return { open, close, label: s.close };
+  });
 
   function madridNow() {
     const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Madrid', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
@@ -38,25 +53,38 @@ const { class: className } = Astro.props;
   }
   const isOpenDay = (d: number) => !closedWeekdays.includes(d);
 
-  document.querySelectorAll<HTMLElement>('[data-hours]').forEach((root) => {
+  function status(): { open: boolean; text: string } {
     const { day, minutes } = madridNow();
-    root.querySelector(`tr[data-day="${day}"]`)?.classList.add('is-today');
-    const status = root.querySelector<HTMLElement>('[data-hours-status]');
-    if (!status) return;
     const yesterday = (day + 6) % 7;
-    const open = (isOpenDay(day) && minutes >= OPEN) || (isOpenDay(yesterday) && minutes < CLOSE);
-    if (open) {
-      status.textContent = 'Abierto ahora · cerramos a la 01:00';
-      status.classList.add('is-open');
-    } else {
-      let next = day;
-      if (!(isOpenDay(day) && minutes < OPEN)) {
-        do next = (next + 1) % 7;
-        while (!isOpenDay(next));
-      }
-      status.textContent = next === day ? 'Cerrado ahora · abrimos hoy a las 10:00' : `Cerrado ahora · abrimos el ${DAYS[next]} a las 10:00`;
+    // ¿Dentro de un turno de hoy o de la madrugada de un turno de ayer?
+    if (isOpenDay(day)) {
+      const s = slots.find((x) => minutes >= x.open && minutes < x.close);
+      if (s) return { open: true, text: `Abierto ahora · cerramos a ${s.label === '01:00' ? 'la' : 'las'} ${s.label}` };
     }
-    status.hidden = false;
+    if (isOpenDay(yesterday)) {
+      const s = slots.find((x) => minutes + 24 * 60 >= x.open && minutes + 24 * 60 < x.close);
+      if (s) return { open: true, text: `Abierto ahora · cerramos a ${s.label === '01:00' ? 'la' : 'las'} ${s.label}` };
+    }
+    // Próxima apertura.
+    if (isOpenDay(day)) {
+      const next = slots.find((x) => minutes < x.open);
+      if (next) return { open: false, text: `Cerrado ahora · abrimos hoy a las ${SLOTS[slots.indexOf(next)].open}` };
+    }
+    let d = day;
+    do d = (d + 1) % 7;
+    while (!isOpenDay(d));
+    return { open: false, text: `Cerrado ahora · abrimos el ${DAYS[d]} a las ${SLOTS[0].open}` };
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-hours]').forEach((root) => {
+    const { day } = madridNow();
+    root.querySelector(`tr[data-day="${day}"]`)?.classList.add('is-today');
+    const el = root.querySelector<HTMLElement>('[data-hours-status]');
+    if (!el) return;
+    const st = status();
+    el.textContent = st.text;
+    el.classList.toggle('is-open', st.open);
+    el.hidden = false;
   });
 </script>
 
@@ -100,6 +128,10 @@ const { class: className } = Astro.props;
   .hours td {
     text-align: right;
     font-variant-numeric: tabular-nums;
+  }
+  .hours .slot {
+    display: block;
+    white-space: nowrap;
   }
   .hours .closed td {
     color: var(--muted-on-dark);

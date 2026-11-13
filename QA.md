@@ -1,13 +1,13 @@
 # QA — estado final antes de publicar
 
-Fecha: 13 de noviembre de 2026 (3.ª revisión) · Build: Astro 7.4.10 · Revisión sobre `dist/`
+Fecha: 13 de noviembre de 2026 (4.ª revisión) · Build: Astro 7.4.10 · Revisión sobre `dist/`
 servido en local emulando Vercel (`scripts/serve-dist.mjs`: reglas de `vercel.json`, Brotli y
 HTTP/2 + TLS para Lighthouse). Todo se repite con `npm run qa` (scripts en `scripts/qa/`,
 informes JSON en `qa-output/`, que no se versiona).
 
 | # | Revisión | Herramienta | Resultado |
 |---|---|---|---|
-| 1 | Enlaces | linkinator + Playwright (`links.mjs`, `anchors.mjs`) | ✅ 664 enlaces · 0 rotos · 0 anclas inexistentes · 16/16 saltos a ancla en su sitio · 0 enlaces de WhatsApp |
+| 1 | Enlaces | linkinator + Playwright (`links.mjs`, `anchors.mjs`) | ✅ 602 enlaces · 0 rotos · 0 anclas inexistentes · 16/16 saltos a ancla en su sitio · 0 enlaces de WhatsApp |
 | 2 | Botones y enlaces en uso real | Playwright en iPhone 13, Pixel 7, iPad Mini, escritorio 1440 y 1920 (`interactions.mjs`) | ✅ 81/81 · ningún control tapado ni roto en ningún dispositivo |
 | 3 | Teléfono antiguo | búsqueda en todo el proyecto (`phone.mjs`) | ✅ 0 apariciones (ni el número ni su prefijo) |
 | 4 | Responsive | 11 tamaños × 8 páginas (`responsive.mjs`) | ✅ 88 capturas · 0 incidencias |
@@ -25,27 +25,35 @@ informes JSON en `qa-output/`, que no se versiona).
 
 - **Páginas**: Inicio, Carta, Galería (fotos y opiniones), Contacto, Aviso legal, Política de
   privacidad, Política de cookies y 404.
-- **Carta**: solo lo que figura en el PDF nuevo: ensaladas, entrantes, carnes, pescados, postres,
-  vinos y el **menú de cenas y fines de semana** (32,50 € por persona). Desayunos, menú del día y
-  menú de grupos se han retirado porque no están en el PDF; sus URLs antiguas redirigen a la carta.
+- **Carta**: lo que figura en el PDF nuevo (ensaladas, entrantes, carnes, pescados, postres,
+  vinos y el **menú de cenas y fines de semana**, 32,50 € por persona) más el **menú del día entre
+  semana a 14,90 €** que pidió el cliente. Desayunos y menú de grupos no se publican; sus URLs
+  antiguas redirigen a la carta.
+- **Horario**: lunes y de jueves a domingo, de 12:00 a 17:00 y de 20:00 a 01:00; martes y
+  miércoles cerrado. Sale igual en la tabla de horario (con el aviso «abierto/cerrado ahora» por
+  turnos), el pie, el menú móvil, el CTA, contacto y los datos estructurados para Google (dos
+  `OpeningHoursSpecification`).
+- **Sin terraza**: no se menciona en ningún texto ni aparece en ninguna foto (se retiraron cuatro
+  fotos de la galería y la sección de la home es ahora «Nuestro salón», con el salón y la barra).
 - **Reservas solo por teléfono** (91 501 39 83): no hay formulario ni WhatsApp. Botón de llamar
   siempre a mano: barra fija abajo en móvil y tablet, botón flotante con el número en escritorio
   (se aparta solo sobre las listas de precios de la carta y al llegar al pie).
 - **Cabecera**: logotipo, menú centrado (Inicio, Carta, Galería, Contacto) y botón «Reservar», que
   llama.
-- **Opiniones**: 17 reseñas reales de Google (las claramente positivas), nota 4,4 con más de 350
+- **Opiniones**: 16 reseñas reales de Google (las claramente positivas), nota 4,4 con más de 350
   reseñas y enlace «Ver todas las reseñas en Google».
 - **Pie**: horario, dirección, teléfono, email, Instagram, enlaces legales, «Configurar cookies» y
   «Web hecha por AAS Marketing» (https://aasmarketing.com/).
 
 ## 1. Enlaces
 
-- Rastreo recursivo desde `/` con linkinator y comprobación de fragmentos: **664 URLs, 660 OK,
-  0 rotas** (las 4 restantes son `tel:` y `mailto:`, que se validan aparte).
+- Rastreo recursivo desde `/` con linkinator y comprobación de fragmentos: **602 URLs, 597 OK,
+  0 rotas** (4 son `tel:` y `mailto:`, que se validan aparte, e Instagram responde 429 a los robots
+  de comprobación: el perfil existe).
 - En cada página: todos los `tel:` son `tel:+34915013983`, todos los `mailto:` van a
   `parrilla.carnivoro@gmail.com`, hay al menos un enlace para llamar, no queda ningún enlace de
   WhatsApp, las anclas internas existen y todos los botones tienen nombre accesible y `type`.
-- Saltos directos a ancla en escritorio y móvil (`/carta/#ensaladas`, `#carnes`, `#postres`,
+- Saltos directos a ancla en escritorio y móvil (`/carta/#ensaladas`, `#carnes`, `#menu-del-dia`,
   `#menu-cenas`, `#vinos`, `/galeria/#opiniones`, `/contacto/#reserva`, `/#visitanos`): la sección
   queda justo bajo la cabecera (**16/16**).
 
@@ -64,7 +72,7 @@ el botón flotante de llamar tapaba el enlace «AAS Marketing» del pie; ahora s
 
 ## 3. Teléfono
 
-`phone.mjs` recorre los 99 archivos de texto del proyecto y del build buscando el móvil antiguo en
+`phone.mjs` recorre los 100 archivos de texto del proyecto y del build buscando el móvil antiguo en
 todas sus formas y su prefijo aislado: **0 apariciones**.
 
 ## 4. Responsive y consola
@@ -113,7 +121,7 @@ cambios:
 - Un único `<h1>` por página; title y meta description únicos; canonical absoluto con
   `https://www.` y barra final; la 404 lleva `noindex`.
 - **JSON-LD**: `Restaurant` (dirección, `geo`, teléfono, horario, `servesCuisine`, `hasMenu`…),
-  `WebSite`, `Menu` con 53 `MenuItem` (52 de la carta + el menú de cenas) y `BreadcrumbList` en las
+  `WebSite`, `Menu` con 54 `MenuItem` (52 de la carta + los dos menús) y `BreadcrumbList` en las
   páginas interiores. Sin `aggregateRating` ni `Review` (Google no las admite si las publica el
   propio negocio).
 - Todas las imágenes tienen `alt` descriptivo y los textos ancla son cortos y no se duplican sin
@@ -131,7 +139,8 @@ consentimiento o al pulsar «Ver mapa interactivo»; la elección se respeta ent
 
 ## 8. Redirecciones 301
 
-Todas con un solo salto: `/desayunos(/)` y `/parrillaelcarnivoro/carta(/)` → `/carta/`,
+Todas con un solo salto: `/desayunos(/)` → `/carta/`, `/parrillaelcarnivoro/carta(/)` →
+`/carta/#menu-del-dia`,
 `/menu-grupos(/)` → `/carta/#menu-cenas`, `/nuestra-historia(/)` y `/galeria` → `/galeria/`,
 textos legales sin barra → con barra, `/wp-*`, `/xmlrpc.php` y los feeds → `/`, `/?p=…` →
 `/?origen=wp`, cualquier ruta sin barra final → con barra, y `parrillaelcarnivoro.es/*` →
@@ -173,9 +182,10 @@ activado en el dispositivo se muestra la foto fija.
 6. Cuenta de Gmail de consumo: valorar Google Workspace u otro proveedor con contrato de encargo.
 
 **Contenido por confirmar (no impide publicar)**
-7. Días y horas exactas del menú de cenas y fines de semana (ahora: «Cenas y fines de semana»).
+7. Días exactos del menú del día («entre semana»; martes y miércoles el restaurante cierra) y del
+   menú de cenas y fines de semana.
 8. Espumoso Alcardet Brut 18: el PDF dice «D.O. Cueva» (¿«D.O. Cava»?); se muestra sin D.O.
-9. Que las 17 reseñas son de 5 estrellas (en el texto recibido no se veían las estrellas) y que se
+9. Que las 16 reseñas son de 5 estrellas (en el texto recibido no se veían las estrellas) y que se
    puede mostrar el nombre con la inicial del apellido — `src/data/reviews.ts`.
 10. Nota media y número de reseñas (4,4 y «más de 350»): valores fijos que hay que actualizar a
     mano — `src/data/reviews.ts`.

@@ -16,18 +16,18 @@ const crumbs = [
 ---
 
 <BaseLayout
-  title="Reservas y contacto | El Carnívoro, terraza en Collado Villalba"
-  description="Reserva mesa en El Carnívoro llamando al 91 501 39 83. C/ Pasaje Piscina Delfe, 3, Collado Villalba. Abierto lunes y de jueves a domingo, de 10:00 a 01:00."
+  title="Reservas y contacto | El Carnívoro, parrilla en Collado Villalba"
+  description="Reserva mesa en El Carnívoro llamando al 91 501 39 83. C/ Pasaje Piscina Delfe, 3, Collado Villalba. Lunes y de jueves a domingo, de 12:00 a 17:00 y de 20:00 a 01:00."
   path="/contacto/"
-  ogImage={{ path: '/og/contacto.jpg', alt: 'Fachada y terraza exterior de Restaurante Parrilla El Carnívoro en Collado Villalba' }}
+  ogImage={{ path: '/og/contacto.jpg', alt: 'Entrada de Restaurante Parrilla El Carnívoro en Collado Villalba' }}
   schema={[breadcrumbSchema(crumbs)]}
 >
   <PageHero
     title="Llámanos _y reserva_"
     kicker="Reservas y contacto"
-    intro="Las reservas se hacen por teléfono. Te guardamos mesa en el salón o en la terraza y, si quieres un corte especial, te lo preparamos."
-    photo="fachada-terraza-exterior-el-carnivoro"
-    photoAlt="Fachada y terraza exterior de El Carnívoro en Collado Villalba"
+    intro="Las reservas se hacen por teléfono. Te guardamos mesa y, si quieres un corte especial, te lo preparamos."
+    photo="fachada-calle-restaurante-el-carnivoro"
+    photoAlt="Entrada de El Carnívoro en el Pasaje Piscina Delfe, Collado Villalba"
     compact
   >
     <a class="hero-call" href={business.phone.tel} data-track="phone" data-track-location="cabecera-contacto" data-reveal style="--d:550">
@@ -54,7 +54,7 @@ const crumbs = [
             </span>
           </a>
           <ul role="list" class="cc-tips">
-            <li><Icon name="clock" size={18} /><span>Te atendemos {hoursSummary.open.toLowerCase()}, de 10:00 a 01:00. {hoursSummary.closed}.</span></li>
+            <li><Icon name="clock" size={18} /><span>Te atendemos {hoursSummary.open.toLowerCase()}, {hoursSummary.sentence}. {hoursSummary.closed}.</span></li>
             <li><Icon name="calendar" size={18} /><span>Para grupos grandes y cortes con reserva previa (chuletón madurado, tomahawk, steak ribeye o paletilla), avísanos con antelación.</span></li>
           </ul>
         </div>

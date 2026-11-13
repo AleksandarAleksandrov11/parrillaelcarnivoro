@@ -3,7 +3,7 @@
  * Sin aggregateRating ni Review (Google no admite reseñas autogestionadas en negocios locales).
  */
 import type { BreadcrumbList, Menu, MenuItem as SchemaMenuItem, MenuSection as SchemaMenuSection, Offer, Restaurant, WebSite, WithContext } from 'schema-dts';
-import { business, hours, SITE_URL } from '../data/site';
+import { business, hours, SITE_URL, SLOTS } from '../data/site';
 import { carta, type MenuItem, type Price, type Section } from '../data/carta';
 
 export const RESTAURANT_ID = `${SITE_URL}/#restaurant`;
@@ -12,7 +12,7 @@ export const WEBSITE_ID = `${SITE_URL}/#website`;
 export const abs = (path: string) => new URL(path, SITE_URL).href;
 
 export function restaurantSchema(images: string[]): WithContext<Restaurant> {
-  const openDays = hours.filter((d) => d.open);
+  const openDays = hours.filter((d) => d.slots.length);
   return {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
@@ -21,7 +21,7 @@ export function restaurantSchema(images: string[]): WithContext<Restaurant> {
     alternateName: business.shortName,
     slogan: business.slogan,
     description:
-      'Restaurante de carnes a la parrilla de carbón en Collado Villalba (sierra de Madrid): chuletón, T-Bone, entraña y cortes madurados, entrantes caseros, pescados, postres caseros, vinos y menú de cenas y fines de semana. Salón y gran terraza.',
+      'Restaurante de carnes a la parrilla de carbón en Collado Villalba (sierra de Madrid): chuletón, T-Bone, entraña y cortes madurados, entrantes caseros, pescados, postres caseros, vinos y menú de cenas y fines de semana. Salón acogedor con barra y vinoteca.',
     url: `${SITE_URL}/`,
     logo: abs('/logo-el-carnivoro.png'),
     image: images,
@@ -37,14 +37,12 @@ export function restaurantSchema(images: string[]): WithContext<Restaurant> {
     },
     geo: { '@type': 'GeoCoordinates', latitude: business.geo.latitude, longitude: business.geo.longitude },
     hasMap: business.maps.place,
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: openDays.map((d) => `https://schema.org/${d.schema}` as never),
-        opens: '10:00',
-        closes: '01:00',
-      },
-    ],
+    openingHoursSpecification: SLOTS.map((slot) => ({
+      '@type': 'OpeningHoursSpecification' as const,
+      dayOfWeek: openDays.map((d) => `https://schema.org/${d.schema}` as never),
+      opens: slot.open,
+      closes: slot.close,
+    })),
     servesCuisine: [...business.cuisine],
     priceRange: business.priceRange,
     currenciesAccepted: 'EUR',

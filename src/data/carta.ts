@@ -5,9 +5,9 @@
  * (no hace falta tocar ningún componente). Los precios van en euros con IVA incluido
  * y se escriben como número: 14.5 se mostrará como «14,50 €».
  *
- * Fuente única: «Para_APROBAR2.pdf» (carta nueva, noviembre 2026). Solo se publica lo que
- * aparece en el PDF: carta (ensaladas, entrantes, carnes, pescados, postres y vinos) y el menú
- * de cenas y fines de semana.
+ * Fuente: «Para_APROBAR2.pdf» (carta nueva, noviembre 2026): carta (ensaladas, entrantes,
+ * carnes, pescados, postres y vinos) y menú de cenas y fines de semana. Además, a petición del
+ * cliente, el menú del día entre semana a 14,90 € (no está en el PDF).
  */
 import type { PhotoName } from './photos';
 
@@ -275,6 +275,24 @@ export const carta: Section[] = [
   },
   {
     kind: 'menu',
+    id: 'menu-del-dia',
+    title: 'Menú del día',
+    kicker: 'Entre semana',
+    intro: 'Un menú distinto cada día, a precio cerrado.',
+    photo: 'pescado-brasa-ensalada-el-carnivoro',
+    photoAlt: 'Plato de pescado a la brasa con ensalada servido en mesa de madera',
+    // TODO: confirmar con el cliente: qué días exactos se sirve (martes y miércoles el restaurante cierra).
+    pendingConfirmation: 'No aparece en el PDF; precio de la web anterior (14,90 €). Confirmar qué días exactos se sirve.',
+    menus: [
+      {
+        name: 'Menú del día',
+        price: { amount: 14.9, per: 'persona' },
+        courses: [],
+      },
+    ],
+  },
+  {
+    kind: 'menu',
     id: 'menu-cenas',
     title: 'Menú cenas y fines de semana',
     kicker: 'Noches y fines de semana',
@@ -322,7 +340,7 @@ export const cartaNotes = {
   vat: 'Todos los precios incluyen IVA.',
 };
 
-/** Orden de navegación: carta y, después, el menú de cenas. */
+/** Orden de navegación: carta y, después, los menús. */
 export const cartaNav = carta.map((s) => ({ id: s.id, label: navLabel(s) }));
 
 function navLabel(s: Section): string {

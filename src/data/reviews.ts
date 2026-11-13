@@ -96,11 +96,6 @@ export const reviews: Review[] = [
     text: 'Estupenda comida y, lo que es aún mejor, buen servicio. Alejandro súper amable y correcto. Ha sido una buena primera vez. Volveremos.',
   },
   {
-    author: 'Carolina D.',
-    highlight: 'El servicio al completo ha sido excelente.',
-    text: 'Hemos comido en la terraza, el servicio al completo ha sido excelente. Tanto la atención de los camareros, que han sido muy agradables, como la comida. La hamburguesa muy buena.',
-  },
-  {
     author: 'Rosa C.',
     highlight: '¡Repetiremos!',
     text: 'La comida buenísima y el servicio muy amable y rápido. Nos han hecho buenas recomendaciones del menú.',

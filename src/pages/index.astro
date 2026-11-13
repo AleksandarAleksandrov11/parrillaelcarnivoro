@@ -33,9 +33,36 @@ const meatDefs: { name: string; photo: PhotoName; alt: string; position?: string
 ];
 const meats = meatDefs.map((m) => ({ ...m, item: findItem('carnes', m.name) }));
 
-const cenas = getSection('menu-cenas');
-if (cenas.kind !== 'menu') throw new Error('menu-cenas');
-const cenasMenu = cenas.menus[0];
+// Los dos menús, con los datos de la carta (precio único en src/data/carta.ts).
+function setMenu(id: string) {
+  const s = getSection(id);
+  if (s.kind !== 'menu') throw new Error(id);
+  return { section: s, menu: s.menus[0] };
+}
+const dia = setMenu('menu-del-dia');
+const cenas = setMenu('menu-cenas');
+const menuCards = [
+  {
+    id: 'menu-del-dia',
+    kicker: dia.section.kicker,
+    title: 'Menú del día',
+    text: 'Un menú distinto cada día, a precio cerrado.',
+    price: dia.menu.price.amount,
+    photo: 'pescado-brasa-ensalada-el-carnivoro' as const,
+    alt: 'Plato de pescado a la brasa con ensalada servido en mesa de madera',
+    link: 'Ver el menú del día',
+  },
+  {
+    id: 'menu-cenas',
+    kicker: cenas.section.kicker,
+    title: 'Menú cenas y fines de semana',
+    text: 'Primero, segundo y postre a elegir, con pan, una bebida y café o chupito.',
+    price: cenas.menu.price.amount,
+    photo: 'chuletillas-cordero-el-carnivoro' as const,
+    alt: 'Chuletillas de cordero a la brasa sobre pizarra con romero',
+    link: 'Ver el menú de cenas',
+  },
+];
 
 const featured = gallery.filter((g) => g.featured);
 
@@ -44,8 +71,8 @@ const schemaImages = await Promise.all(
   (
     [
       'salon-restaurante-el-carnivoro-collado-villalba',
-      'fachada-terraza-exterior-el-carnivoro',
-      'terraza-cubierta-el-carnivoro',
+      'barra-restaurante-el-carnivoro',
+      'fachada-calle-restaurante-el-carnivoro',
       'chuleton-parrilla-carbon-el-carnivoro',
     ] as const
   ).map(async (n) => abs((await getImage({ src: await photo(n), width: 1200, format: 'jpg' })).src)),
@@ -55,7 +82,7 @@ const schema = [restaurantSchema(schemaImages), websiteSchema()];
 
 <BaseLayout
   title="Restaurante parrilla en Collado Villalba | El Carnívoro"
-  description="Carne a la brasa de carbón en Collado Villalba, sierra de Madrid: chuletón, entraña, T-Bone, menú de cenas y fines de semana y gran terraza. Reservas: 91 501 39 83."
+  description="Carne a la brasa de carbón en Collado Villalba, sierra de Madrid: chuletón, entraña, T-Bone, menú del día y menú de cenas y fines de semana. Reservas: 91 501 39 83."
   path="/"
   ogImage={{ path: '/og/inicio.jpg', alt: 'Carne a la parrilla de carbón en Restaurante Parrilla El Carnívoro, Collado Villalba' }}
   schema={schema}
@@ -87,12 +114,12 @@ const schema = [restaurantSchema(schemaImages), websiteSchema()];
             <span class="fact-text">Brasa viva para cada corte</span>
           </li>
           <li data-reveal style="--d:200">
-            <span class="fact-title">Salón y gran terraza</span>
-            <span class="fact-text">Dentro o al aire de la sierra</span>
+            <span class="fact-title">Salón acogedor</span>
+            <span class="fact-text">Madera, ladrillo y luz cálida</span>
           </li>
           <li data-reveal style="--d:300">
-            <span class="fact-title">De 10:00 a&nbsp;01:00</span>
-            <span class="fact-text">Del aperitivo a la sobremesa</span>
+            <span class="fact-title">Comidas y cenas</span>
+            <span class="fact-text">De 12:00 a 17:00 y de 20:00 a 01:00</span>
           </li>
         </ul>
       </div>
@@ -135,13 +162,13 @@ const schema = [restaurantSchema(schemaImages), websiteSchema()];
     </div>
   </section>
 
-  {/* Salón y terraza -------------------------------------------------------*/}
+  {/* El salón ------------------------------------------------------------*/}
   <section class="section bg-cream grain spaces" aria-labelledby="espacios-title">
     <div class="container container--wide">
       <div class="spaces-head">
         <div>
           <span class="eyebrow" data-reveal="fade">Un restaurante con encanto</span>
-          <SplitText as="h2" id="espacios-title" class="display" text="Salón _y terraza_" />
+          <SplitText as="h2" id="espacios-title" class="display" text="Nuestro _salón_" />
         </div>
       </div>
       <div class="spaces-pair">
@@ -156,48 +183,43 @@ const schema = [restaurantSchema(schemaImages), websiteSchema()];
         </figure>
         <figure class="space" data-reveal style="--d:220">
           <Photo
-            name="terraza-cubierta-el-carnivoro"
-            alt="Gran terraza cubierta con pérgola de madera y mural de paisaje de sierra"
+            name="barra-restaurante-el-carnivoro"
+            alt="La barra del restaurante con botellero iluminado y plantas colgantes"
             sizes="(min-width: 800px) 46vw, 100vw"
             ratio="4 / 3"
           />
-          <figcaption>La terraza</figcaption>
+          <figcaption>La barra</figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  {/* Menú de cenas y fines de semana ------------------------------------*/}
-  <section class="section bg-wood grain dinner" aria-labelledby="cenas-title">
-    <div class="container container--wide dinner-grid">
-      <div class="dinner-media" data-reveal="fade">
-        <Photo
-          name="chuletillas-cordero-el-carnivoro"
-          alt="Chuletillas de cordero a la brasa sobre pizarra con romero"
-          sizes="(min-width: 1000px) 50vw, 100vw"
-          ratio="4 / 3"
-        />
+  {/* Menús ---------------------------------------------------------------*/}
+  <section class="section bg-wood grain menus" aria-labelledby="menus-title">
+    <div class="container container--wide">
+      <div class="sec-head sec-head--center">
+        <span class="eyebrow eyebrow--center" data-reveal="fade">Comidas y cenas</span>
+        <SplitText as="h2" id="menus-title" class="display" text="Nuestros _menús_" />
       </div>
-      <div class="dinner-card" data-reveal style="--d:120">
-        <span class="eyebrow eyebrow--center">{cenas.kicker}</span>
-        <SplitText as="h2" id="cenas-title" class="display dinner-title" text="Menú cenas _y fines de semana_" />
-        <ul role="list" class="dinner-courses">
-          {
-            cenasMenu.courses.map((c) => (
-              <li>
-                <span class="dc-title">{c.title}</span>
-                <span class="dc-text">{c.options.length} a elegir</span>
-              </li>
-            ))
-          }
-        </ul>
-        <p class="dinner-includes">Con pan, una bebida y café o chupito incluidos.</p>
-        <p class="dinner-price">
-          <span class="dp-amount">{euros(cenasMenu.price.amount)}</span>
-          <span class="dp-per">por persona</span>
-        </p>
-        <a class="link" href="/carta/#menu-cenas">Ver el menú completo <Icon name="arrow" /></a>
-      </div>
+      <ul role="list" class="menu-pair">
+        {
+          menuCards.map((m, i) => (
+            <li class="menu-card" data-reveal style={`--d:${i * 140}`}>
+              <Photo name={m.photo} alt={m.alt} sizes="(min-width: 900px) 45vw, 100vw" ratio="16 / 9" class="mc-photo" />
+              <span class="mc-kicker">{m.kicker}</span>
+              <h3 class="mc-title">{m.title}</h3>
+              <p class="mc-text">{m.text}</p>
+              <p class="mc-price">
+                <span class="mc-amount">{euros(m.price)}</span>
+                <span class="mc-per">por persona</span>
+              </p>
+              <a class="link mc-link" href={`/carta/#${m.id}`}>
+                {m.link} <Icon name="arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -443,7 +465,7 @@ const schema = [restaurantSchema(schemaImages), websiteSchema()];
     }
   }
 
-  /* Salón y terraza */
+  /* El salón */
   .spaces-head {
     display: grid;
     gap: 1.25rem;
@@ -480,90 +502,76 @@ const schema = [restaurantSchema(schemaImages), websiteSchema()];
     }
   }
 
-  /* Menú de cenas */
-  .dinner-grid {
+  /* Menús: dos tarjetas idénticas, con las filas alineadas */
+  .menu-pair {
     display: grid;
-    gap: var(--space-l);
-    align-items: center;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 1180px;
+    margin-inline: auto;
   }
-  .dinner-card {
+  @media (min-width: 900px) {
+    .menu-pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .menu-card {
     position: relative;
     display: grid;
+    grid-row: span 6;
+    grid-template-rows: subgrid;
+    grid-template-columns: minmax(0, 1fr);
     justify-items: center;
-    gap: 1.25rem;
-    padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 3rem);
+    row-gap: 1rem;
+    padding-bottom: clamp(2rem, 3vw, 2.75rem);
     text-align: center;
     border: 1px solid rgb(201 168 106 / 0.32);
     background: linear-gradient(180deg, rgb(28 25 22 / 0.78), rgb(11 10 9 / 0.88));
+    overflow: hidden;
   }
-  .dinner-card::before {
-    content: '';
-    position: absolute;
-    inset: 6px;
-    border: 1px solid rgb(201 168 106 / 0.12);
-    pointer-events: none;
+  .menu-card :global(.mc-photo) {
+    width: 100%;
+    margin-bottom: 0.75rem;
   }
-  .dinner-card :global(.dinner-title) {
-    font-size: var(--step-4);
-    text-wrap: balance;
-  }
-  .dinner-card :global(.dinner-title em) {
-    font-style: italic;
-    color: var(--brass);
-  }
-  .dinner-courses {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem clamp(1.5rem, 4vw, 3rem);
-    padding-block: 1.25rem;
-    border-block: 1px solid rgb(201 168 106 / 0.3);
-  }
-  .dinner-courses li {
-    display: grid;
-    gap: 0.2rem;
-  }
-  .dc-title {
+  .mc-kicker {
     font-size: var(--step--2);
     font-weight: 600;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
     color: var(--brass);
   }
-  .dc-text {
-    font-family: var(--ff-display);
-    font-size: var(--step-1);
+  .mc-title {
+    padding-inline: 1.5rem;
+    font-size: var(--step-3);
+    line-height: 1.1;
+    text-wrap: balance;
   }
-  .dinner-includes {
-    max-width: 40ch;
+  .mc-text {
+    max-width: 38ch;
+    padding-inline: 1.5rem;
     color: var(--muted-on-dark);
   }
-  .dinner-price {
+  .mc-price {
     display: grid;
     place-items: center;
-    min-width: 180px;
-    padding: 0.95rem 2rem;
+    align-self: center;
+    min-width: 170px;
+    padding: 0.9rem 1.9rem;
     border-radius: 50%;
     background: var(--wine);
     color: var(--cream);
     box-shadow: 0 14px 40px rgb(155 0 14 / 0.35);
   }
-  .dp-amount {
+  .mc-amount {
     font-size: var(--step-3);
     font-weight: 700;
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
   }
-  .dp-per {
+  .mc-per {
     font-size: var(--step--2);
     letter-spacing: 0.16em;
     text-transform: uppercase;
-  }
-  @media (min-width: 1000px) {
-    .dinner-grid {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: clamp(3rem, 6vw, 6rem);
-    }
   }
 
   /* Opiniones */
