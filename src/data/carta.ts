@@ -5,9 +5,9 @@
  * (no hace falta tocar ningún componente). Los precios van en euros con IVA incluido
  * y se escriben como número: 14.5 se mostrará como «14,50 €».
  *
- * Fuente: «Para_APROBAR2.pdf» (carta nueva, noviembre 2026). Desayunos, menú del día
- * y menú de grupos no aparecen en el PDF: se toman de la web anterior y están marcados
- * con `pendingConfirmation` para revisarlos con el cliente.
+ * Fuente única: «Para_APROBAR2.pdf» (carta nueva, noviembre 2026). Solo se publica lo que
+ * aparece en el PDF: carta (ensaladas, entrantes, carnes, pescados, postres y vinos) y el menú
+ * de cenas y fines de semana.
  */
 import type { PhotoName } from './photos';
 
@@ -275,26 +275,6 @@ export const carta: Section[] = [
   },
   {
     kind: 'menu',
-    id: 'menu-del-dia',
-    title: 'Menú del día',
-    kicker: 'Lunes, jueves y viernes',
-    intro: 'Un menú que cambia cada día. Publicamos el de hoy en nuestro Instagram.',
-    photo: 'pescado-brasa-ensalada-el-carnivoro',
-    photoAlt: 'Plato de pescado a la brasa con ensalada servido en mesa de madera',
-    availability: 'Lunes, jueves y viernes (martes y miércoles cerramos).',
-    link: { href: 'https://www.instagram.com/elcarnivoro.villalba/', label: 'Menú de hoy en Instagram' },
-    pendingConfirmation:
-      'No aparece en el PDF. Precio de la web anterior: 14,90 € de lunes a viernes (la antigua página de desayunos indicaba «plato del día 12 €»). Confirmar precio, días y si se mantiene el plato del día.',
-    menus: [
-      {
-        name: 'Menú del día',
-        price: { amount: 14.9, per: 'persona' },
-        courses: [],
-      },
-    ],
-  },
-  {
-    kind: 'menu',
     id: 'menu-cenas',
     title: 'Menú cenas y fines de semana',
     kicker: 'Noches y fines de semana',
@@ -333,89 +313,7 @@ export const carta: Section[] = [
         includes: ['Pan', '1 bebida', 'Café o chupito'],
       },
     ],
-  },
-  {
-    kind: 'menu',
-    id: 'grupos',
-    title: 'Menú de grupos',
-    kicker: 'Celebraciones · mínimo 4 personas',
-    intro:
-      'Primeros para compartir, un segundo por persona, pan, aperitivo, postre, una bebida por persona y café. Botella de vino cada 4 personas (Rueda, Ribera del Duero o Rioja) o una bebida por persona.',
-    photo: 'parrilla-carbon-carnes-el-carnivoro',
-    photoAlt: 'La parrilla de carbón de El Carnívoro llena de carnes para un grupo',
-    notes: ['Servicio/cubierto (por comensal): 0,60\u00a0€.', 'IVA incluido.'],
-    pendingConfirmation:
-      'No aparece en el PDF; datos de la web anterior. Confirmar precios (39,50 € y 59,50 €), platos y el servicio/cubierto (0,60 € en grupos frente a 0,90 € en el menú de cenas).',
-    menus: [
-      {
-        name: 'Menú 1',
-        price: { amount: 39.5, per: 'persona' },
-        courses: [
-          { title: 'Primeros', hint: 'Para compartir cada 4 personas', options: ['2 entrantes de la carta a elegir'] },
-          {
-            title: 'Segundos',
-            hint: 'Un plato a elegir por persona',
-            options: ['Entrecot de vaca gallega', 'Contramuslo de pollo deshuesado a la parrilla', 'Bacalao al ajoarriero'],
-          },
-        ],
-        includes: ['Pan', 'Aperitivo', 'Postre', '1 bebida por persona', 'Café'],
-      },
-      {
-        name: 'Menú 2',
-        price: { amount: 59.5, per: 'persona' },
-        courses: [
-          { title: 'Primeros', hint: 'Para compartir cada 4 personas', options: ['3 entrantes de la carta a elegir'] },
-          {
-            title: 'Segundos',
-            hint: 'Un plato a elegir por persona',
-            options: ['Solomillo de ternera a la brasa', 'Pulpo a la brasa', 'Paletilla de cordero asada'],
-          },
-        ],
-        includes: ['Pan', 'Aperitivo', 'Postre', '1 bebida por persona', 'Café'],
-      },
-    ],
-  },
-  {
-    kind: 'carta',
-    id: 'desayunos',
-    title: 'Desayunos',
-    kicker: 'Desde las 10:00',
-    intro: 'Empieza el día en la barra o en la terraza: tostadas, bocatas y café recién hecho.',
-    photo: 'barra-restaurante-el-carnivoro',
-    photoAlt: 'Barra del restaurante El Carnívoro con botellero, cafetera y plantas colgantes',
-    notes: ['Suplemento de refresco en los desayunos: 1,00\u00a0€.', 'Suplemento de queso en sándwiches y bocatas: 0,50\u00a0€.'],
-    pendingConfirmation: 'No aparecen en el PDF; precios de la web anterior. Confirmar carta y precios de desayunos.',
-    groups: [
-      {
-        title: 'Desayunos',
-        items: [
-          { name: 'Tostada con tomate o mermelada', description: 'Con café o infusión', prices: [{ amount: 3 }] },
-          { name: 'Tostada de jamón', description: 'Con café o infusión', prices: [{ amount: 4.5 }] },
-          { name: 'Tortilla francesa', description: 'Con café o infusión', prices: [{ amount: 4.5 }] },
-          {
-            name: 'Desayuno completo',
-            description: '2 huevos fritos, bacon, chistorra y pan tostado, con café o infusión',
-            prices: [{ amount: 6.5 }],
-          },
-        ],
-      },
-      {
-        title: 'Sándwiches y bocatas',
-        items: [
-          { name: 'Sándwich mixto con huevo', prices: [{ amount: 4.2 }] },
-          { name: 'Bocatas fríos', description: 'Jamón, salchichón, chorizo o queso', prices: [{ amount: 5 }] },
-          { name: 'Bocatas calientes', description: 'Lomo, bacon, chorizo o chistorra', prices: [{ amount: 6 }] },
-        ],
-      },
-      {
-        title: 'Bebidas',
-        items: [
-          { name: 'Café, vaso de leche, infusión o ColaCao', prices: [{ amount: 1.5 }] },
-          { name: 'Zumos y refrescos', prices: [{ amount: 2.5 }] },
-        ],
-      },
-    ],
-  },
+  }
 ];
 
 /** Notas generales de la carta (Reglamento UE 1169/2011 e IVA). */
@@ -424,7 +322,7 @@ export const cartaNotes = {
   vat: 'Todos los precios incluyen IVA.',
 };
 
-/** Orden de navegación: carta y, después, menús y desayunos. */
+/** Orden de navegación: carta y, después, el menú de cenas. */
 export const cartaNav = carta.map((s) => ({ id: s.id, label: navLabel(s) }));
 
 function navLabel(s: Section): string {
@@ -433,8 +331,6 @@ function navLabel(s: Section): string {
       return 'Carnes';
     case 'menu-cenas':
       return 'Menú cenas';
-    case 'grupos':
-      return 'Grupos';
     default:
       return s.title;
   }

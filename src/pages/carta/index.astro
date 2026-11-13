@@ -10,7 +10,6 @@ import { carta, cartaNav, cartaNotes } from '../../data/carta';
 import { gallery } from '../../data/gallery';
 import type { PhotoName } from '../../data/photos';
 import { breadcrumbSchema, menuSchema } from '../../lib/schema';
-import { euros } from '../../lib/format';
 
 const crumbs = [
   { name: 'Inicio', path: '/' },
@@ -23,18 +22,15 @@ const bgFor = (i: number, kind: string) => (kind === 'menu' ? (i % 2 ? 'bg-coal'
 /**
  * Composición de cada sección en escritorio (en móvil todas se apilan igual):
  *  - compact: pocas líneas → sección más baja, foto pequeña al lado y platos en grande.
- *  - daily:   menú del día centrado, foto y precio lado a lado.
  *  - standard: columna de fotos que acompaña el scroll junto a la lista; `extra` añade fotos.
  */
-type Layout = { variant: 'compact' | 'daily' | 'standard'; extra?: PhotoName[] };
+type Layout = { variant: 'compact' | 'standard'; extra?: PhotoName[] };
 const layouts: Record<string, Layout> = {
   ensaladas: { variant: 'compact' },
   pescados: { variant: 'compact' },
   postres: { variant: 'compact' },
-  'menu-del-dia': { variant: 'daily' },
   carnes: { variant: 'standard', extra: ['entrana-parrilla-el-carnivoro', 't-bone-brasa-el-carnivoro'] },
-  grupos: { variant: 'standard', extra: ['paletilla-cordero-asada-el-carnivoro', 'bacalao-ajoarriero-el-carnivoro'] },
-  desayunos: { variant: 'standard', extra: ['terraza-cubierta-mesas-el-carnivoro', 'fachada-terraza-exterior-el-carnivoro'] },
+  'menu-cenas': { variant: 'standard', extra: ['contramuslo-pollo-parrilla-el-carnivoro', 'pescado-brasa-ensalada-el-carnivoro'] },
 };
 const layoutFor = (id: string): Layout => layouts[id] ?? { variant: 'standard' };
 const altFor = (name: PhotoName) => gallery.find((g) => g.photo === name)?.alt ?? '';
@@ -42,7 +38,7 @@ const altFor = (name: PhotoName) => gallery.find((g) => g.photo === name)?.alt ?
 
 <BaseLayout
   title="Carta y menús | El Carnívoro, parrilla en Collado Villalba"
-  description="Chuletón, T-Bone, entraña y carnes a la brasa de carbón, entrantes, pescados y vinos. Menú del día, menú de cenas, grupos y desayunos en Collado Villalba."
+  description="Chuletón, T-Bone, entraña y carnes a la brasa de carbón, entrantes, pescados, postres caseros, vinos y menú de cenas y fines de semana en Collado Villalba."
   path="/carta/"
   ogImage={{ path: '/og/carta.jpg', alt: 'Chuletón a la parrilla de carbón de la carta de El Carnívoro' }}
   schema={[breadcrumbSchema(crumbs), menuSchema()]}
@@ -122,33 +118,6 @@ const altFor = (name: PhotoName) => gallery.find((g) => g.photo === name)?.alt ?
                 <MenuList section={s} size="large" />
                 {notes}
               </div>
-            </div>
-          )}
-
-          {L.variant === 'daily' && s.kind === 'menu' && (
-            <div class="container cs-daily">
-              {head}
-              <div class="cs-daily-row">
-                <div class="cs-figure">
-                  <Photo name={s.photo} alt={s.photoAlt} sizes="(min-width: 1000px) 540px, 100vw" ratio="4 / 3" reveal="mask" curtain={curtain} class="cs-photo" widths={[480, 720, 960, 1280]} lowPriority />
-                </div>
-                {s.menus.map((m) => (
-                  <div class="daily" data-reveal style="--d:100">
-                    <p class="daily-price">
-                      <span class="daily-amount">{euros(m.price.amount)}</span>
-                      <span class="daily-per">por persona</span>
-                    </p>
-                    <p class="daily-text">El menú cambia cada día. Consulta el de hoy en nuestro Instagram o pregúntanos al llamar.</p>
-                    {s.link && (
-                      <a class="btn btn--ghost daily-link" href={s.link.href} target="_blank" rel="noopener">
-                        <Icon name="instagram" />
-                        {s.link.label}
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-              {notes}
             </div>
           )}
 
@@ -437,75 +406,6 @@ const altFor = (name: PhotoName) => gallery.find((g) => g.photo === name)?.alt ?
     }
   }
 
-  /* Menú del día: centrado */
-  .cs-daily {
-    display: grid;
-    gap: var(--space-l);
-  }
-  .cs-daily .cs-head {
-    justify-items: center;
-    text-align: center;
-  }
-  .cs-daily .cs-notes {
-    margin-top: 0;
-    justify-items: center;
-    text-align: center;
-  }
-  .cs-daily-row {
-    display: grid;
-    gap: var(--space-m);
-  }
-  .daily {
-    display: grid;
-    justify-items: center;
-    align-content: center;
-    gap: 1.4rem;
-    padding: clamp(2rem, 5vw, 3.5rem) 1.5rem;
-    text-align: center;
-    border: 1px solid rgb(201 168 106 / 0.32);
-    background: linear-gradient(180deg, rgb(28 25 22 / 0.55), rgb(11 10 9 / 0.65));
-  }
-  .daily-price {
-    display: grid;
-    place-items: center;
-    min-width: 200px;
-    padding: 1.1rem 2.2rem;
-    border-radius: 50%;
-    background: var(--wine);
-    color: var(--cream);
-    box-shadow: 0 14px 40px rgb(155 0 14 / 0.35);
-  }
-  .daily-amount {
-    font-size: var(--step-4);
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    line-height: 1.1;
-  }
-  .daily-per {
-    font-size: var(--step--2);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-  .daily-text {
-    max-width: 40ch;
-    color: var(--muted-on-dark);
-  }
-  .daily-link {
-    white-space: nowrap;
-  }
-  @media (min-width: 1000px) {
-    .cs-daily {
-      width: min(100% - 2 * var(--gutter), 1120px);
-    }
-    .cs-daily-row {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: stretch;
-    }
-    .cs-daily .cs-figure,
-    .cs-daily .cs-figure :global(.cs-photo) {
-      height: 100%;
-    }
-  }
   .allergens {
     text-align: center;
   }

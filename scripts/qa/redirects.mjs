@@ -2,12 +2,12 @@
 import { BASE, startServer, writeReport } from './lib.mjs';
 
 const CASES = [
-  ['/desayunos', '/carta/#desayunos'],
-  ['/desayunos/', '/carta/#desayunos'],
-  ['/menu-grupos', '/carta/#grupos'],
-  ['/menu-grupos/', '/carta/#grupos'],
-  ['/parrillaelcarnivoro/carta', '/carta/#menu-del-dia'],
-  ['/parrillaelcarnivoro/carta/', '/carta/#menu-del-dia'],
+  ['/desayunos', '/carta/'],
+  ['/desayunos/', '/carta/'],
+  ['/menu-grupos', '/carta/#menu-cenas'],
+  ['/menu-grupos/', '/carta/#menu-cenas'],
+  ['/parrillaelcarnivoro/carta', '/carta/'],
+  ['/parrillaelcarnivoro/carta/', '/carta/'],
   ['/galeria', '/galeria/'],
   ['/nuestra-historia', '/galeria/'],
   ['/nuestra-historia/', '/galeria/'],

@@ -21,7 +21,7 @@ export function restaurantSchema(images: string[]): WithContext<Restaurant> {
     alternateName: business.shortName,
     slogan: business.slogan,
     description:
-      'Restaurante de carnes a la parrilla de carbón en Collado Villalba (sierra de Madrid): chuletón, T-Bone, entraña y cortes madurados, entrantes caseros, pescados, desayunos, menú del día, menú de cenas y fines de semana y menú de grupos. Salón y gran terraza.',
+      'Restaurante de carnes a la parrilla de carbón en Collado Villalba (sierra de Madrid): chuletón, T-Bone, entraña y cortes madurados, entrantes caseros, pescados, postres caseros, vinos y menú de cenas y fines de semana. Salón y gran terraza.',
     url: `${SITE_URL}/`,
     logo: abs('/logo-el-carnivoro.png'),
     image: images,

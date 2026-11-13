@@ -91,11 +91,6 @@ export const reviews: Review[] = [
     text: 'La entraña riquísima y la atención del camarero David, muy profesional. Los aperitivos estaban riquísimos, tanto como el pan…',
   },
   {
-    author: 'Irene F.',
-    highlight: 'Sitio para repetir sin lugar a dudas.',
-    text: 'Todo estaba riquísimo, hemos pedido el menú del día y nos ha gustado mucho. Pero lo mejor, el trato de la camarera, que ha estado pendiente de nosotras en todo momento.',
-  },
-  {
     author: 'Valle G.',
     highlight: 'Estupenda comida y buen servicio.',
     text: 'Estupenda comida y, lo que es aún mejor, buen servicio. Alejandro súper amable y correcto. Ha sido una buena primera vez. Volveremos.',

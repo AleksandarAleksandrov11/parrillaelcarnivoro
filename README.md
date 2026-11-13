@@ -27,7 +27,7 @@ Desplegable en Vercel sin tocar nada.
 
 ## Puesta en marcha
 
-Requisitos: **Node.js 22.12 o superior** (Vercel: Node 22.x o 24.x).
+Requisitos: **Node.js 22.23.4 o superior** (lo exige Astro 7; en Vercel, Node 22.x o 24.x).
 
 ```bash
 npm install
@@ -53,7 +53,7 @@ de `vercel.json`, Brotli, 404). `npm run check` comprueba los tipos.
 ```
 src/
   data/           ← contenidos editables (carta, negocio, galería, opiniones)
-    carta.ts      ← LA CARTA: platos, precios, menús, desayunos
+    carta.ts      ← LA CARTA: platos, precios y menú de cenas (solo lo del PDF)
     site.ts       ← nombre, dirección, teléfono, horario, enlaces, datos legales
     gallery.ts    ← fotos de la galería, categoría y texto alternativo
     reviews.ts    ← opiniones reales de Google (selección) y nota media
@@ -80,12 +80,14 @@ source-assets/    ← ORIGINALES (no forman parte del build)
 1. En Vercel → proyecto → **Settings → Domains**, añade `www.parrillaelcarnivoro.es` y
    `parrillaelcarnivoro.es`. Marca **www como dominio principal** y configura el dominio sin `www`
    para que **redirija** a `www` (el `vercel.json` también lo hace con un 301).
-2. En el panel DNS del registrador del dominio crea o modifica **solo** estos registros:
+2. En el panel DNS del registrador del dominio crea o modifica **solo** estos dos registros, con
+   los valores **exactos que muestre Vercel** en *Settings → Domains* (cada proyecto tiene su
+   propio CNAME, del tipo `xxxxxxxx.vercel-dns-017.com`):
 
    | Tipo | Nombre | Valor |
    |---|---|---|
-   | A | `@` (raíz) | `76.76.21.21` |
-   | CNAME | `www` | el valor que indique Vercel (normalmente `cname.vercel-dns.com`) |
+   | A | `@` (raíz) | la IP que indique Vercel |
+   | CNAME | `www` | el CNAME que indique Vercel para este proyecto |
 
 3. **No toques los registros MX ni TXT** (son los del correo y sus verificaciones). Si existía un
    registro A o CNAME anterior para `@` o `www` que apuntaba al WordPress, sustitúyelo.
@@ -119,7 +121,7 @@ Todo está en **`src/data/carta.ts`** (un único archivo tipado; no hay que toca
 - Los precios se escriben como número con punto decimal (`14.9`) y la web los muestra en formato
   español (`14,90 €`). `per` admite `'kg'`, `'unidad'` y `'persona'`.
 - Para quitar un plato, borra su línea; para añadirlo, copia una línea y cámbiala.
-- Los menús (del día, cenas y fines de semana, grupos) están en la misma lista (`kind: 'menu'`).
+- El menú de cenas y fines de semana está en la misma lista (`kind: 'menu'`). Para añadir otro menú cerrado, copia ese bloque.
 - La carta, sus datos estructurados (schema `Menu`) y los precios de la home se actualizan solos.
 - Tras editar: `npm run build` (o simplemente `git push` y Vercel lo publica).
 

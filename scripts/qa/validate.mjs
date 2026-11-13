@@ -92,7 +92,8 @@ if (days !== 'Friday,Monday,Saturday,Sunday,Thursday') problems.push(`Horario de
 const carta = await readFile(path.join(DIST, 'carta/index.html'), 'utf8');
 const menu = [...carta.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1])).find((x) => x['@type'] === 'Menu');
 const menuItems = JSON.stringify(menu).match(/"@type":"MenuItem"/g)?.length ?? 0;
-if (menuItems < 60) problems.push(`Menu con pocos platos (${menuItems})`);
+// 52 platos y vinos del PDF + el menú de cenas.
+if (menuItems < 53) problems.push(`Menu con pocos platos (${menuItems})`);
 
 // 4) sitemap.xml y robots.txt.
 const sitemap = await readFile(path.join(DIST, 'sitemap.xml'), 'utf8');
