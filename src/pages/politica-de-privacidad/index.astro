@@ -6,7 +6,7 @@ import { business, legal } from '../../data/site';
 <LegalLayout
   title="Política de privacidad"
   metaTitle="Política de privacidad | Restaurante Parrilla El Carnívoro"
-  description="Cómo trata Ivosi 2022, S.L. tus datos en Parrilla El Carnívoro: reservas por teléfono, consultas, analítica y mapas con consentimiento, y tus derechos."
+  description="Cómo trata Ivosi 2022, S.L. tus datos en Parrilla El Carnívoro: reservas por teléfono, consultas, analítica, publicidad y mapas con consentimiento, y tus derechos."
   path="/politica-de-privacidad/"
   updated="11 de noviembre de 2026"
 >
@@ -56,7 +56,7 @@ import { business, legal } from '../../data/site';
           <th scope="row" data-label="Epígrafe">Destinatarios</th>
           <td data-label="Información básica">
             No cedemos tus datos a terceros, salvo obligación legal. Nos prestan servicios Vercel (alojamiento web), Google (correo Gmail, Google Analytics y
-            Google Maps). Puede haber transferencias internacionales a EE. UU. con garantías adecuadas.
+            Google Maps) y Meta (píxel de publicidad, solo con tu consentimiento). Puede haber transferencias internacionales a EE. UU. con garantías adecuadas.
           </td>
         </tr>
         <tr>
@@ -145,6 +145,14 @@ import { business, legal } from '../../data/site';
       enviar información.
     </li>
     <li>
+      <strong>Publicidad, solo con tu consentimiento.</strong> Si aceptas la categoría «Publicidad» en el panel de cookies, cargamos el píxel de Meta
+      Platforms Ireland Ltd. (Facebook e Instagram). Sin tu consentimiento, su código ni siquiera se descarga y no se envía nada a Meta. Con él se instalan
+      las cookies <code>_fbp</code> y <code>_fbc</code> (3 meses) y Meta recibe tu dirección IP, el navegador y dispositivo, las páginas que visitas y el
+      clic en el botón de llamar (nunca tu número ni el contenido de la llamada). Lo usamos para medir nuestros anuncios y mostrarlos a quienes han
+      visitado la web o a personas parecidas. Meta actúa como corresponsable o encargado según los términos de sus herramientas para empresas. Si retiras
+      el consentimiento, se deja de enviar información y esas cookies se borran.
+    </li>
+    <li>
       <strong>Mapa de Google, solo con tu consentimiento.</strong> El mapa interactivo de Google Maps solo se carga si aceptas «Mapas de Google» en el panel
       de cookies o si pulsas «Ver mapa interactivo». En ese momento tu navegador se conecta con Google, que recibe tu dirección IP y puede instalar sus propias
       cookies en google.com, como <code>NID</code> (6 meses), <code>AEC</code> (6 meses) o <code>SOCS</code> (13 meses), y otras si tienes una sesión
@@ -169,7 +177,7 @@ import { business, legal } from '../../data/site';
       Nuestro perfil de Instagram ({business.instagram.handle}) aparece solo como enlace: no hay contenido de Instagram incrustado en la web. Si haces clic,
       pasarás a Instagram, que aplica su propia política de privacidad.
     </li>
-    <li>No usamos cookies publicitarias, no elaboramos perfiles, no tomamos decisiones automatizadas sobre ti y no vendemos tus datos.</li>
+    <li>Solo usamos cookies publicitarias (píxel de Meta) si las aceptas; no vendemos tus datos ni tomamos decisiones automatizadas sobre ti.</li>
   </ul>
   {/* TODO: confirmar con el cliente: que no envía comunicaciones comerciales (listas de difusión, mensajes o promociones por correo dirigidos a clientes) con los datos de quienes reservan o consultan; si lo hace, añadir esa finalidad con consentimiento previo y expreso (art. 21 LSSI‑CE). */}
 
@@ -215,6 +223,11 @@ import { business, legal } from '../../data/site';
           <td data-label="Base jurídica">Tu consentimiento (art. 6.1.a RGPD y art. 22.2 de la LSSI‑CE).</td>
         </tr>
         <tr>
+          <td data-label="Finalidad">Medir nuestros anuncios y mostrar publicidad a quien ha visitado la web (píxel de Meta).</td>
+          <td data-label="Datos">Identificador de la cookie, dirección IP, páginas visitadas, dispositivo y clic en el botón de llamar.</td>
+          <td data-label="Base jurídica">Tu consentimiento (art. 6.1.a RGPD y art. 22.2 de la LSSI‑CE).</td>
+        </tr>
+        <tr>
           <td data-label="Finalidad">Mostrar el mapa interactivo de Google Maps.</td>
           <td data-label="Datos">Dirección IP y cookies de Google.</td>
           <td data-label="Base jurídica">Tu consentimiento (art. 6.1.a RGPD y art. 22.2 de la LSSI‑CE).</td>
@@ -241,7 +254,7 @@ import { business, legal } from '../../data/site';
     podremos gestionarla.
   </p>
   <p>
-    Puedes retirar tu consentimiento en cualquier momento, sin que ello afecte a la licitud del tratamiento anterior. Para las cookies de analítica y de Google
+    Puedes retirar tu consentimiento en cualquier momento, sin que ello afecte a la licitud del tratamiento anterior. Para las cookies de analítica, de publicidad y de Google
     Maps, basta con pulsar «Configurar cookies» en el pie de cualquier página de la web.
   </p>
 
@@ -270,6 +283,10 @@ import { business, legal } from '../../data/site';
       <strong>Facturas:</strong> si nos pides una factura a tu nombre (por ejemplo, de una comida de grupo), sus datos se conservan durante los plazos que
       exigen la normativa mercantil y la tributaria (con carácter general, seis años según el art. 30 del Código de Comercio y cuatro años según la Ley General
       Tributaria).
+    </li>
+    <li>
+      <strong>Píxel de Meta:</strong> las cookies <code>_fbp</code> y <code>_fbc</code> duran hasta 3 meses, salvo que retires el consentimiento o las borres
+      antes. Meta conserva los datos según sus propias condiciones.
     </li>
     <li>
       <strong>Google Analytics:</strong> las cookies <code>_ga</code> y <code>_ga_&lt;ID&gt;</code> duran hasta 2 años, salvo que retires el consentimiento o
@@ -330,6 +347,15 @@ import { business, legal } from '../../data/site';
           <td data-label="Ubicación y garantías">
             Irlanda (UE). Los datos pueden tratarse también fuera del Espacio Económico Europeo, incluido EE. UU. (Google LLC): Marco de Privacidad de Datos
             UE-EE. UU. y/o cláusulas contractuales tipo.
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Proveedor">Meta Platforms Ireland Limited</td>
+          <td data-label="Servicio">Píxel de Meta (Facebook e Instagram), solo si aceptas las cookies de publicidad.</td>
+          <td data-label="Datos y papel">Identificador de navegador, dirección IP, páginas visitadas y clic en llamar.</td>
+          <td data-label="Ubicación y garantías">
+            Irlanda (UE). Los datos pueden tratarse también en EE. UU. (Meta Platforms, Inc.): Marco de Privacidad de Datos UE-EE. UU. y/o cláusulas
+            contractuales tipo.
           </td>
         </tr>
         <tr>
@@ -423,7 +449,7 @@ import { business, legal } from '../../data/site';
     solicitudes lo requieran; en ese caso, te informaremos de la ampliación dentro del primer mes.
   </p>
   <p>
-    Para retirar tu consentimiento a las cookies de analítica o de Google Maps no necesitas escribirnos: pulsa «Configurar cookies» en el pie de cualquier
+    Para retirar tu consentimiento a las cookies de analítica, de publicidad o de Google Maps no necesitas escribirnos: pulsa «Configurar cookies» en el pie de cualquier
     página.
   </p>
 

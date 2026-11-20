@@ -4,12 +4,15 @@
  * antes de cualquier otra cosa. Aquí se gestionan las elecciones del usuario.
  */
 import { applyAnalyticsConsent } from './analytics';
+import { applyAdsConsent } from './meta-pixel';
 import { lockScroll, unlockScroll } from './scroll-lock';
 
 export interface Consent {
   v: 1;
   analytics: boolean;
   maps: boolean;
+  /** Publicidad (píxel de Meta). Los registros antiguos no lo traen: equivale a «no». */
+  ads?: boolean;
   /** Fecha de expiración (ms). Se vuelve a preguntar a los 12 meses. */
   exp: number;
   ts: number;
@@ -38,8 +41,8 @@ export function readConsent(): Consent | null {
 }
 
 /** Guarda una elección. `keepExpiry` conserva el vencimiento previo (no prorroga consentimientos anteriores). */
-function writeConsent(analytics: boolean, maps: boolean, keepExpiry?: number): Consent {
-  const c: Consent = { v: 1, analytics, maps, ts: Date.now(), exp: keepExpiry ?? Date.now() + TWELVE_MONTHS };
+function writeConsent(analytics: boolean, maps: boolean, ads: boolean, keepExpiry?: number): Consent {
+  const c: Consent = { v: 1, analytics, maps, ads, ts: Date.now(), exp: keepExpiry ?? Date.now() + TWELVE_MONTHS };
   memo = c;
   try {
     localStorage.setItem(KEY, JSON.stringify(c));
@@ -55,6 +58,7 @@ function apply(c: Consent, changed: boolean) {
   html.dataset.consent = 'set';
   html.classList.toggle('consent-maps', c.maps);
   applyAnalyticsConsent(c.analytics);
+  applyAdsConsent(c.ads === true);
   if (changed) document.dispatchEvent(new CustomEvent<Consent>('consentchange', { detail: c }));
 }
 
@@ -65,13 +69,13 @@ export function hasMapsConsent(): boolean {
 /** Concede el consentimiento de mapas (al pulsar «Cargar mapa»), manteniendo el resto. */
 export function grantMaps() {
   const prev = readConsent();
-  const c = writeConsent(prev?.analytics ?? false, true, prev?.exp);
+  const c = writeConsent(prev?.analytics ?? false, true, prev?.ads ?? false, prev?.exp);
   apply(c, true);
 }
 
 /** Estado efectivo (sin elección o caducada = todo denegado). */
 function effective(): Consent {
-  return readConsent() ?? { v: 1, analytics: false, maps: false, ts: 0, exp: 0 };
+  return readConsent() ?? { v: 1, analytics: false, maps: false, ads: false, ts: 0, exp: 0 };
 }
 
 export function initConsent() {
@@ -80,14 +84,15 @@ export function initConsent() {
   if (!banner || !dialog) return;
   const analyticsBox = dialog.querySelector<HTMLInputElement>('#cc-analytics')!;
   const mapsBox = dialog.querySelector<HTMLInputElement>('#cc-maps')!;
+  const adsBox = dialog.querySelector<HTMLInputElement>('#cc-ads')!;
 
   const current = readConsent();
   if (current) apply(current, false);
   else delete document.documentElement.dataset.consent;
 
-  const choose = (analytics: boolean, maps: boolean) => {
+  const choose = (analytics: boolean, maps: boolean, ads: boolean) => {
     const fromBanner = banner.contains(document.activeElement);
-    const c = writeConsent(analytics, maps);
+    const c = writeConsent(analytics, maps, ads);
     apply(c, true);
     if (dialog.open) dialog.close();
     // El banner desaparece: el foco pasa al contenido en vez de perderse en <body>.
@@ -100,6 +105,7 @@ export function initConsent() {
     const c = readConsent();
     analyticsBox.checked = c?.analytics ?? false;
     mapsBox.checked = c?.maps ?? false;
+    adsBox.checked = c?.ads ?? false;
     dialog.showModal();
     lockScroll();
   };
@@ -114,13 +120,13 @@ export function initConsent() {
     }
     switch (target.dataset.cc) {
       case 'accept':
-        choose(true, true);
+        choose(true, true, true);
         break;
       case 'reject':
-        choose(false, false);
+        choose(false, false, false);
         break;
       case 'save':
-        choose(analyticsBox.checked, mapsBox.checked);
+        choose(analyticsBox.checked, mapsBox.checked, adsBox.checked);
         break;
       case 'configure':
         openPreferences();
@@ -145,6 +151,7 @@ export function initConsent() {
       const denied = effective();
       document.documentElement.classList.remove('consent-maps');
       applyAnalyticsConsent(false);
+      applyAdsConsent(false);
       document.dispatchEvent(new CustomEvent<Consent>('consentchange', { detail: denied }));
     }
   };

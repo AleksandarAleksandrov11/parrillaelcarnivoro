@@ -5,6 +5,7 @@
  * Todo respeta prefers-reduced-motion.
  */
 import { initClickTracking } from './analytics';
+import { initMetaClickTracking } from './meta-pixel';
 import { lockScroll, unlockScroll } from './scroll-lock';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -203,4 +204,5 @@ initReveals();
 initParallax();
 initFab();
 initClickTracking();
+initMetaClickTracking();
 initSmoothScroll();

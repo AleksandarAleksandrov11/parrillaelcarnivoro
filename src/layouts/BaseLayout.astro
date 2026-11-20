@@ -22,10 +22,12 @@ interface Props {
 
 const { title, description, path, ogImage, schema = [], noindex = false, overlayHeader = true, intro = false } = Astro.props;
 const gaId = (import.meta.env.PUBLIC_GA_ID ?? '').trim();
+// Píxel de Meta «PIXEL CARNIVORO WEB». Solo se carga si el usuario acepta «Publicidad».
+const metaPixelId = (import.meta.env.PUBLIC_META_PIXEL_ID ?? '2197983217734951').trim();
 ---
 
 <!doctype html>
-<html lang="es-ES" data-ga={gaId || undefined} data-intro-page={intro ? '' : undefined}>
+<html lang="es-ES" data-ga={gaId || undefined} data-meta-pixel={metaPixelId || undefined} data-intro-page={intro ? '' : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />

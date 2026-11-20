@@ -6,7 +6,7 @@ import { business, legal } from '../../data/site';
 <LegalLayout
   title="Política de cookies"
   metaTitle="Política de cookies | Restaurante Parrilla El Carnívoro"
-  description="Cookies de la web de Restaurante Parrilla El Carnívoro: técnicas, Google Analytics y Google Maps, para qué sirven y cómo aceptarlas, rechazarlas o retirarlas."
+  description="Cookies de la web de Restaurante Parrilla El Carnívoro: técnicas, Google Analytics, publicidad (píxel de Meta) y Google Maps, para qué sirven y cómo aceptarlas, rechazarlas o retirarlas."
   path="/politica-de-cookies/"
   updated="11 de noviembre de 2026"
 >
@@ -101,15 +101,19 @@ import { business, legal } from '../../data/site';
       tipo de dispositivo y cómo han llegado hasta nosotros, para mejorar sus contenidos. Utilizamos Google Analytics 4 y solo se activan si las aceptas.
     </li>
     <li>
+      <strong>Publicitarias o de marketing:</strong> permiten medir los anuncios de {legal.company} en Facebook e Instagram y mostrar publicidad propia a quienes han
+      visitado la web. Utilizamos el píxel de Meta y solo se activa si lo aceptas en la categoría «Publicidad».
+    </li>
+    <li>
       <strong>De terceros por contenido incrustado (Google Maps):</strong> al mostrar el mapa interactivo de Google Maps, Google puede instalar sus propias
       cookies en su dominio google.com, con las finalidades que él determina (preferencias, seguridad y, en algún caso, publicidad en los servicios de
       Google). El mapa solo se carga si lo aceptas.
     </li>
   </ul>
   <p>
-    Nosotros no utilizamos cookies publicitarias ni de personalización de anuncios, y no elaboramos perfiles a partir de tu navegación. En Google
-    Analytics, la web nunca concede a Google permiso para el almacenamiento con fines publicitarios: aunque aceptes la analítica, solo se autoriza la
-    medición estadística. Ten en cuenta, no obstante, que si cargas el mapa de Google Maps, algunas de las cookies que Google instala en su propio dominio
+    Las cookies publicitarias (píxel de Meta) solo se instalan si aceptas la categoría «Publicidad»; no se activan por aceptar solo la analítica ni los
+    mapas. En Google Analytics, la web nunca concede a Google permiso para el almacenamiento con fines publicitarios: aunque aceptes la analítica, solo se
+    autoriza la medición estadística. Ten en cuenta, no obstante, que si cargas el mapa de Google Maps, algunas de las cookies que Google instala en su propio dominio
     pueden servirle también para sus propios fines, incluida la publicidad en los servicios de Google, como se indica en la tabla del apartado 4.
   </p>
 
@@ -166,6 +170,25 @@ import { business, legal } from '../../data/site';
           <td data-label="Finalidad">Mantiene el estado de la sesión de navegación, para medir las visitas y su duración en Google Analytics 4.</td>
           <td data-label="Duración">2 años</td>
           <td data-label="Tipo">Analítica · de terceros. Solo con tu consentimiento.</td>
+        </tr>
+        <tr>
+          <td data-label="Nombre"><code>_fbp</code></td>
+          <td data-label="Titular">Meta Platforms Ireland Ltd. (cookie en el dominio de esta web)</td>
+          <td data-label="Finalidad">
+            Identifica el navegador mediante un código aleatorio, para medir los anuncios de {legal.company} en Facebook e Instagram y mostrar publicidad a
+            quienes han visitado la web.
+          </td>
+          <td data-label="Duración">3 meses</td>
+          <td data-label="Tipo">Publicitaria · de terceros. Solo con tu consentimiento («Publicidad»).</td>
+        </tr>
+        <tr>
+          <td data-label="Nombre"><code>_fbc</code></td>
+          <td data-label="Titular">Meta Platforms Ireland Ltd. (cookie en el dominio de esta web)</td>
+          <td data-label="Finalidad">
+            Si llegas desde un anuncio de Facebook o Instagram, guarda el identificador de ese clic para saber qué anuncio te trajo a la web.
+          </td>
+          <td data-label="Duración">3 meses</td>
+          <td data-label="Tipo">Publicitaria · de terceros. Solo con tu consentimiento («Publicidad»).</td>
         </tr>
         <tr>
           <td data-label="Nombre"><code>NID</code></td>
@@ -227,6 +250,10 @@ import { business, legal } from '../../data/site';
       Google Analytics (gtag.js) ni siquiera se descarga hasta que aceptas la analítica.
     </li>
     <li>
+      <strong>No se hace ninguna petición a Meta.</strong> El código del píxel de Meta (fbevents.js) no se descarga hasta que aceptas la categoría
+      «Publicidad».
+    </li>
+    <li>
       <strong>No se hace ninguna petición a Google Maps.</strong> En lugar del mapa verás una fotografía de la fachada con nuestra dirección, el botón
       «Ver mapa interactivo» y el enlace «Cómo llegar», que solo abre Google Maps en una pestaña nueva si lo pulsas.
     </li>
@@ -239,6 +266,11 @@ import { business, legal } from '../../data/site';
   <p>
     Puedes navegar por toda la web, consultar la carta y llamarnos para reservar rechazando todas las cookies opcionales. Los botones de llamada
     solo abren la aplicación de teléfono de tu dispositivo con nuestro número; no usan cookies ni envían ningún dato.
+  </p>
+  <p>
+    Si aceptas la categoría «Publicidad», el píxel de Meta registra las visitas a las páginas y los clics en el botón de llamar (como un evento de
+    «Contacto»), sin tu número de teléfono ni el contenido de la llamada. Meta usa esa información para medir nuestros anuncios y para mostrarlos a
+    personas parecidas a quienes visitan la web o a quienes ya la han visitado.
   </p>
   <p>
     Si aceptas la analítica, además de las visitas a las páginas medimos algunas acciones, como la consulta de la carta y los clics en el botón de
@@ -258,7 +290,7 @@ import { business, legal } from '../../data/site';
     </li>
     <li>
       <strong>Panel de configuración.</strong> Con «Configurar» se abre un panel en el que puedes decidir por separado sobre cada categoría opcional,
-      «Analítica» y «Mapas de Google», mediante interruptores que aparecen desactivados mientras no los actives tú: no hay casillas premarcadas. Las
+      «Analítica», «Publicidad» y «Mapas de Google», mediante interruptores que aparecen desactivados mientras no los actives tú: no hay casillas premarcadas. Las
       cookies técnicas aparecen como «Siempre activas». Desde el panel puedes «Rechazar todo», «Guardar selección» o «Aceptar todo».
     </li>
   </ol>
@@ -297,6 +329,9 @@ import { business, legal } from '../../data/site';
     <li>
       <strong>Analítica:</strong> se deja de enviar información a Google Analytics y se borran de tu navegador las cookies <code>_ga</code> y
       <code>_ga_&lt;ID&gt;</code>.
+    </li>
+    <li>
+      <strong>Publicidad:</strong> se deja de enviar información a Meta y se borran de tu navegador las cookies <code>_fbp</code> y <code>_fbc</code>.
     </li>
     <li>
       <strong>Mapas de Google:</strong> el mapa interactivo se retira de la página y no vuelve a cargarse, salvo que vuelvas a pulsar «Ver mapa
